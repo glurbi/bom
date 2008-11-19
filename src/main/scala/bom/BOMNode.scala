@@ -1,0 +1,104 @@
+package bom
+
+import org.w3c.dom._
+import bom.bin._
+import bom.schema._
+
+/**
+ * The <code>BOMNode</code> class is the primary data type for the entire
+ * Binary Object Model. It represents a single node in the document tree.
+ */
+abstract class BOMNode(val schema: BOMSchemaElement,
+                       val parent: BOMContainer,
+                       val index: Int) {
+
+  val NO_POSITION = -1L
+  val NO_SIZE = -1L
+
+  protected var pos = NO_POSITION
+  protected var sz = NO_SIZE
+  
+  /**
+   * @return the name of this node
+   */
+  def name: String = schema.name
+
+  /**
+   * @return the document node associated with this node
+   */
+  def document: BOMDocument = parent.document
+
+
+  /**
+   * @return the depth of the node in the binary structure
+   */
+  def depth: int = schema.depth
+
+  /**
+   *  The size is calculated as the sum of all children (direct or indirect) of this node.
+   * 
+   * @return the node size (number of bytes)
+   */
+  def size: long = sz
+
+  /**
+   * @return this node identifier
+   */
+  def identifier: BOMIdentifier = {
+    val ia = new Array[int](depth)
+    populateId(ia);
+    new BOMIdentifier(ia);
+  }
+
+  private def populateId(id: Array[int]): Unit = {
+    if (!isInstanceOf[BOMDocument]) {
+      id(depth - 1) = index
+      parent.asInstanceOf[BOMNode].populateId(id);
+    }
+  }
+  
+  /**
+   * @return the position (in bytes) of this node in the binary space
+   */
+  def position: long = {
+    if (pos == NO_POSITION) {
+      if (index == 0) {
+        pos = parent.position;
+      } else if (parent.isInstanceOf[BOMSequence]) {
+        val previousSibling = parent.schema.children.get(index - 1).
+          createNode(parent, index - 1)
+        pos = previousSibling.position + previousSibling.size
+      } else if (parent.isInstanceOf[BOMArray]) {
+        if (parent.schema.asInstanceOf[BOMSchemaArray].regular) {
+          pos = parent.position + index * size;
+        } else {
+          pos = parent.asInstanceOf[BOMArray].child(index - 1).position +
+            parent.asInstanceOf[BOMArray].child(index - 1).size
+        }
+      }
+    }
+    pos
+  }
+
+  /**
+   * @return the DOM node corresponding to this BOM node
+   */
+  def asDomNode: Node
+
+  /**
+   * @return the binary space associated with this node
+   */
+  def binarySpace: BOMBinarySpace = document.binarySpace
+
+  override def equals(that: Any): boolean = that match {
+      case other: BOMNode
+        => this.index == other.index && this.parent.equals(other.parent)
+      case _
+        => false
+    }
+
+  override def hashCode: int = index
+
+  override def toString: String = name
+  
+}

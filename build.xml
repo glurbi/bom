@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="bom" default="all" basedir=".">
+
+	<property environment="env"/>
+    <property name="scala.home" value="${env.SCALA_HOME}"/>
+	
+    <property name="src.dir" value="src/main/scala"/>
+	<property name="lib.dir" value="lib"/>
+    <property name="build.dir" value="target/classes"/>
+
+    <path id="scala.classpath">
+        <pathelement location="${scala.home}/lib/scala-compiler.jar"/>
+        <pathelement location="${scala.home}/lib/scala-library.jar"/>
+    </path>
+
+    <path id="compile.classpath">
+        <path refid="scala.classpath"/>
+        <pathelement location="${build.dir}"/>
+    </path>
+
+	<path id="runtime.classpath">
+		<pathelement location="${lib.dir}/saxon9.jar"/>
+		<pathelement location="${lib.dir}/saxon9-dom.jar"/>
+		<pathelement location="${lib.dir}/saxon9-xpath.jar"/>
+	</path>
+	
+	<taskdef resource="scala/tools/ant/antlib.xml">
+		<classpath refid="scala.classpath"/>
+	</taskdef>
+
+	<target name="clean">
+		<delete dir="${build.dir}"/>
+	</target>
+	
+    <target name="compile">
+        <mkdir dir="${build.dir}"/>
+        <scalac srcdir="${src.dir}" destdir="${build.dir}" classpathref="compile.classpath" force="changed">
+            <include name="**/*.scala"/>
+        </scalac>
+    </target>
+
+	<target name="test" depends="compile">
+		<java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+			<classpath>
+				<path refid="compile.classpath"/>
+				<path refid="runtime.classpath"/>
+			</classpath>
+			<arg line="bom.test.AllTests"/>
+		</java>
+	</target>
+	
+    <target name="all" depends="compile,test">
+    </target>
+
+</project>
