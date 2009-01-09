@@ -1,4 +1,4 @@
-package bom.bin
+package bom.types
 
 abstract class ByteOrder
 

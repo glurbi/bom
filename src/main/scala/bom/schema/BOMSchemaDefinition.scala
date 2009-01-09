@@ -3,6 +3,7 @@ package bom.schema
 import java.util._
 import bom._
 import bom.bin._
+import bom.types._
 
 
 case class BOMSchemaDefinition extends BOMSchemaElement {

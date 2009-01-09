@@ -2,7 +2,7 @@ package bom.test
 
 import bom.schema._
 import bom.types._
-import bom.bin.ByteOrder._
+import bom.types.ByteOrder._
 
 object BomJavaClassFormat extends BOMSchemaBuilder with BOMTypes {
 
