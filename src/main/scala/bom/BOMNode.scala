@@ -32,25 +32,25 @@ abstract class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return the depth of the node in the binary structure
    */
-  def depth: int = schema.depth
+  def depth: Int = schema.depth
 
   /**
-   *  The size is calculated as the sum of all children (direct or indirect) of this node.
+   *  The size is calculated as the number of bits of all this node children.
    * 
-   * @return the node size (number of bytes)
+   * @return the node size (number of bits)
    */
-  def size: long = sz
+  def size: Long = sz
 
   /**
    * @return this node identifier
    */
   def identifier: BOMIdentifier = {
-    val ia = new Array[int](depth)
+    val ia = new Array[Int](depth)
     populateId(ia);
     new BOMIdentifier(ia);
   }
 
-  private def populateId(id: Array[int]): Unit = {
+  private def populateId(id: Array[Int]): Unit = {
     if (!isInstanceOf[BOMDocument]) {
       id(depth - 1) = index
       parent.asInstanceOf[BOMNode].populateId(id);
@@ -58,9 +58,9 @@ abstract class BOMNode(val schema: BOMSchemaElement,
   }
   
   /**
-   * @return the position (in bytes) of this node in the binary space
+   * @return the position (in bits) of this node in the binary space
    */
-  def position: long = {
+  def position: Long = {
     if (pos == NO_POSITION) {
       if (index == 0) {
         pos = parent.position;
@@ -97,7 +97,7 @@ abstract class BOMNode(val schema: BOMSchemaElement,
         => false
     }
 
-  override def hashCode: int = index
+  override def hashCode: Int = index
 
   override def toString: String = name
   

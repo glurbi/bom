@@ -10,9 +10,9 @@ trait BOMType {
     def typeName: String
 
     /**
-     * @return the type size (in bytes)
+     * @return the type size (in bits)
      */
-    def typeSize(params: Any*): int
+    def typeSize(params: Any*): Int
 
     /**
      * Reads one element of this type in the binary space.

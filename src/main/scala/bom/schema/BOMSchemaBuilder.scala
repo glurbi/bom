@@ -43,6 +43,7 @@ trait BOMSchemaBuilder {
     a.parent = stack.top
     a.name = name
     a.arrayLengthExpression = lengthXPath
+    a.regular = regular
     stack.push(a)
     body
     stack.pop

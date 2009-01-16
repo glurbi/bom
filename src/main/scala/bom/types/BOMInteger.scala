@@ -6,7 +6,7 @@ class BOMInteger extends BOMType {
 
   def typeName: String = "integer"
 
-  def typeSize(params: Any*): int = 4
+  def typeSize(params: Any*): Int = 32
 
   def read(bspace: BOMBinarySpace, params: Any*): Any = {
     (bspace.getByte.asInstanceOf[Long] << 24) +

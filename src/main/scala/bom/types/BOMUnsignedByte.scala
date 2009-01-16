@@ -6,7 +6,7 @@ class BOMUnsignedByte extends BOMType {
 
   def typeName: String = "unsigned-byte"
 
-  def typeSize(params: Any*): int = 1
+  def typeSize(params: Any*): Int = 8
 
   def read(bspace: BOMBinarySpace, params: Any*): Any = {
     (bspace.getByte & 255).asInstanceOf[Byte]

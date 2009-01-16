@@ -23,7 +23,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
   /**
    * @return the number of element in this array
    */
-  def childrenCount: int = {
+  def childrenCount: Int = {
     if (arrayLength == NO_LENGTH) {
       val xpath = schema.arrayLengthExpression
       val number = document.queryNumber(this, xpath);
@@ -50,7 +50,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
   /**
    * @return the array element at the specified index
    */
-  def child(index: int): BOMNode = {
+  def child(index: Int): BOMNode = {
     if (regular) {
       if (index >= childrenCount) {
         throw new ArrayIndexOutOfBoundsException(index);

@@ -22,7 +22,7 @@ case class BOMString(override val schema: BOMSchemaString,
   def value: String = {
     if (string == null) {
       binarySpace.position(position.intValue)
-      val ba = new Array[byte](size.intValue)
+      val ba = new Array[byte](size.intValue / 8)
       binarySpace.getBytes(ba)
       val encoding = schema.asInstanceOf[BOMSchemaString].encoding
       val charset = Charset.availableCharsets.get(encoding)
@@ -35,12 +35,12 @@ case class BOMString(override val schema: BOMSchemaString,
   var stringSize = NO_SIZE
   var string: String = null
 
-  override def size: long = {
+  override def size: Long = {
     if (stringSize == NO_SIZE) {
       val xpath = schema.asInstanceOf[BOMSchemaElement].sizeExpression
       stringSize = document.queryNumber(this, xpath).longValue
     }
-    stringSize
+    stringSize * 8
   }
 
   def asDomNode: Node = new BOMStringAdapter(this)

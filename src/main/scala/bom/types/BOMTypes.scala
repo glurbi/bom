@@ -13,4 +13,11 @@ trait BOMTypes {
   def bom_float = new BOMFloat
   def bom_double = new BOMDouble
 
+  def bom_bcd1 = new BOMBinaryCodedDecimal(1)
+  def bom_bcd2 = new BOMBinaryCodedDecimal(2)
+  def bom_bcd3 = new BOMBinaryCodedDecimal(3)
+  def bom_bcd4 = new BOMBinaryCodedDecimal(4)
+  def bom_bcd6 = new BOMBinaryCodedDecimal(6)
+  def bom_bcd8 = new BOMBinaryCodedDecimal(8)
+  
 }
