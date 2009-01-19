@@ -11,12 +11,20 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
       sequence("segd") {
         reference(generalHeader1)
         reference(generalHeader2)
-        array("scan type headers", "../general_header_1/channel_sets_per_scan_type * ../general_header_1/scan_type_per_record") {
-          reference(scanTypeHeader)
+        array("scan_type_headers", "../general_header_1/scan_type_per_record") {
+          array("channel_set_header", "../../general_header_1/channel_sets_per_scan_type") {
+            reference(scanTypeHeader)
+          }
         }
         reference(extendedHeader)
         reference(externalHeader)
-        reference(trace)
+        array("data", "../general_header_1/scan_type_per_record") {
+          array("scan type", "../../general_header_1/channel_sets_per_scan_type") {
+            array("channel set", "../../../scan_type_headers/channel_set_header[1]/scan_type_header[1]/number_of_channels", true) {
+              reference(trace)
+            }
+          }
+        }
       }
     }
 
@@ -79,14 +87,14 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
 
   def scanTypeHeader =
     typedef {
-      sequence("scan type header") {
+      sequence("scan_type_header") {
         number("scan type number", bom_bcd2)
         number("channel set number", bom_bcd2)
         number("start time", bom_ushort)
         number("end time", bom_ushort)
         number("optional", bom_ubyte)
         number("input voltage", bom_ubyte)
-        number("number of channels", bom_bcd4)
+        number("number_of_channels", bom_bcd4)
         number("channel type", bom_ubyte)
         number("sc", bom_ubyte)
         array("scan type header", "20") {
@@ -113,16 +121,41 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
     typedef {
       sequence("trace") {
         reference(traceHeader)
+        array("trace header extensions", "../trace_header/trace_header_extensions", true) {
+          reference(traceHeaderExtension)
+        }
+        reference(traceData)
       }
     }
 
   def traceHeader =
     typedef {
-      sequence("traceHeader") {
+      sequence("trace_header") {
         number("file number", bom_bcd4)
         number("scan type number", bom_bcd2)
         number("channel set number", bom_bcd2)
         number("trace number", bom_bcd4)
+        array("first timing word", "3", true) {
+          number("value", bom_byte)
+        }
+        number("trace_header_extensions", bom_byte)
+        array("pad", "10", true) {
+          number("value", bom_byte)
+        }
+      }
+    }
+
+  def traceHeaderExtension =
+    typedef {
+      array("trace header extension", "32", true) {
+        number("value", bom_byte)
+      }
+    }
+
+  def traceData =
+    typedef {
+      array("trace data", "15000", true) {
+        number("value", bom_byte)
       }
     }
 
