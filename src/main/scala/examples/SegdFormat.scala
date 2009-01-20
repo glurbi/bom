@@ -41,9 +41,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
       sequence("general_header_1") {
         number("file number", bom_bcd4)
         number("format code", bom_bcd4)
-        array("general constants", "6") {
-          number("general constant", bom_bcd2)
-        }
+        blob("general constants", 6)
         number("year", bom_bcd2)
         number("general header blocks", bom_bcd1)
         number("day", bom_bcd3)
@@ -52,9 +50,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         number("second", bom_bcd2)
         number("manufacture's code", bom_bcd2)
         number("manufacture's serial number", bom_bcd4)
-        number("not used", bom_byte)
-        number("not used", bom_byte)
-        number("not used", bom_byte)
+        blob("not used", 3)
         number("base scan interval", bom_byte)
         number("polarity", bom_byte)
         number("not used", bom_byte)
@@ -75,13 +71,9 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         number("extended channel set", bom_ushort)
         number("extended_header_blocks", bom_ushort)
         number("external_header_blocks", bom_ushort)
-        array("general header 2", "9") {
-            number("value", bom_byte)
-        }
+        blob("undefined", 9)
         number("general header block number", bom_bcd2)
-        array("general header 2", "13") {
-            number("value", bom_byte)
-        }
+        blob("undefined", 13)
       }
     }
 
@@ -97,9 +89,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         number("number_of_channels", bom_bcd4)
         number("channel type", bom_ubyte)
         number("sc", bom_ubyte)
-        array("scan type header", "20") {
-            number("value", bom_byte)
-        }
+        blob("undefined", 20)
       }
     }
 

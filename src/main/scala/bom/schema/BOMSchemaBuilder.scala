@@ -119,5 +119,13 @@ trait BOMSchemaBuilder {
     s.encoding = encoding
     s.sizeExpression(sizeXPath)
   }
-  
+
+  def blob(name: String, size: Long) = {
+    val b = new BOMSchemaBlob
+    stack.top.appendChild(b)
+    b.parent = stack.top
+    b.name = name
+    b.size = size
+  }
+
 }

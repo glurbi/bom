@@ -18,6 +18,7 @@ object BOMDumper {
       reader.nextEvent match {
         case BOMEvent(c: BOMContainer, StartContainer) => dumpStartContainer(c)
         case BOMEvent(n: BOMNumber, _) => dumpNumber(n)
+        case BOMEvent(b: BOMBlob, _) => dumpBlob(b)
         case BOMEvent(l: BOMLeaf, Leaf) => dumpLeaf(l)
         case BOMEvent(_, BOMEvent.EndContainer) =>
       }
@@ -57,6 +58,15 @@ object BOMDumper {
         format("%s ", it.next)
       }
       format("]")
+    }
+  }
+
+  private def dumpBlob(blob: BOMBlob) = {
+    dumpCommon(blob)
+    val max: Int = if (blob.size > 10) 10 else blob.size.intValue
+    val bytes = blob.value
+    for (i <- 0 until max) {
+      format(" %02x", bytes(i))
     }
   }
 
