@@ -136,4 +136,12 @@ trait BOMSchemaBuilder {
     b.sizeExpression = sizeXPath
   }
 
+  def virtual(name: String, xpath: String) = {
+    val v = new BOMSchemaVirtual
+    stack.top.appendChild(v)
+    v.parent = stack.top
+    v.name = name
+    v.xpath = xpath
+  }
+
 }

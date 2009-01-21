@@ -34,7 +34,10 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BOMBinarySpace {
 
   def position: Long = buffer.position * 8
 
-  def position(position: Long) = buffer.position((position / 8).intValue)
+  def position(position: Long) = {
+    buffer.position((position / 8).intValue)
+    offset = position % 8
+  }
   
   def byteOrder: ByteOrder = {
     if (buffer.order == java.nio.ByteOrder.BIG_ENDIAN) {

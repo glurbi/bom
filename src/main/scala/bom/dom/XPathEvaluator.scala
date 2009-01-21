@@ -29,10 +29,20 @@ class XPathEvaluator {
     def evaluate(args: List[_]): Object = contexts.getFirst.asDomNode.getPreviousSibling
   }
 
+  val bomPowerFunction = new XPathFunction {
+    def evaluate(args: List[_]): Object = {
+      // TODO: very disgusting, improve...
+      val a1 = args.get(0).asInstanceOf[Number].doubleValue
+      val a2 = args.get(1).asInstanceOf[List[Node]].get(0).asInstanceOf[BOMNumberAdapter].node.asInstanceOf[BOMNumber].value.doubleValue
+      double2Double(Math.pow(a1, a2))
+    }
+  }
+
   xPath.setNamespaceContext(new BOMNamespaceContext)
   xPath.setXPathFunctionResolver(functionResolver)
   xpathFunctions.put("context", bomContextFunction)
   xpathFunctions.put("previous-sibling", bomPreviousSiblingFunction)
+  xpathFunctions.put("power", bomPowerFunction)
 
   def evaluateAsElementList(xpath: String, context: BOMNode): List[BOMNode] = {
     contexts.push(context)

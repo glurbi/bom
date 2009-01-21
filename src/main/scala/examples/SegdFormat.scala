@@ -13,14 +13,14 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         reference(generalHeader2)
         array("scan_type_headers", "../general_header_1/scan_type_per_record") {
           array("channel_set_headers", "../../general_header_1/channel_sets_per_scan_type") {
-            reference(scanTypeHeader)
+            reference(channelSetHeader)
           }
         }
         reference(extendedHeader)
         reference(externalHeader)
-        array("data", "../general_header_1/scan_type_per_record") {
-          array("scan type", "../../general_header_1/channel_sets_per_scan_type") {
-            array("channel set", "../../../scan_type_headers/channel_set_headers[1]/channel_set_header[1]/number_of_channels", true) {
+        array("data", "/segd/general_header_1/scan_type_per_record") {
+          array("scan type", "/segd/general_header_1/channel_sets_per_scan_type") {
+            array("channel set", "/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels", true) {
               reference(trace)
             }
           }
@@ -77,18 +77,19 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
       }
     }
 
-  def scanTypeHeader =
+  def channelSetHeader =
     typedef {
       sequence("channel_set_header") {
         number("scan type number", bom_bcd2)
         number("channel set number", bom_bcd2)
-        number("start time", bom_ushort)
-        number("end time", bom_ushort)
+        number("start_time", bom_ushort)
+        number("end_time", bom_ushort)
         number("optional", bom_ubyte)
         number("input voltage", bom_ubyte)
         number("number_of_channels", bom_bcd4)
         number("channel type", bom_ubyte)
-        number("sc", bom_ubyte)
+        number("sc", bom_bcd1)
+        number("gain", bom_bcd1)
         blob("undefined", 20)
       }
     }
@@ -110,6 +111,10 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         array("trace header extensions", "../trace_header/trace_header_extensions", true) {
           reference(traceHeaderExtension)
         }
+        virtual("start_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/start_time")
+        virtual("end_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/end_time")
+        virtual("subscan", "bom:power(2, /segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/sc)")
+        virtual("trace_size", "(../end_time - ../start_time) * ../subscan * 3")
         reference(traceData)
       }
     }
@@ -134,7 +139,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
 
   def traceData =
     typedef {
-      blob("trace data", 15000)
+      blob("trace data", "../trace_size")
     }
 
 }
