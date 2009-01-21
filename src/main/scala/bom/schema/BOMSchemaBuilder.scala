@@ -128,4 +128,12 @@ trait BOMSchemaBuilder {
     b.size = size
   }
 
+  def blob(name: String, sizeXPath: String) = {
+    val b = new BOMSchemaBlob
+    stack.top.appendChild(b)
+    b.parent = stack.top
+    b.name = name
+    b.sizeExpression = sizeXPath
+  }
+
 }

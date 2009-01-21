@@ -95,16 +95,12 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
 
   def extendedHeader =
     typedef {
-      array("extended header", "32 * ../general_header_2/extended_header_blocks", true) {
-        number("value", bom_byte)
-      }
+      blob("extended header", "32 * ../general_header_2/extended_header_blocks")
     }
 
   def externalHeader =
     typedef {
-      array("external header", "32 * ../general_header_2/external_header_blocks", true) {
-        number("value", bom_byte)
-      }
+      blob("external header", "32 * ../general_header_2/external_header_blocks")
     }
 
   def trace =

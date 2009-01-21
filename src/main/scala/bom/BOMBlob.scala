@@ -14,7 +14,7 @@ import bom.types._
 case class BOMBlob(override val schema: BOMSchemaBlob,
                    override val parent: BOMContainer,
                    override val index: Int,
-                   var localsz: Long)
+                   sizeFun: BOMNode => Long)
   extends BOMLeaf(schema, parent, index) {
 
   /**
@@ -27,7 +27,7 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
     bytes
   }
 
-  override def size: long = localsz
+  override def size: Long = sizeFun(this)
 
   def asDomNode: Node = new BOMBlobAdapter(this)
 
