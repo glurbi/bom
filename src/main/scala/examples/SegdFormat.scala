@@ -121,28 +121,20 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         number("scan type number", bom_bcd2)
         number("channel set number", bom_bcd2)
         number("trace number", bom_bcd4)
-        array("first timing word", "3", true) {
-          number("value", bom_byte)
-        }
+        blob("first timing word", 3)
         number("trace_header_extensions", bom_byte)
-        array("pad", "10", true) {
-          number("value", bom_byte)
-        }
+        blob("pad", 10)
       }
     }
 
   def traceHeaderExtension =
     typedef {
-      array("trace header extension", "32", true) {
-        number("value", bom_byte)
-      }
+      blob("trace header extension", 32)
     }
 
   def traceData =
     typedef {
-      array("trace data", "15000", true) {
-        number("value", bom_byte)
-      }
+      blob("trace data", 15000)
     }
 
 }

@@ -22,7 +22,7 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
    */
   def value: Array[Byte] = {
     binarySpace.position(position)
-    val bytes = new Array[Byte](size.intValue)
+    val bytes = new Array[Byte](size.intValue / 8)
     binarySpace.getBytes(bytes)
     bytes
   }

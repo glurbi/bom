@@ -27,7 +27,7 @@ object BOMDumper {
 
   private def dumpCommon(node: BOMNode) = {
     println
-    format("%010x", node.position)
+    format("%010x", node.position / 8)
     format("%s", "              ".substring(0, node.depth))
     format("%s", node.name)
   }
@@ -63,7 +63,7 @@ object BOMDumper {
 
   private def dumpBlob(blob: BOMBlob) = {
     dumpCommon(blob)
-    val max: Int = if (blob.size > 10) 10 else blob.size.intValue
+    val max: Int = if (blob.size / 8 > 30) 30 else blob.size.intValue / 8
     val bytes = blob.value
     for (i <- 0 until max) {
       format(" %02x", bytes(i))

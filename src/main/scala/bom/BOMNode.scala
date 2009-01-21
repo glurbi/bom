@@ -70,7 +70,7 @@ abstract class BOMNode(val schema: BOMSchemaElement,
         pos = previousSibling.position + previousSibling.size
       } else if (parent.isInstanceOf[BOMArray]) {
         if (parent.schema.asInstanceOf[BOMSchemaArray].regular) {
-          pos = parent.position + index * size;
+          pos = parent.position + index * parent.schema.children.get(0).createNode(parent, 0).size;
         } else {
           pos = parent.asInstanceOf[BOMArray].child(index - 1).position +
             parent.asInstanceOf[BOMArray].child(index - 1).size
