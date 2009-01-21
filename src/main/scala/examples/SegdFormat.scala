@@ -12,7 +12,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         reference(generalHeader1)
         reference(generalHeader2)
         array("scan_type_headers", "../general_header_1/scan_type_per_record") {
-          array("channel_set_header", "../../general_header_1/channel_sets_per_scan_type") {
+          array("channel_set_headers", "../../general_header_1/channel_sets_per_scan_type") {
             reference(scanTypeHeader)
           }
         }
@@ -20,7 +20,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
         reference(externalHeader)
         array("data", "../general_header_1/scan_type_per_record") {
           array("scan type", "../../general_header_1/channel_sets_per_scan_type") {
-            array("channel set", "../../../scan_type_headers/channel_set_header[1]/scan_type_header[1]/number_of_channels", true) {
+            array("channel set", "../../../scan_type_headers/channel_set_headers[1]/channel_set_header[1]/number_of_channels", true) {
               reference(trace)
             }
           }
@@ -79,7 +79,7 @@ object SegdFormat extends BOMSchemaBuilder with BOMTypes {
 
   def scanTypeHeader =
     typedef {
-      sequence("scan_type_header") {
+      sequence("channel_set_header") {
         number("scan type number", bom_bcd2)
         number("channel set number", bom_bcd2)
         number("start time", bom_ushort)

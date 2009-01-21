@@ -63,6 +63,7 @@ object BOMDumper {
 
   private def dumpBlob(blob: BOMBlob) = {
     dumpCommon(blob)
+    format(" (%d bytes)", blob.size / 8)
     val max: Int = if (blob.size / 8 > 30) 30 else blob.size.intValue / 8
     val bytes = blob.value
     for (i <- 0 until max) {
