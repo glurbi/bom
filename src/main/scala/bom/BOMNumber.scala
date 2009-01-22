@@ -30,7 +30,7 @@ case class BOMNumber(override val schema: BOMSchemaNumber,
 
   override def size: long = numberType.typeSize()
 
-  def asDomNode: Node = new BOMNumberAdapter(this)
+  def asDomNode: Node = new BOMLeafAdapter(this)
 
   override def toString: String = name + " " + value
 

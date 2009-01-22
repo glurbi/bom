@@ -29,7 +29,7 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
 
   override def size: Long = sizeFun(this)
 
-  def asDomNode: Node = new BOMBlobAdapter(this)
+  def asDomNode: Node = new BOMLeafAdapter(this)
 
   override def toString: String = name + " " + value.length + " bytes"
 

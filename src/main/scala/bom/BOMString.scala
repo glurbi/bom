@@ -43,7 +43,7 @@ case class BOMString(override val schema: BOMSchemaString,
     stringSize * 8
   }
 
-  def asDomNode: Node = new BOMStringAdapter(this)
+  def asDomNode: Node = new BOMLeafAdapter(this)
 
   override def toString: String = name + " " + value
 

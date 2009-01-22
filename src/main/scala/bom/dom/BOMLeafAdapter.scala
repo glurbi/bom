@@ -2,7 +2,7 @@ package bom.dom
 
 import org.w3c.dom._
 
-class BOMVirtualAdapter(bomVirtual: BOMVirtual) extends ElementAdapter(bomVirtual) {
+class BOMLeafAdapter(bomLeaf: BOMLeaf) extends ElementAdapter(bomLeaf) {
 
   override def getChildNodes: NodeList =
     new NodeList {
@@ -11,10 +11,10 @@ class BOMVirtualAdapter(bomVirtual: BOMVirtual) extends ElementAdapter(bomVirtua
         if (index != 0) {
           throw new BOMException("Index out of bound!")
         }
-        new TextAdapter(bomVirtual)
+        new TextAdapter(bomLeaf)
       }
     }
 
-  override def getFirstChild: Node = new TextAdapter(bomVirtual)
+  override def getFirstChild: Node = new TextAdapter(bomLeaf)
   
 }

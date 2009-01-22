@@ -25,7 +25,7 @@ case class BOMVirtual(override val schema: BOMSchemaVirtual,
 
   override def size: Long = 0
 
-  def asDomNode: Node = new BOMVirtualAdapter(this)
+  def asDomNode: Node = new BOMLeafAdapter(this)
 
   override def toString: String = name + " " + value
 

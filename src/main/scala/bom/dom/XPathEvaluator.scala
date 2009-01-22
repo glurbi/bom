@@ -33,7 +33,7 @@ class XPathEvaluator {
     def evaluate(args: List[_]): Object = {
       // TODO: very disgusting, improve...
       val a1 = args.get(0).asInstanceOf[Number].doubleValue
-      val a2 = args.get(1).asInstanceOf[List[Node]].get(0).asInstanceOf[BOMNumberAdapter].node.asInstanceOf[BOMNumber].value.doubleValue
+      val a2 = args.get(1).asInstanceOf[List[Node]].get(0).asInstanceOf[BOMLeafAdapter].node.asInstanceOf[BOMNumber].value.doubleValue
       double2Double(Math.pow(a1, a2))
     }
   }
