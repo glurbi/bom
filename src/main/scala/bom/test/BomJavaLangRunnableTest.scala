@@ -3,6 +3,7 @@ package bom.test
 import java.io._
 import bom.bin._
 import bom.schema._
+import bom.examples._
 import bom.stream._
 
 object BomJavaLangRunnableTest {
@@ -11,7 +12,7 @@ object BomJavaLangRunnableTest {
 
     val is = getClass.getResourceAsStream("/java/lang/Runnable.class")
     val binarySpace = new MemoryBinarySpace(is)
-    val definition = BomJavaClassFormat.classDefinition
+    val definition = JavaClassSchema.classDefinition
     val doc = definition.createDocument(binarySpace)
     val root = doc.rootNode
     

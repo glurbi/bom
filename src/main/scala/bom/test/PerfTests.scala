@@ -3,6 +3,7 @@ package bom.test
 import java.io._
 import bom.bin._
 import bom.schema._
+import bom.examples._
 import bom.stream._
 
 object PerfTests {
@@ -10,7 +11,7 @@ object PerfTests {
   def main(args: Array[String]) = {
     val is = getClass.getResourceAsStream("/java/lang/String.class")
     val binarySpace = new MemoryBinarySpace(is)
-    val definition = BomJavaClassFormat.classDefinition
+    val definition = JavaClassSchema.classDefinition
     
     while (true) {
       val reader = new BOMEventReader(binarySpace, definition)

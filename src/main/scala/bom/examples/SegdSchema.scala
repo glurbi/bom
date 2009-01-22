@@ -1,10 +1,12 @@
-package examples
+package bom.examples
 
 import bom.schema._
 import bom.types._
 import bom.types.ByteOrder._
 
-object SegdFormat extends BOMSchemaBuilder with BOMTypes {
+object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
+
+  def schemaDefinition = segd
 
   def segd =
     definition(BIG_ENDIAN) {
