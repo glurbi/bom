@@ -48,9 +48,9 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
     var curr: BOMNode = null
     def hasNext: boolean = {
       if (curr == null) {
-        BOMSequence.this.schema.childrenCount != 0
+        BOMSequence.this.schema.children.size != 0
       } else {
-        curr.index < schema.childrenCount - 1
+        curr.index < schema.children.size - 1
       }
     }
     def next: BOMNode = {

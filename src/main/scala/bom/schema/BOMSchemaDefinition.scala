@@ -6,7 +6,11 @@ import bom.bin._
 import bom.types._
 
 
-case class BOMSchemaDefinition extends BOMSchemaElement {
+case class BOMSchemaDefinition(override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
+
+  override val name: String = null
+  override val parent: BOMSchemaElement = null
 
   var byteOrder: ByteOrder = null
   private var child: BOMSchemaElement = null

@@ -4,7 +4,10 @@ import java.util._
 import bom._
 import bom.bin._
 
-case class BOMSchemaArray extends BOMSchemaElement {
+case class BOMSchemaArray(override val name: String,
+                          override val parent: BOMSchemaElement,
+                          override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
 
   private var child: BOMSchemaElement = null
   private var arrayLength: int = -1

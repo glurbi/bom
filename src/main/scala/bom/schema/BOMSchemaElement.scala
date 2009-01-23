@@ -4,36 +4,41 @@ import java.util._
 import bom._
 import bom.bin._
 
-object BOMSchemaElement {
+trait BOMSchemaElement {
 
-  def create: BOMSchemaElement = throw new BOMException
-  
-}
+  /**
+   * @return the name of this schema element
+   */
+  def name: String
 
-abstract class BOMSchemaElement {
+  /**
+   * @return the schema element parent of this schema element
+   */
+  def parent: BOMSchemaElement
 
-  var name: String = null
-  var sizeExpression: String = null
-  var parent: BOMSchemaElement = null
-  var size: long = 0
-  
+  /**
+   * @return the function that will calculate the size of the BOMNode
+   */
+  def sizeFun: BOMNode => Long
+
+  /**
+   * @return the depth of the schema element in the schema hierarchy
+   */
   def depth: int = 1 + parent.depth
-  
-  def childrenCount: int
-  
-  def children: List[BOMSchemaElement]
-  
-  def createNode(parent: BOMContainer, index: int): BOMNode
-  
-  def appendChild(schemaElement: BOMSchemaElement)
 
-  def sizeExpression(expr: String): Unit = {
-    sizeExpression = expr;
-    try {
-        size = expr.toLong
-    } catch {
-      case _ =>
-    }
-  }
+  /**
+   * the schema element children of this schema element
+   */
+  def children: List[BOMSchemaElement]
+
+  /**
+   * TODO: move responsability in BOMContainer?
+   */
+  def createNode(parent: BOMContainer, index: Int): BOMNode
+
+  /**
+   * Add a schema element child of this schema element.
+   */
+  def appendChild(schemaElement: BOMSchemaElement)
 
 }

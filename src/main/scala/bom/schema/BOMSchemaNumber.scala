@@ -5,7 +5,10 @@ import bom._
 import bom.types._
 import bom.bin._
 
-case class BOMSchemaNumber extends BOMSchemaElement {
+case class BOMSchemaNumber(override val name: String,
+                           override val parent: BOMSchemaElement,
+                           override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
 
   var numberType: BOMType = null
   val mappings = new HashMap[Object, Object]

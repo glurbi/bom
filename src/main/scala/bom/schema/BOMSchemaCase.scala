@@ -4,7 +4,11 @@ import java.util._
 import bom._
 import bom.bin._
 
-case class BOMSchemaCase extends BOMSchemaElement {
+case class BOMSchemaCase(override val parent: BOMSchemaElement,
+                         override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
+
+  override val name: String = null
 
   private var child: BOMSchemaElement = null
   

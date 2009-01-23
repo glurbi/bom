@@ -9,7 +9,7 @@ class BOMSequenceAdapter(bomSequence: BOMSequence) extends ElementAdapter(bomSeq
 
   override def getChildNodes: NodeList =
     new NodeList {
-      def getLength: int = bomSequence.schema.childrenCount
+      def getLength: int = bomSequence.schema.children.size
       def item(index: int): Node =
         bomSequence.schema.children.get(index).createNode(bomSequence, index).asDomNode
     }

@@ -6,7 +6,7 @@ import org.w3c.dom._
 
 abstract class NodeAdapter(var node: BOMNode) extends Node {
 
-  def hasChildNodes: boolean = node.schema.childrenCount > 0
+  def hasChildNodes: boolean = node.schema.children.size > 0
 
   def getOwnerDocument: Document = {
     var e = node

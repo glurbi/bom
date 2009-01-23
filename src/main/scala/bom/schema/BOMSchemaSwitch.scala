@@ -7,7 +7,11 @@ import bom.dom._
 import bom.bin._
 import org.w3c.dom._
 
-case class BOMSchemaSwitch extends BOMSchemaElement {
+case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
+                           override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
+
+  override val name: String = null
 
   val cases = new HashMap[Any, BOMSchemaCase]
   var switchExpression: String = null
@@ -41,8 +45,6 @@ case class BOMSchemaSwitch extends BOMSchemaElement {
 
   override def children: List[BOMSchemaElement] =
     new ArrayList[BOMSchemaElement](cases.values)
-
-  override def childrenCount: int = cases.size
 
   def findMatchingCase(o: Object): BOMSchemaCase = {
     var scase = cases.get(o)

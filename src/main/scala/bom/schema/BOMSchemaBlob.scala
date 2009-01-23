@@ -4,7 +4,10 @@ import java.util._
 import bom._
 import bom.bin._
 
-case class BOMSchemaBlob extends BOMSchemaElement {
+case class BOMSchemaBlob(override val name: String,
+                         override val parent: BOMSchemaElement,
+                         override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
 
   def appendChild(schema: BOMSchemaElement) = throw new BOMException
 
@@ -12,13 +15,7 @@ case class BOMSchemaBlob extends BOMSchemaElement {
 
   override def children: List[BOMSchemaElement] = null
 
-  override def createNode(parent: BOMContainer, index: int): BOMNode = {
-    if (sizeExpression != null) {
-      new BOMBlob(this, parent, index, (n: BOMNode) =>
-        n.document.queryNumber(n, sizeExpression).intValue * 8)
-    } else {
-      new BOMBlob(this, parent, index, BOMNode => size * 8)
-    }
-  }
+  override def createNode(parent: BOMContainer, index: int): BOMNode =
+    new BOMBlob(this, parent, index, sizeFun)
 
 }

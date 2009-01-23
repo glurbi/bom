@@ -20,28 +20,15 @@ case class BOMString(override val schema: BOMSchemaString,
    * @return the value of this character string in the binary space
    */
   def value: String = {
-    if (string == null) {
-      binarySpace.position(position.intValue)
-      val ba = new Array[byte](size.intValue / 8)
-      binarySpace.getBytes(ba)
-      val encoding = schema.asInstanceOf[BOMSchemaString].encoding
-      val charset = Charset.availableCharsets.get(encoding)
-      string = charset.decode(ByteBuffer.wrap(ba)).toString
-    }
-    string;
+    binarySpace.position(position.intValue)
+    val ba = new Array[byte](size.intValue / 8)
+    binarySpace.getBytes(ba)
+    val encoding = schema.asInstanceOf[BOMSchemaString].encoding
+    val charset = Charset.availableCharsets.get(encoding)
+    charset.decode(ByteBuffer.wrap(ba)).toString
   }
-
  
-  var stringSize = NO_SIZE
-  var string: String = null
-
-  override def size: Long = {
-    if (stringSize == NO_SIZE) {
-      val xpath = schema.asInstanceOf[BOMSchemaElement].sizeExpression
-      stringSize = document.queryNumber(this, xpath).longValue
-    }
-    stringSize * 8
-  }
+  override def size: Long = schema.sizeFun(this)
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 

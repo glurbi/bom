@@ -4,7 +4,10 @@ import java.util._
 import bom._
 import bom.bin._
 
-case class BOMSchemaSequence extends BOMSchemaElement {
+case class BOMSchemaSequence(override val name:String,
+                             override val parent: BOMSchemaElement,
+                             override val sizeFun: BOMNode => Long)
+  extends BOMSchemaElement {
 
   override val children = new ArrayList[BOMSchemaElement]
   val name2element = new HashMap[String, BOMSchemaElement]
@@ -15,8 +18,6 @@ case class BOMSchemaSequence extends BOMSchemaElement {
     name2element.put(schema.name, schema)
     name2index.put(schema.name, children.size - 1);
   }
-
-  override def childrenCount: int = children.size
 
   override def createNode(parent: BOMContainer, index: int): BOMNode =
     new BOMSequence(this, parent, index)
