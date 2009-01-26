@@ -10,7 +10,7 @@ object ResourceDump {
 
   def main(args: Array[String]) = {
     BOMDumper.dump(
-      Class.forName(args(0)).getMethod("schemaDefinition").invoke(null, null).asInstanceOf[BOMSchemaDefinition],
+      Class.forName(args(0)).getMethod("schema").invoke(null, null).asInstanceOf[BOMSchemaElement],
       new MemoryBinarySpace(getClass.getResourceAsStream(args(1))))
   }
 

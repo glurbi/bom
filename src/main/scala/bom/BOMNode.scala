@@ -12,6 +12,7 @@ abstract class BOMNode(val schema: BOMSchemaElement,
                        val parent: BOMContainer,
                        val index: Int) {
 
+  // TODO: make it more functional
   val NO_POSITION = -1L
   val NO_SIZE = -1L
 

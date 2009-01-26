@@ -12,8 +12,8 @@ object BomJavaLangStringTest {
 
     val is = getClass.getResourceAsStream("/java/lang/String.class")
     val binarySpace = new MemoryBinarySpace(is)
-    val definition = JavaClassSchema.classDefinition
-    val doc = definition.createDocument(binarySpace)
+    val schema = JavaClassSchema.schema
+    val doc = new BOMDocument(schema, binarySpace)
     val root = doc.rootNode
 
     assert(443 == doc.queryNumber(root, "/class/constant_pool_count"))
@@ -21,7 +21,7 @@ object BomJavaLangStringTest {
     assert(72 == doc.queryNumber(root,
       "/class/methods/method[4]/attributes/method_attribute/bytecode/code_length"))
 
-    val reader = new BOMEventReader(binarySpace, definition)
+    val reader = new BOMEventReader(binarySpace, schema)
     var count = 0
     while (reader.hasNext) {
       count += 1

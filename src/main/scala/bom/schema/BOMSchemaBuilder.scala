@@ -10,14 +10,13 @@ trait BOMSchemaBuilder {
 
   protected val stack = new Stack[BOMSchemaElement]
 
-  def definition(byteOrder: ByteOrder)(body: => Unit): BOMSchemaDefinition = {
-    val d = new BOMSchemaDefinition(null)
+  def document(body: => Unit): BOMSchemaDocument = {
+    val d = new BOMSchemaDocument
     stack.push(d)
-    d.byteOrder = byteOrder
     body
-    stack.pop.asInstanceOf[BOMSchemaDefinition]
+    stack.pop.asInstanceOf[BOMSchemaDocument]
   }
-  
+
   def sequence(name: String)(body: => Unit): BOMSchemaSequence = {
     val seq = new BOMSchemaSequence(name, stack.top, null)
     stack.top.appendChild(seq)

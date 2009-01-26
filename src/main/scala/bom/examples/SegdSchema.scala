@@ -6,25 +6,25 @@ import bom.types.ByteOrder._
 
 object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
-  def schemaDefinition = segd
+  def schema = document {
+    segd
+  }
 
   def segd =
-    definition(BIG_ENDIAN) {
-      sequence("segd") {
-        reference(generalHeader1)
-        reference(generalHeader2)
-        array("scan_type_headers", "../general_header_1/scan_type_per_record") {
-          array("channel_set_headers", "../../general_header_1/channel_sets_per_scan_type") {
-            reference(channelSetHeader)
-          }
+    sequence("segd") {
+      reference(generalHeader1)
+      reference(generalHeader2)
+      array("scan_type_headers", "../general_header_1/scan_type_per_record") {
+        array("channel_set_headers", "../../general_header_1/channel_sets_per_scan_type") {
+          reference(channelSetHeader)
         }
-        reference(extendedHeader)
-        reference(externalHeader)
-        array("data", "/segd/general_header_1/scan_type_per_record") {
-          array("scan type", "/segd/general_header_1/channel_sets_per_scan_type") {
-            array("channel set", "/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels", true) {
-              reference(trace)
-            }
+      }
+      reference(extendedHeader)
+      reference(externalHeader)
+      array("data", "/segd/general_header_1/scan_type_per_record") {
+        array("scan type", "/segd/general_header_1/channel_sets_per_scan_type") {
+          array("channel set", "/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels", true) {
+            reference(trace)
           }
         }
       }

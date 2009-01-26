@@ -6,47 +6,47 @@ import bom.types.ByteOrder._
 
 object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
-  def schemaDefinition = classDefinition
+  def schema = document {
+    classDefinition
+  }
 
   def classDefinition =
-    definition(BIG_ENDIAN) {
-      sequence("class") {
-        number("magic", bom_uint)
-        sequence("version") {
-          number("minor", bom_ushort)
-          number("major", bom_ushort)
+    sequence("class") {
+      number("magic", bom_uint)
+      sequence("version") {
+        number("minor", bom_ushort)
+        number("major", bom_ushort)
+      }
+      number("constant_pool_count", bom_ushort)
+      array("constant_pool", "../constant_pool_count - 1") {
+        reference(constantType)
+      }
+      number("access_flags", bom_ushort, {
+        masks {
+          mask("ACC_PUBLIC", "0x0001")
+          mask("ACC_FINAL", "0x0010")
+          mask("ACC_SUPER", "0x0020")
+          mask("ACC_INTERFACE", "0x0200")
+          mask("ACC_ABSTRACT", "0x0400")
         }
-        number("constant_pool_count", bom_ushort)
-        array("constant_pool", "../constant_pool_count - 1") {
-          reference(constantType)
-        }
-        number("access_flags", bom_ushort, {
-          masks {
-            mask("ACC_PUBLIC", "0x0001")
-            mask("ACC_FINAL", "0x0010")
-            mask("ACC_SUPER", "0x0020")
-            mask("ACC_INTERFACE", "0x0200")
-            mask("ACC_ABSTRACT", "0x0400")
-          }
-        })
-        number("this_class", bom_ushort)
-        number("super_class", bom_ushort)
-        number("interfaces_count", bom_ushort)
-        array("interfaces", "../interfaces_count") {
-          reference(interfaceType)
-        }
-        number("fields_count", bom_ushort)
-        array("fields", "../fields_count") {
-          reference(fieldType)
-        }
-        number("methods_count", bom_ushort)
-        array("methods", "../methods_count") {
-          reference(methodType)
-        }
-        number("attributes_count", bom_ushort)
-        array("attributes", "../attributes_count") {
-          reference(attributeType)
-        }
+      })
+      number("this_class", bom_ushort)
+      number("super_class", bom_ushort)
+      number("interfaces_count", bom_ushort)
+      array("interfaces", "../interfaces_count") {
+        reference(interfaceType)
+      }
+      number("fields_count", bom_ushort)
+      array("fields", "../fields_count") {
+        reference(fieldType)
+      }
+      number("methods_count", bom_ushort)
+      array("methods", "../methods_count") {
+        reference(methodType)
+      }
+      number("attributes_count", bom_ushort)
+      array("attributes", "../attributes_count") {
+        reference(attributeType)
       }
     }
 

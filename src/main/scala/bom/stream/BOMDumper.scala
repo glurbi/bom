@@ -12,8 +12,8 @@ import bom.types._
 
 object BOMDumper {
 
-  def dump(definition: BOMSchemaDefinition, bspace: BOMBinarySpace) = {
-    val reader = new BOMEventReader(bspace, definition)
+  def dump(schema: BOMSchemaElement, bspace: BOMBinarySpace) = {
+    val reader = new BOMEventReader(bspace, schema)
     while (reader.hasNext) {
       reader.nextEvent match {
         case BOMEvent(c: BOMContainer, StartContainer) => dumpStartContainer(c)

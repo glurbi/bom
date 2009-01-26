@@ -12,8 +12,8 @@ object BomJavaLangRunnableTest {
 
     val is = getClass.getResourceAsStream("/java/lang/Runnable.class")
     val binarySpace = new MemoryBinarySpace(is)
-    val definition = JavaClassSchema.classDefinition
-    val doc = definition.createDocument(binarySpace)
+    val schema = JavaClassSchema.schema
+    val doc = new BOMDocument(schema, binarySpace)
     val root = doc.rootNode
     
     assert(9 == doc.queryNumber(root, "/class/constant_pool_count"))
@@ -22,7 +22,7 @@ object BomJavaLangRunnableTest {
     assert("Runnable.java" == doc.queryString(root,
       "/class/constant_pool/constant[8]/content/bytes"))
 
-    val reader = new BOMEventReader(binarySpace, definition)
+    val reader = new BOMEventReader(binarySpace, schema)
     var count = 0
     while (reader.hasNext) {
       count += 1

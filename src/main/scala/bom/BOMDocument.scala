@@ -13,7 +13,7 @@ import bom.bin._
  * The <code>BOMDocument</code> interface defines the entry point for accessing
  * a concrete binary structure.
  */
-case class BOMDocument(override val schema: BOMSchemaDefinition,
+case class BOMDocument(override val schema: BOMSchemaElement,
                        val bspace: BOMBinarySpace)
   extends BOMContainer(schema, null, 0) {
 
