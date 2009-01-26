@@ -15,7 +15,8 @@ object BOMDumper {
     val reader = new BOMEventReader(bspace, schema)
     while (reader.hasNext) {
       reader.nextEvent match {
-        case BOMEvent(d: BOMDocument, _) =>
+        case BOMEvent(d: BOMDocument, StartContainer) =>
+        case BOMEvent(a: BOMArray, StartContainer) => dumpStartArray(a, reader)
         case BOMEvent(c: BOMContainer, StartContainer) => dumpStartContainer(c)
         case BOMEvent(n: BOMNumber, _) => dumpNumber(n)
         case BOMEvent(b: BOMBlob, _) => dumpBlob(b)
@@ -38,6 +39,25 @@ object BOMDumper {
     container.parent match {
       case (a: BOMArray) => format("[%d]", container.index)
       case _ =>
+    }
+  }
+
+  private def dumpStartArray(array: BOMArray, reader: BOMEventReader) {
+    dumpCommon(array)
+    array.schema.children.get(0) match {
+      case (n: BOMSchemaNumber) => {
+        format(" (%d elements)", array.length)
+        for (i <- 0 until array.length.intValue) {
+          val next = reader.nextEvent
+          if (i <= 20) {
+            format(" %s", next.node.asInstanceOf[BOMNumber].value)
+          }
+        }
+        if (array.length > 20) {
+          format(" ...")
+        }
+      }
+      case _ => // we dump as normal...
     }
   }
 

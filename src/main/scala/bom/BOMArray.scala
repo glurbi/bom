@@ -32,6 +32,8 @@ case class BOMArray(override val schema: BOMSchemaArray,
     arrayLength;
   }
 
+  def length: Long = childrenCount
+
   override def size: long = {
     if (regular) {
       val n = schema.children.get(0).createNode(this, 0)
