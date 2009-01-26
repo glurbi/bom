@@ -19,5 +19,6 @@ trait BOMTypes {
   def bom_bcd4 = new BOMBinaryCodedDecimal(4)
   def bom_bcd6 = new BOMBinaryCodedDecimal(6)
   def bom_bcd8 = new BOMBinaryCodedDecimal(8)
-  
+
+  // TODO: define 3 byte integers
 }

@@ -9,13 +9,13 @@ import bom.stream._
 import bom.stream.BOMEvent._
 import bom.types._
 
-
 object BOMDumper {
 
   def dump(schema: BOMSchemaElement, bspace: BOMBinarySpace) = {
     val reader = new BOMEventReader(bspace, schema)
     while (reader.hasNext) {
       reader.nextEvent match {
+        case BOMEvent(d: BOMDocument, _) =>
         case BOMEvent(c: BOMContainer, StartContainer) => dumpStartContainer(c)
         case BOMEvent(n: BOMNumber, _) => dumpNumber(n)
         case BOMEvent(b: BOMBlob, _) => dumpBlob(b)
@@ -23,11 +23,12 @@ object BOMDumper {
         case BOMEvent(_, BOMEvent.EndContainer) =>
       }
     }
+    println
   }
 
   private def dumpCommon(node: BOMNode) = {
     println
-    format("%010x", node.position / 8)
+    format("%08x", node.position / 8)
     format("%s", "              ".substring(0, node.depth))
     format("%s", node.name)
   }
@@ -63,11 +64,12 @@ object BOMDumper {
 
   private def dumpBlob(blob: BOMBlob) = {
     dumpCommon(blob)
-    format(" (%d bytes)", blob.size / 8)
-    val max: Int = if (blob.size / 8 > 30) 30 else blob.size.intValue / 8
-    val bytes = blob.value
-    for (i <- 0 until max) {
-      format(" %02x", bytes(i))
+    format(" (%d bytes)", blob.byteCount)
+    for (i <- 0 until Math.min(blob.byteCount, 20).intValue) {
+      format(" %02x", blob.value(i))
+    }
+    if (blob.byteCount > 20) {
+      format(" ...")
     }
   }
 

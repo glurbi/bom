@@ -17,13 +17,17 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
                    val sizeFun: BOMNode => Long)
   extends BOMLeaf(schema, parent, index) {
 
+  private var bytes: Array[Byte] = _
+
   /**
    * @return the value of this blob in the binary space
    */
   def value: Array[Byte] = {
-    binarySpace.position(position)
-    val bytes = new Array[Byte](size.intValue / 8)
-    binarySpace.getBytes(bytes)
+    if (bytes == null) {
+      binarySpace.position(position)
+      bytes = new Array[Byte](byteCount.intValue)
+      binarySpace.getBytes(bytes)
+    }
     bytes
   }
 
@@ -32,5 +36,7 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
   def asDomNode: Node = new BOMLeafAdapter(this)
 
   override def toString: String = name + " " + value.length + " bytes"
+
+  def byteCount: Long = size / 8
 
 }
