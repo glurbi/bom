@@ -5,7 +5,7 @@ import bom._
 import bom.bin._
 
 case class BOMSchemaCase(override val parent: BOMSchemaElement,
-                         override val sizeFun: BOMNode => Long)
+                         override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
   override val name: String = null

@@ -2,7 +2,6 @@ package bom.examples
 
 import bom.schema._
 import bom.types._
-import bom.types.ByteOrder._
 
 object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 

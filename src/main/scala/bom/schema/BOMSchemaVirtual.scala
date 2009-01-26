@@ -8,7 +8,7 @@ case class BOMSchemaVirtual(override val name: String,
                             override val parent: BOMSchemaElement)
   extends BOMSchemaElement {
 
-  def sizeFun: BOMNode => Long = (n:BOMNode) => 0
+  def size: BOMNode => Long = (n:BOMNode) => 0
 
   var xpath: String = _
 

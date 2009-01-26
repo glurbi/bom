@@ -8,7 +8,7 @@ import bom.bin._
 import org.w3c.dom._
 
 case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
-                           override val sizeFun: BOMNode => Long)
+                           override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
   override val name: String = null

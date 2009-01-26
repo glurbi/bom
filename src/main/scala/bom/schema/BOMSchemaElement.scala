@@ -19,7 +19,7 @@ trait BOMSchemaElement {
   /**
    * @return the function that will calculate the size of the BOMNode
    */
-  def sizeFun: BOMNode => Long
+  def size: BOMNode => Long
 
   /**
    * @return the depth of the schema element in the schema hierarchy
@@ -29,6 +29,7 @@ trait BOMSchemaElement {
   /**
    * the schema element children of this schema element
    */
+  // TODO: use scala list
   def children: List[BOMSchemaElement]
 
   /**

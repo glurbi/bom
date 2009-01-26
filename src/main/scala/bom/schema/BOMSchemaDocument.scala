@@ -37,6 +37,6 @@ case class BOMSchemaDocument extends BOMSchemaElement {
   def createDocument(bspace: BOMBinarySpace): BOMDocument =
     createNode(bspace, null, 0).asInstanceOf[BOMDocument]
 
-  def sizeFun: BOMNode => Long = (n:BOMNode) => n.size
+  def size: BOMNode => Long = (n:BOMNode) => n.size
 
 }

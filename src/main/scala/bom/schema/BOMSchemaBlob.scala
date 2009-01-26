@@ -6,7 +6,7 @@ import bom.bin._
 
 case class BOMSchemaBlob(override val name: String,
                          override val parent: BOMSchemaElement,
-                         override val sizeFun: BOMNode => Long)
+                         override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
   def appendChild(schema: BOMSchemaElement) = throw new BOMException
@@ -16,6 +16,6 @@ case class BOMSchemaBlob(override val name: String,
   override def children: List[BOMSchemaElement] = null
 
   override def createNode(parent: BOMContainer, index: int): BOMNode =
-    new BOMBlob(this, parent, index, sizeFun)
+    new BOMBlob(this, parent, index, size)
 
 }

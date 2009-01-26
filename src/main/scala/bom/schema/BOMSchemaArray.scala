@@ -6,7 +6,7 @@ import bom.bin._
 
 case class BOMSchemaArray(override val name: String,
                           override val parent: BOMSchemaElement,
-                          override val sizeFun: BOMNode => Long)
+                          override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
   private var child: BOMSchemaElement = null

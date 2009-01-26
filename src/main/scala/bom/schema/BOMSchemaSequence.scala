@@ -6,7 +6,7 @@ import bom.bin._
 
 case class BOMSchemaSequence(override val name:String,
                              override val parent: BOMSchemaElement,
-                             override val sizeFun: BOMNode => Long)
+                             override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
   override val children = new ArrayList[BOMSchemaElement]

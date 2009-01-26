@@ -7,7 +7,7 @@ import bom.bin._
 
 case class BOMSchemaNumber(override val name: String,
                            override val parent: BOMSchemaElement,
-                           override val sizeFun: BOMNode => Long)
+                           override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
   var numberType: BOMType = null
