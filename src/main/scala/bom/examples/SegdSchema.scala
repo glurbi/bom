@@ -103,6 +103,7 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       virtual("end_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/end_time")
       virtual("subscan", "bom:power(2, /segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/sc)")
       virtual("trace_size", "(../end_time - ../start_time) * ../subscan * 3")
+      virtual("sample_count", "(../end_time - ../start_time) * ../subscan")
       reference(traceData)
     }
 
@@ -121,6 +122,8 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     blob("trace header extension", byteSize(32))
 
   def traceData =
-    blob("trace data", byteSize("../trace_size"))
+    array("trace data", "../sample_count", true) {
+      number("sample", bom_int3)
+    }
 
 }
