@@ -11,7 +11,7 @@ object PerfTests {
   def main(args: Array[String]) = {
     val is = getClass.getResourceAsStream("/java/lang/String.class")
     val binarySpace = new MemoryBinarySpace(is)
-    val definition = JavaClassSchema.classDefinition
+    val definition = JavaClassSchema.schema
     
     while (true) {
       val reader = new BOMEventReader(binarySpace, definition)
