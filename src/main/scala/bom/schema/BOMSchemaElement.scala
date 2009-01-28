@@ -33,7 +33,7 @@ abstract case class BOMSchemaElement() {
   /**
    * Create an BOMNode instance corresponding to this schema element.
    */
-  def instantiate(parent: BOMContainer, index: Int): BOMNode
+  def instance(parent: BOMContainer, index: Int): BOMNode
 
   /**
    * Add a schema element child of this schema element.

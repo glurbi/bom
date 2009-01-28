@@ -15,8 +15,8 @@ case class BOMSchemaCase(override val parent: BOMSchemaElement,
 
   def add(child: BOMSchemaElement) = element = child
 
-  def instantiate(parent: BOMContainer, index: Int): BOMNode =
-    element.instantiate(parent, index)
+  def instance(parent: BOMContainer, index: Int): BOMNode =
+    element.instance(parent, index)
 
   def children: List[BOMSchemaElement] = element :: Nil
 

@@ -36,7 +36,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
 
   override def size: Long = {
     if (regular) {
-      val n = schema.children(0).instantiate(this, 0)
+      val n = schema.children(0).instance(this, 0)
       childrenCount * n.size
     } else {
       if (sz == NO_SIZE) {
@@ -52,7 +52,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
   /**
    * @return the array element at the specified index
    */
-  def child(index: Int): BOMNode = schema.children(0).instantiate(this, index)
+  def child(index: Int): BOMNode = schema.children(0).instance(this, index)
 
   def asDomNode: Node = new BOMArrayAdapter(this)
 

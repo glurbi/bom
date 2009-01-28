@@ -67,11 +67,11 @@ abstract class BOMNode(val schema: BOMSchemaElement,
         pos = parent.position;
       } else if (parent.isInstanceOf[BOMSequence]) {
         val previousSibling = parent.schema.children(index - 1).
-          instantiate(parent, index - 1)
+          instance(parent, index - 1)
         pos = previousSibling.position + previousSibling.size
       } else if (parent.isInstanceOf[BOMArray]) {
         if (parent.schema.asInstanceOf[BOMSchemaArray].regular) {
-          pos = parent.position + index * parent.schema.children(0).instantiate(parent, 0).size;
+          pos = parent.position + index * parent.schema.children(0).instance(parent, 0).size;
         } else {
           pos = parent.asInstanceOf[BOMArray].child(index - 1).position +
             parent.asInstanceOf[BOMArray].child(index - 1).size
