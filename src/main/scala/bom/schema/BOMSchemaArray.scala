@@ -39,7 +39,7 @@ case class BOMSchemaArray(override val name: String,
 
   override def children: List[BOMSchemaElement] = element :: Nil
 
-  def createNode(parent: BOMContainer, index: Int): BOMNode = {
+  def instantiate(parent: BOMContainer, index: Int): BOMNode = {
     val array = new BOMArray(this, parent, index, regular)
     if (dynamic)
       array.arrayLengthExpression = arrayLengthExpression

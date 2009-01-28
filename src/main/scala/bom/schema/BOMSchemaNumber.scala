@@ -49,7 +49,7 @@ case class BOMSchemaNumber(override val name: String,
         if (o != null) o else defaultMapping
     }
     
-  def createNode(parent: BOMContainer, index: Int): BOMNode =
+  def instantiate(parent: BOMContainer, index: Int): BOMNode =
     new BOMNumber(this, parent, index)
 
 }

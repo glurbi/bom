@@ -17,7 +17,7 @@ case class BOMSchemaVirtual(override val name: String,
 
   override def children: List[BOMSchemaElement] = null
 
-  override def createNode(parent: BOMContainer, index: Int): BOMNode = {
+  override def instantiate(parent: BOMContainer, index: Int): BOMNode = {
     new BOMVirtual(this, parent, index, xpath)
   }
 

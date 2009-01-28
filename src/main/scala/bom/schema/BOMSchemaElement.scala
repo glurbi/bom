@@ -26,14 +26,14 @@ abstract case class BOMSchemaElement() {
   def depth: Int = 1 + parent.depth
 
   /**
-   * the schema element children of this schema element
+   * @return the sequence of schema elements children of this schema element
    */
   def children: List[BOMSchemaElement]
 
   /**
-   * TODO: move responsability in BOMContainer?
+   * Create an BOMNode instance corresponding to this schema element.
    */
-  def createNode(parent: BOMContainer, index: Int): BOMNode
+  def instantiate(parent: BOMContainer, index: Int): BOMNode
 
   /**
    * Add a schema element child of this schema element.

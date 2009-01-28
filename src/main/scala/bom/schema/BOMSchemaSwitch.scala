@@ -26,7 +26,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
     cases.put(scase.caseValue, scase)
   }
 
-  def createNode(parent: BOMContainer, index: Int): BOMNode = {
+  def instantiate(parent: BOMContainer, index: Int): BOMNode = {
     val elementAdapter = new ElementAdapter(null) {
       override def hasChildNodes: Boolean = false
       def ownerDocument: Document = parent.document.asDomNode.asInstanceOf[Document]
@@ -41,7 +41,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
     elementAdapter.node = node
     val matchingCase = findMatchingCase(
       parent.document.queryString(node, switchExpression))
-    matchingCase.createNode(parent, index)
+    matchingCase.instantiate(parent, index)
   }
 
   override def children: List[BOMSchemaElement] = {

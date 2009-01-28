@@ -24,7 +24,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
       null
     }
     val index = schema.childIndex(name)
-    schema.createNode(this, index)
+    schema.instantiate(this, index)
   }
 
   def asDomNode: Node = new BOMSequenceAdapter(this)
@@ -58,9 +58,9 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
         throw new NoSuchElementException
       }
       if (curr == null) {
-        curr = schema.children(0).createNode(BOMSequence.this, 0)
+        curr = schema.children(0).instantiate(BOMSequence.this, 0)
       } else {
-        curr = schema.children(curr.index + 1).createNode(BOMSequence.this, curr.index + 1)
+        curr = schema.children(curr.index + 1).instantiate(BOMSequence.this, curr.index + 1)
       }
       curr
     }

@@ -16,7 +16,7 @@ case class BOMSchemaString(override val name: String,
 
   override def children: List[BOMSchemaElement] = null
 
-  override def createNode(parent: BOMContainer, index: Int): BOMNode =
+  override def instantiate(parent: BOMContainer, index: Int): BOMNode =
     new BOMString(this, parent, index)
 
 }

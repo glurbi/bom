@@ -19,7 +19,7 @@ case class BOMSchemaSequence(override val name:String,
     name2index.put(child.name, children.size - 1);
   }
 
-  override def createNode(parent: BOMContainer, index: Int): BOMNode =
+  override def instantiate(parent: BOMContainer, index: Int): BOMNode =
     new BOMSequence(this, parent, index)
 
   def child(name: String): BOMSchemaElement = name2element.get(name)

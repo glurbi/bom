@@ -20,7 +20,7 @@ case class BOMDocument(override val schema: BOMSchemaElement,
     /**
      * @return the root node of the binary structure
      */
-  def rootNode: BOMNode = schema.children(0).createNode(this, 0)
+  def rootNode: BOMNode = schema.children(0).instantiate(this, 0)
 
   /**
    * Query the document from the context node, with the xpath expression and
@@ -76,7 +76,7 @@ case class BOMDocument(override val schema: BOMSchemaElement,
       def next: BOMNode = {
         if (!used) {
           used = true;
-          return schema.children(0).createNode(BOMDocument.this, 0)
+          return schema.children(0).instantiate(BOMDocument.this, 0)
         }
         return null
       }

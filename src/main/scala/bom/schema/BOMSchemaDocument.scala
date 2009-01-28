@@ -26,7 +26,7 @@ case class BOMSchemaDocument() extends BOMSchemaElement {
     }
   }
 
-  override def createNode(parent: BOMContainer, index: Int): BOMNode =
+  override def instantiate(parent: BOMContainer, index: Int): BOMNode =
     throw new UnsupportedOperationException
 
   def createDocument(bspace: BOMBinarySpace): BOMDocument =
