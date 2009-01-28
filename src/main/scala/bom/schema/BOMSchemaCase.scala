@@ -21,6 +21,4 @@ case class BOMSchemaCase(override val parent: BOMSchemaElement,
 
   def children: List[BOMSchemaElement] = element :: Nil
 
-  def childrenCount: Int = 1
-
 }

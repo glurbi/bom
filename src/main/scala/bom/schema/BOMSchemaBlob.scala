@@ -11,8 +11,6 @@ case class BOMSchemaBlob(override val name: String,
 
   def add(child: BOMSchemaElement) = throw new BOMException
 
-  def childrenCount: Int = 0
-
   override def children: List[BOMSchemaElement] = null
 
   override def instance(parent: BOMContainer, index: Int): BOMNode =

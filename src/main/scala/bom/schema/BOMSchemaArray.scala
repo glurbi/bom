@@ -36,8 +36,6 @@ case class BOMSchemaArray(override val name: String,
 
   def dynamic: Boolean = arrayLength == -1
 
-  def childrenCount: Int = 1
-
   override def children: List[BOMSchemaElement] = element :: Nil
 
   def instance(parent: BOMContainer, index: Int): BOMNode = {
