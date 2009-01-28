@@ -3,7 +3,7 @@ package bom.schema
 import bom.bin._
 import bom._
 
-case class BOMSchemaDocument extends BOMSchemaElement {
+case class BOMSchemaDocument() extends BOMSchemaElement {
 
   val name: String = null
 
@@ -11,10 +11,10 @@ case class BOMSchemaDocument extends BOMSchemaElement {
 
   var root: BOMSchemaElement = _
 
-  def createNode(bspace: BOMBinarySpace, parent: BOMContainer, index: int): BOMNode =
+  def createNode(bspace: BOMBinarySpace, parent: BOMContainer, index: Int): BOMNode =
     new BOMDocument(this, bspace)
 
-  override def depth: int = 0
+  override def depth: Int = 0
 
   override def children: List[BOMSchemaElement] = root :: Nil
 

@@ -12,11 +12,11 @@ case class BOMSchemaString(override val name: String,
     
   def appendChild(schema: BOMSchemaElement) = throw new BOMException
 
-  def childrenCount: int = 0
+  def childrenCount: Int = 0
 
   override def children: List[BOMSchemaElement] = null
 
-  override def createNode(parent: BOMContainer, index: int): BOMNode =
+  override def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMString(this, parent, index)
 
 }

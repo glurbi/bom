@@ -31,7 +31,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
 
   def iterator: Iterator[BOMNode] = new SequenceIterator
 
-  override def size: long = {
+  override def size: Long = {
     if (sz == NO_SIZE) {
       sz = 0
       val it = iterator
@@ -46,7 +46,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
 
   class SequenceIterator extends Iterator[BOMNode] {
     var curr: BOMNode = null
-    def hasNext: boolean = {
+    def hasNext: Boolean = {
       if (curr == null) {
         BOMSequence.this.schema.children.size != 0
       } else {

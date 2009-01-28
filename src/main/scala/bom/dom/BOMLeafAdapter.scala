@@ -6,8 +6,8 @@ class BOMLeafAdapter(bomLeaf: BOMLeaf) extends ElementAdapter(bomLeaf) {
 
   override def getChildNodes: NodeList =
     new NodeList {
-      def getLength: int = 1
-      def item(index: int): Node = {
+      def getLength: Int = 1
+      def item(index: Int): Node = {
         if (index != 0) {
           throw new BOMException("Index out of bound!")
         }

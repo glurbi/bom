@@ -3,6 +3,7 @@ package bom.schema
 import bom._
 import bom.bin._
 
+// TODO: make it a case class
 trait BOMSchemaElement {
 
   /**
@@ -23,7 +24,7 @@ trait BOMSchemaElement {
   /**
    * @return the depth of the schema element in the schema hierarchy
    */
-  def depth: int = 1 + parent.depth
+  def depth: Int = 1 + parent.depth
 
   /**
    * the schema element children of this schema element

@@ -15,13 +15,13 @@ case class BOMSchemaCase(override val parent: BOMSchemaElement,
 
   def appendChild(schemaElement: BOMSchemaElement) = child = schemaElement
 
-  def createNode(parent: BOMContainer, index: int): BOMNode =
+  def createNode(parent: BOMContainer, index: Int): BOMNode =
     child.createNode(parent, index)
 
   def children: List[BOMSchemaElement] = child :: Nil
 
-  def childrenCount: int = 1
+  def childrenCount: Int = 1
 
-  override def depth: int = parent.depth
+  override def depth: Int = parent.depth
 
 }

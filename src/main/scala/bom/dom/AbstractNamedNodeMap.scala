@@ -13,7 +13,7 @@ abstract class AbstractNamedNodeMap extends NamedNodeMap {
   def getNamedItemNS(namespaceURI: String, localName: String): Node =
     throw new BOMException
 
-  def item(index: int): Node = throw new BOMException
+  def item(index: Int): Node = throw new BOMException
 
   def removeNamedItem(name: String): Node = throw new BOMException
 

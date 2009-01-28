@@ -12,7 +12,7 @@ import bom.schema._
 case class BOMArray(override val schema: BOMSchemaArray,
                     override val parent: BOMContainer,
                     override val index: Int,
-                    val regular: boolean)
+                    val regular: Boolean)
   extends BOMContainer(schema, parent, index) {
 
   val NO_LENGTH = -1
@@ -34,7 +34,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
 
   def length: Long = childrenCount
 
-  override def size: long = {
+  override def size: Long = {
     if (regular) {
       val n = schema.children(0).createNode(this, 0)
       childrenCount * n.size
@@ -69,7 +69,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
 
   class ArrayIterator extends Iterator[BOMNode] {
     var index = -1
-    def hasNext: boolean = index < childrenCount - 1;
+    def hasNext: Boolean = index < childrenCount - 1;
     def next: BOMNode = {
       if (!hasNext) {
         throw new NoSuchElementException();

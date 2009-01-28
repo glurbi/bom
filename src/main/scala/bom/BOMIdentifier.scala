@@ -4,9 +4,9 @@ import java.util.Arrays
 
 class BOMIdentifier(val rawID: Array[int]) {
 
-  override def hashCode: int = Arrays.hashCode(rawID)
+  override def hashCode: Int = Arrays.hashCode(rawID)
 
-  override def equals(that: Any): boolean = that match {
+  override def equals(that: Any): Boolean = that match {
     case other: BOMIdentifier
       => this.eq(other) || Arrays.equals(this.rawID, other.rawID)
     case _

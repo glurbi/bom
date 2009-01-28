@@ -8,8 +8,8 @@ class BOMArrayAdapter(bomArray: BOMArray) extends ElementAdapter(bomArray) {
 
   override def getAttributes: NamedNodeMap =
     new AttributeNamedNodeMap(bomArray) {
-      override def getLength: int = super.getLength + 1
-      override def item(index: int): Node = {
+      override def getLength: Int = super.getLength + 1
+      override def item(index: Int): Node = {
         if (index == getLength() - 1) {
           val value = if (bomArray.arrayLengthExpression == null)
             ""+bomArray.arrayLength else bomArray.arrayLengthExpression
@@ -20,8 +20,8 @@ class BOMArrayAdapter(bomArray: BOMArray) extends ElementAdapter(bomArray) {
     
   override def getChildNodes: NodeList =
     new NodeList {
-      def getLength: int = bomArray.childrenCount
-      def item(index: int): Node = bomArray.child(index).asDomNode
+      def getLength: Int = bomArray.childrenCount
+      def item(index: Int): Node = bomArray.child(index).asDomNode
     }
 
 }

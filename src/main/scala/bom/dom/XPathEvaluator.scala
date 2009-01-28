@@ -115,7 +115,7 @@ class XPathEvaluator {
   }
 
   class FunctionResolver extends XPathFunctionResolver {
-    def resolveFunction(functionName: QName, arity: int): XPathFunction = {
+    def resolveFunction(functionName: QName, arity: Int): XPathFunction = {
       xpathFunctions.get(functionName.getLocalPart)
     }
   }

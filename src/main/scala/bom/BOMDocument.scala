@@ -55,8 +55,8 @@ case class BOMDocument(override val schema: BOMSchemaElement,
   val xpathEvaluator = new XPathEvaluator
 
   override def document: BOMDocument = this
-  override def size: long = rootNode.size
-  override def position: long = 0
+  override def size: Long = rootNode.size
+  override def position: Long = 0
   
   override def binarySpace: BOMBinarySpace = bspace
   
@@ -71,8 +71,8 @@ case class BOMDocument(override val schema: BOMSchemaElement,
   
   def iterator: Iterator[BOMNode] = {
     new Iterator[BOMNode] {
-      var used: boolean = false
-      def hasNext: boolean = !used && (schema.children.size != 0)
+      var used: Boolean = false
+      def hasNext: Boolean = !used && (schema.children.size != 0)
       def next: BOMNode = {
         if (!used) {
           used = true;
@@ -84,6 +84,6 @@ case class BOMDocument(override val schema: BOMSchemaElement,
     }
   }
 
-  override def equals(that: Any): boolean = this.eq(that.asInstanceOf[AnyRef])
+  override def equals(that: Any): Boolean = this.eq(that.asInstanceOf[AnyRef])
 
 }

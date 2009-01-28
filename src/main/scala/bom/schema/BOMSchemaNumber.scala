@@ -19,20 +19,20 @@ case class BOMSchemaNumber(override val name: String,
 
   def appendChild(schema: BOMSchemaElement) = throw new BOMException
 
-  def childrenCount: int = 0
+  def childrenCount: Int = 0
 
   override def children: List[BOMSchemaElement] = null
 
-  def hasMapping: boolean = mappings.size() > 0
+  def hasMapping: Boolean = mappings.size() > 0
 
-  def hasMasks: boolean = masks.size > 0
+  def hasMasks: Boolean = masks.size > 0
 
   def addMapping(value: Object, mappedValue: Object) =
     mappings.put(value, mappedValue)
 
-  def addMask(name: String, value: long) = masks.put(name, value)
+  def addMask(name: String, value: Long) = masks.put(name, value)
   
-  def getMasks(n: long): JSet[String] = {
+  def getMasks(n: Long): JSet[String] = {
     val result = new JHashSet[String]
     val it = masks.entrySet.iterator
     while (it.hasNext) {
@@ -49,7 +49,7 @@ case class BOMSchemaNumber(override val name: String,
         if (o != null) o else defaultMapping
     }
     
-  def createNode(parent: BOMContainer, index: int): BOMNode =
+  def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMNumber(this, parent, index)
 
 }

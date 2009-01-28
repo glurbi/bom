@@ -54,7 +54,7 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BOMBinarySpace {
     }
   }
 
-  def getByte: byte = {
+  def getByte: Byte = {
     if (offset != 0) {
       throw new BOMException("Bad alignment...")
     }

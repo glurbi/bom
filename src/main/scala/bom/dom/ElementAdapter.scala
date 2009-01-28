@@ -7,7 +7,7 @@ class ElementAdapter(node: BOMNode) extends NodeAdapter(node) with Element {
 
   override def getAttributes: NamedNodeMap = new AttributeNamedNodeMap(node)
 
-  override def getNodeType: short = Node.ELEMENT_NODE
+  override def getNodeType: Short = Node.ELEMENT_NODE
 
   override def getNodeValue: String = null
 
@@ -30,9 +30,9 @@ class ElementAdapter(node: BOMNode) extends NodeAdapter(node) with Element {
 
   def getTagName: String = throw new BOMException
 
-  def hasAttribute(name: String): boolean = throw new BOMException
+  def hasAttribute(name: String): Boolean = throw new BOMException
 
-  def hasAttributeNS(namespaceURI: String, localName: String): boolean =
+  def hasAttributeNS(namespaceURI: String, localName: String): Boolean =
     throw new BOMException
 
   def removeAttribute(name: String) = throw new BOMException
@@ -51,11 +51,11 @@ class ElementAdapter(node: BOMNode) extends NodeAdapter(node) with Element {
 
   def setAttributeNodeNS(newAttr: Attr): Attr = throw new BOMException
 
-  def setIdAttribute(name: String, isId: boolean) = throw new BOMException
+  def setIdAttribute(name: String, isId: Boolean) = throw new BOMException
 
-  def setIdAttributeNS(namespaceURI: String, localName: String, isId: boolean) =
+  def setIdAttributeNS(namespaceURI: String, localName: String, isId: Boolean) =
     throw new BOMException
 
-  def setIdAttributeNode(idAttr: Attr , isId: boolean) = throw new BOMException
+  def setIdAttributeNode(idAttr: Attr, isId: Boolean) = throw new BOMException
 
 }

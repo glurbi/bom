@@ -12,7 +12,7 @@ import org.w3c.dom.TypeInfo;
 class AttributeAdapter(node: BOMNode, name: String, value: String)
   extends NodeAdapter(node) with Attr {
 
-  def getNodeType: short = Node.ATTRIBUTE_NODE
+  def getNodeType: Short = Node.ATTRIBUTE_NODE
 
   def getName: String = name
 
@@ -22,7 +22,7 @@ class AttributeAdapter(node: BOMNode, name: String, value: String)
 
   def getValue: String = value
 
-  override def hasChildNodes: boolean = false
+  override def hasChildNodes: Boolean = false
 
   override def getNodeValue: String = value
 
@@ -30,9 +30,9 @@ class AttributeAdapter(node: BOMNode, name: String, value: String)
 
   def getSchemaTypeInfo: TypeInfo = throw new BOMException
 
-  def getSpecified: boolean = throw new BOMException
+  def getSpecified: Boolean = throw new BOMException
 
-  def isId: boolean = throw new BOMException
+  def isId: Boolean = throw new BOMException
 
   def setValue(value: String) = throw new BOMException
 

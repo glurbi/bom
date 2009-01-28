@@ -6,7 +6,7 @@ import org.w3c.dom._
 class DocumentAdapter(node: BOMNode)
   extends NodeAdapter(node) with Document {
 
-  def getNodeType: short = Node.DOCUMENT_NODE
+  def getNodeType: Short = Node.DOCUMENT_NODE
   
   def adoptNode(source: Node): Node = throw new BOMException
 
@@ -53,15 +53,15 @@ class DocumentAdapter(node: BOMNode)
 
   def getInputEncoding: String = throw new BOMException
 
-  def getStrictErrorChecking: boolean = throw new BOMException
+  def getStrictErrorChecking: Boolean = throw new BOMException
 
   def getXmlEncoding: String = throw new BOMException
 
-  def getXmlStandalone: boolean = throw new BOMException
+  def getXmlStandalone: Boolean = throw new BOMException
 
   def getXmlVersion: String = throw new BOMException
 
-  def importNode(importedNode: Node, deep: boolean): Node =
+  def importNode(importedNode: Node, deep: Boolean): Node =
     throw new BOMException
 
   def normalizeDocument = throw new BOMException
@@ -71,10 +71,10 @@ class DocumentAdapter(node: BOMNode)
 
   def setDocumentURI(documentURI: String) = throw new BOMException
 
-  def setStrictErrorChecking(strictErrorChecking: boolean) =
+  def setStrictErrorChecking(strictErrorChecking: Boolean) =
     throw new BOMException
 
-  def setXmlStandalone(xmlStandalone: boolean) = throw new BOMException
+  def setXmlStandalone(xmlStandalone: Boolean) = throw new BOMException
 
   def setXmlVersion(xmlVersion: String) = throw new BOMException
 

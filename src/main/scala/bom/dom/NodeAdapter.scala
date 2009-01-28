@@ -6,7 +6,7 @@ import org.w3c.dom._
 
 abstract class NodeAdapter(var node: BOMNode) extends Node {
 
-  def hasChildNodes: boolean = node.schema.children.size > 0
+  def hasChildNodes: Boolean = node.schema.children.size > 0
 
   def getOwnerDocument: Document = {
     var e = node
@@ -52,13 +52,13 @@ abstract class NodeAdapter(var node: BOMNode) extends Node {
 
   def appendChild(newChild: Node): Node = throw new BOMException
 
-  def compareDocumentPosition(other: Node): short = throw new BOMException
+  def compareDocumentPosition(other: Node): Short = throw new BOMException
 
   def setPrefix(prefix: String) = throw new BOMException
 
   def getTextContent: String = throw new BOMException
 
-  def cloneNode(deep: boolean): Node = throw new BOMException
+  def cloneNode(deep: Boolean): Node = throw new BOMException
 
   def getBaseURI: String = throw new BOMException
 
@@ -77,18 +77,18 @@ abstract class NodeAdapter(var node: BOMNode) extends Node {
 
   def getUserData(key: String): Object = throw new BOMException
 
-  def hasAttributes: boolean = throw new BOMException
+  def hasAttributes: Boolean = throw new BOMException
 
   def insertBefore(newChild: Node , refChild: Node): Node =
     throw new BOMException
 
-  def isDefaultNamespace(namespaceURI: String): boolean = throw new BOMException
+  def isDefaultNamespace(namespaceURI: String): Boolean = throw new BOMException
 
-  def isEqualNode(arg: Node): boolean = throw new BOMException
+  def isEqualNode(arg: Node): Boolean = throw new BOMException
 
-  def isSameNode(other: Node): boolean = throw new BOMException
+  def isSameNode(other: Node): Boolean = throw new BOMException
 
-  def isSupported(feature: String, version: String): boolean =
+  def isSupported(feature: String, version: String): Boolean =
     throw new BOMException
 
   def lookupNamespaceURI(prefix: String): String = throw new BOMException

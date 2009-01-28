@@ -9,11 +9,11 @@ case class BOMSchemaArray(override val name: String,
   extends BOMSchemaElement {
 
   private var child: BOMSchemaElement = null
-  private var arrayLength: int = -1
+  private var arrayLength: Int = -1
   
   private var lenExpr: String = null
 
-  var regular: boolean = false
+  var regular: Boolean = false
 
   def appendChild(schemaElement: BOMSchemaElement) =
     if (child == null) {
@@ -33,9 +33,9 @@ case class BOMSchemaArray(override val name: String,
 
   def arrayLengthExpression: String = lenExpr
 
-  def dynamic: boolean = arrayLength == -1
+  def dynamic: Boolean = arrayLength == -1
 
-  def childrenCount: int =
+  def childrenCount: Int =
     if (child == null)
       0
     else
@@ -43,7 +43,7 @@ case class BOMSchemaArray(override val name: String,
 
   override def children: List[BOMSchemaElement] = child :: Nil
 
-  def createNode(parent: BOMContainer, index: int): BOMNode = {
+  def createNode(parent: BOMContainer, index: Int): BOMNode = {
     val array = new BOMArray(this, parent, index, regular)
     if (dynamic)
       array.arrayLengthExpression = arrayLengthExpression

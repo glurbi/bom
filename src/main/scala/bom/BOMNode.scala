@@ -91,7 +91,7 @@ abstract class BOMNode(val schema: BOMSchemaElement,
    */
   def binarySpace: BOMBinarySpace = document.binarySpace
 
-  override def equals(that: Any): boolean = that match {
+  override def equals(that: Any): Boolean = that match {
       case other: BOMNode
         => this.index == other.index && this.parent.equals(other.parent)
       case _

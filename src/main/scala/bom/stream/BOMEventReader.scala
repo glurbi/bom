@@ -20,7 +20,7 @@ class BOMEventReader(val bspace: BOMBinarySpace,
   val iterators = new ArrayDeque[Iterator[BOMNode]]
   var event: BOMEvent = null
 
-  def hasNext: boolean = event match {
+  def hasNext: Boolean = event match {
     case BOMEvent(x: BOMDocument, EndContainer) => false
     case null => true
     case _ => true
