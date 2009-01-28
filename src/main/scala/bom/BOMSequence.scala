@@ -24,7 +24,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
       null
     }
     val index = schema.childIndex(name)
-    schema.instance(this, index)
+    childSchema.instance(this, index)
   }
 
   def asDomNode: Node = new BOMSequenceAdapter(this)
