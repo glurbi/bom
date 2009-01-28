@@ -8,6 +8,8 @@ import java.lang.{Long => JLong}
 
 trait BOMSchemaBuilder {
 
+  // TODO: add regular / irregular DSL elements
+
   protected val stack = new Stack[BOMSchemaElement]
 
   def document(body: => Unit): BOMSchemaDocument = {
@@ -19,7 +21,7 @@ trait BOMSchemaBuilder {
 
   def sequence(name: String)(body: => Unit): BOMSchemaSequence = {
     val seq = new BOMSchemaSequence(name, stack.top, null)
-    stack.top.appendChild(seq)
+    stack.top.add(seq)
     stack.push(seq)
     body
     stack.pop
@@ -31,7 +33,7 @@ trait BOMSchemaBuilder {
   
   def array(name: String, lengthXPath: String, regular: Boolean)(body: => Unit): BOMSchemaArray = {
     val a = new BOMSchemaArray(name, stack.top, null)
-    stack.top.appendChild(a)
+    stack.top.add(a)
     a.arrayLengthExpression = lengthXPath
     a.regular = regular
     stack.push(a)
@@ -42,7 +44,7 @@ trait BOMSchemaBuilder {
 
   def switch(xpath: String)(body: => Unit): BOMSchemaSwitch = {
     val bomSwitch = new BOMSchemaSwitch(stack.top, null)
-    stack.top.appendChild(bomSwitch)
+    stack.top.add(bomSwitch)
     bomSwitch.switchExpression = xpath
     stack.push(bomSwitch)
     body
@@ -58,7 +60,7 @@ trait BOMSchemaBuilder {
     } else {
       bomCase.caseValue = value
     }
-    stack.top.appendChild(bomCase)
+    stack.top.add(bomCase)
     stack.push(bomCase)
     body
     stack.pop
@@ -72,7 +74,7 @@ trait BOMSchemaBuilder {
 
   def number(name: String, numberType: BOMType, body: => Unit): BOMSchemaNumber =  {
     val n = new BOMSchemaNumber(name, stack.top, null)
-    stack.top.appendChild(n)
+    stack.top.add(n)
     n.numberType = numberType
     stack.push(n)
     body
@@ -99,20 +101,20 @@ trait BOMSchemaBuilder {
 
   def string(name: String, encoding: String, sizeFun: BOMNode => Long): BOMSchemaString = {
     val s = new BOMSchemaString(name, stack.top, sizeFun)
-    stack.top.appendChild(s)
+    stack.top.add(s)
     s.encoding = encoding
     s
   }
 
   def blob(name: String, sizeFun: BOMNode => Long): BOMSchemaBlob = {
     val b = new BOMSchemaBlob(name, stack.top, sizeFun)
-    stack.top.appendChild(b)
+    stack.top.add(b)
     b
   }
 
   def virtual(name: String, xpath: String): BOMSchemaVirtual = {
     val v = new BOMSchemaVirtual(name, stack.top)
-    stack.top.appendChild(v)
+    stack.top.add(v)
     v.xpath = xpath
     v
   }

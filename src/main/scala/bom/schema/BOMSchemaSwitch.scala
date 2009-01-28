@@ -18,11 +18,11 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
   var switchExpression: String = null
   var defaultCase: BOMSchemaCase = null
 
-  override def appendChild(schema: BOMSchemaElement) {
-    if (!(schema.isInstanceOf[BOMSchemaCase])) {
+  override def add(child: BOMSchemaElement) {
+    if (!(child.isInstanceOf[BOMSchemaCase])) {
       throw new BOMException();
     }
-    val scase = schema.asInstanceOf[BOMSchemaCase]
+    val scase = child.asInstanceOf[BOMSchemaCase]
     cases.put(scase.caseValue, scase)
   }
 

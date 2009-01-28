@@ -9,16 +9,16 @@ case class BOMSchemaCase(override val parent: BOMSchemaElement,
 
   override val name: String = null
 
-  private var child: BOMSchemaElement = null
+  private var element: BOMSchemaElement = null
   
   var caseValue: Object = null
 
-  def appendChild(schemaElement: BOMSchemaElement) = child = schemaElement
+  def add(child: BOMSchemaElement) = element = child
 
   def createNode(parent: BOMContainer, index: Int): BOMNode =
-    child.createNode(parent, index)
+    element.createNode(parent, index)
 
-  def children: List[BOMSchemaElement] = child :: Nil
+  def children: List[BOMSchemaElement] = element :: Nil
 
   def childrenCount: Int = 1
 

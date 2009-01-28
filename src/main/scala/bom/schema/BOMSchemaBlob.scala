@@ -8,7 +8,7 @@ case class BOMSchemaBlob(override val name: String,
                          override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
-  def appendChild(schema: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = throw new BOMException
 
   def childrenCount: Int = 0
 

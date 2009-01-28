@@ -17,7 +17,7 @@ case class BOMSchemaNumber(override val name: String,
   val masks = new JHashMap[String, Long]
   var defaultMapping: Object = null
 
-  def appendChild(schema: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = throw new BOMException
 
   def childrenCount: Int = 0
 

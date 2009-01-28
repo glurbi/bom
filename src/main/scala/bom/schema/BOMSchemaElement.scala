@@ -38,6 +38,6 @@ abstract case class BOMSchemaElement() {
   /**
    * Add a schema element child of this schema element.
    */
-  def appendChild(schemaElement: BOMSchemaElement)
+  def add(child: BOMSchemaElement)
 
 }

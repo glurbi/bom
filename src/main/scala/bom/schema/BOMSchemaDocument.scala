@@ -18,9 +18,9 @@ case class BOMSchemaDocument() extends BOMSchemaElement {
 
   override def children: List[BOMSchemaElement] = root :: Nil
 
-  override def appendChild(schemaElement: BOMSchemaElement) = {
+  override def add(child: BOMSchemaElement) = {
     if (root == null) {
-      root = schemaElement
+      root = child
     } else {
       throw new BOMException("Cannot have more than one root in a document.")
     }

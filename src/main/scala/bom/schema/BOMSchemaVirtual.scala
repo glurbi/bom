@@ -11,7 +11,7 @@ case class BOMSchemaVirtual(override val name: String,
 
   var xpath: String = _
 
-  def appendChild(schema: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = throw new BOMException
 
   def childrenCount: Int = 0
 

@@ -10,7 +10,7 @@ case class BOMSchemaString(override val name: String,
 
   var encoding: String = null
     
-  def appendChild(schema: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = throw new BOMException
 
   def childrenCount: Int = 0
 
