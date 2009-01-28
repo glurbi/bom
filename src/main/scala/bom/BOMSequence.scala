@@ -32,7 +32,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
   def iterator: Iterator[BOMNode] = new SequenceIterator
 
   override def size: Long = {
-    if (sz == NO_SIZE) {
+    if (sz == -1) {
       sz = 0
       val it = iterator
       while (it.hasNext) {

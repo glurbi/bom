@@ -26,15 +26,16 @@ class XPathEvaluator {
   }
 
   val bomPreviousSiblingFunction = new XPathFunction {
-    def evaluate(args: List[_]): Object = contexts.getFirst.asDomNode.getPreviousSibling
+    def evaluate(args: List[_]): Object =
+      contexts.getFirst.asDomNode.getPreviousSibling
   }
 
   val bomPowerFunction = new XPathFunction {
     def evaluate(args: List[_]): Object = {
-      // TODO: very disgusting, improve...
-      val a1 = args.get(0).asInstanceOf[Number].doubleValue
-      val a2 = args.get(1).asInstanceOf[List[Node]].get(0).asInstanceOf[BOMLeafAdapter].node.asInstanceOf[BOMNumber].value.doubleValue
-      double2Double(Math.pow(a1, a2))
+      val base = args.get(0).asInstanceOf[Number].doubleValue
+      val exponent = args.get(1).asInstanceOf[List[Node]].get(0).
+        asInstanceOf[BOMLeafAdapter].node.asInstanceOf[BOMNumber].value.doubleValue
+      double2Double(Math.pow(base, exponent))
     }
   }
 
@@ -47,7 +48,8 @@ class XPathEvaluator {
   def evaluateAsElementList(xpath: String, context: BOMNode): List[BOMNode] = {
     contexts.push(context)
     try {
-      val nodes = xpathExpression(xpath).evaluate(context.asDomNode, XPathConstants.NODESET).asInstanceOf[NodeList]
+      val nodes = xpathExpression(xpath).
+        evaluate(context.asDomNode, XPathConstants.NODESET).asInstanceOf[NodeList]
       val result = new ArrayList[BOMNode](nodes.getLength)
       for (i <- 0 until nodes.getLength) {
         result.add((nodes.item(i).asInstanceOf[NodeAdapter]).node)
@@ -66,7 +68,8 @@ class XPathEvaluator {
     var result = stringResultCache.get(id)
     if (result == null) {
       try {
-        result = xpathExpression(xpath).evaluate(context.asDomNode, XPathConstants.STRING).asInstanceOf[String]
+        result = xpathExpression(xpath).
+          evaluate(context.asDomNode, XPathConstants.STRING).asInstanceOf[String]
       } catch {
         case xpee: XPathExpressionException => throw new BOMException(xpee)
       }
@@ -82,7 +85,8 @@ class XPathEvaluator {
     var result = numberResultCache.get(id)
     if (result == null) {
       try {
-        result = xpathExpression(xpath).evaluate(context.asDomNode, XPathConstants.NUMBER).asInstanceOf[Number]
+        result = xpathExpression(xpath).
+          evaluate(context.asDomNode, XPathConstants.NUMBER).asInstanceOf[Number]
       } catch {
         case xpee: XPathExpressionException => throw new BOMException(xpee)
       }
@@ -95,7 +99,8 @@ class XPathEvaluator {
   def evaluateAsElement(xpath: String, context: BOMNode): BOMNode = {
     contexts.push(context)
     try {
-      val n = xpathExpression(xpath).evaluate(context.asDomNode, XPathConstants.NODE).asInstanceOf[NodeAdapter]
+      val n = xpathExpression(xpath).
+        evaluate(context.asDomNode, XPathConstants.NODE).asInstanceOf[NodeAdapter]
       val result = if (n != null) n.node else null
       result
     } catch {

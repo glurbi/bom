@@ -17,7 +17,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         number("major", bom_ushort)
       }
       number("constant_pool_count", bom_ushort)
-      array("constant_pool", "../constant_pool_count - 1") {
+      array("constant_pool", "../constant_pool_count - 1", irregular) {
         reference(constantType)
       }
       number("access_flags", bom_ushort, {
@@ -32,19 +32,19 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("this_class", bom_ushort)
       number("super_class", bom_ushort)
       number("interfaces_count", bom_ushort)
-      array("interfaces", "../interfaces_count") {
+      array("interfaces", "../interfaces_count", irregular) {
         reference(interfaceType)
       }
       number("fields_count", bom_ushort)
-      array("fields", "../fields_count") {
+      array("fields", "../fields_count", irregular) {
         reference(fieldType)
       }
       number("methods_count", bom_ushort)
-      array("methods", "../methods_count") {
+      array("methods", "../methods_count", irregular) {
         reference(methodType)
       }
       number("attributes_count", bom_ushort)
-      array("attributes", "../attributes_count") {
+      array("attributes", "../attributes_count", irregular) {
         reference(attributeType)
       }
     }

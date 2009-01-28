@@ -8,7 +8,8 @@ import java.lang.{Long => JLong}
 
 trait BOMSchemaBuilder {
 
-  // TODO: add regular / irregular DSL elements
+  val regular = true
+  val irregular = false
 
   protected val stack = new Stack[BOMSchemaElement]
 

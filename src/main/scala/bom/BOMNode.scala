@@ -12,12 +12,8 @@ abstract class BOMNode(val schema: BOMSchemaElement,
                        val parent: BOMContainer,
                        val index: Int) {
 
-  // TODO: make it more functional
-  val NO_POSITION = -1L
-  val NO_SIZE = -1L
-
-  protected var pos = NO_POSITION
-  protected var sz = NO_SIZE
+  protected var pos: Long = -1
+  protected var sz: Long = -1
   
   /**
    * @return the name of this node
@@ -62,7 +58,7 @@ abstract class BOMNode(val schema: BOMSchemaElement,
    * @return the position (in bits) of this node in the binary space
    */
   def position: Long = {
-    if (pos == NO_POSITION) {
+    if (pos == -1) {
       if (index == 0) {
         pos = parent.position;
       } else if (parent.isInstanceOf[BOMSequence]) {

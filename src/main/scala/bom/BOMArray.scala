@@ -15,16 +15,14 @@ case class BOMArray(override val schema: BOMSchemaArray,
                     val regular: Boolean)
   extends BOMContainer(schema, parent, index) {
 
-  val NO_LENGTH = -1
-
-  var arrayLength = NO_LENGTH
+  var arrayLength = -1
   var arrayLengthExpression: String = null
 
   /**
    * @return the number of element in this array
    */
   def childrenCount: Int = {
-    if (arrayLength == NO_LENGTH) {
+    if (arrayLength == -1) {
       val xpath = schema.arrayLengthExpression
       val number = document.queryNumber(this, xpath);
       arrayLength = number.intValue
@@ -39,7 +37,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
       val n = schema.children(0).instance(this, 0)
       childrenCount * n.size
     } else {
-      if (sz == NO_SIZE) {
+      if (sz == -1) {
         sz = 0
         for (i <- 0 until childrenCount) {
           sz += child(i).size
