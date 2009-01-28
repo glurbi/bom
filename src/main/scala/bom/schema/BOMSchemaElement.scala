@@ -3,6 +3,9 @@ package bom.schema
 import bom._
 import bom.bin._
 
+/**
+ * The common contract for all BOM schema elements.
+ */
 abstract case class BOMSchemaElement() {
 
   /**
@@ -23,7 +26,7 @@ abstract case class BOMSchemaElement() {
   /**
    * @return the depth of the schema element in the schema hierarchy
    */
-  def depth: Int = 1 + parent.depth
+  def depth: Int
 
   /**
    * @return the sequence of schema elements children of this schema element

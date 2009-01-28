@@ -21,7 +21,7 @@ trait BOMSchemaBuilder {
   }
 
   def sequence(name: String)(body: => Unit): BOMSchemaSequence = {
-    val seq = new BOMSchemaSequence(name, stack.top, null)
+    val seq = new BOMSchemaSequence(name, stack.top, null, stack.top.depth + 1)
     stack.top.add(seq)
     stack.push(seq)
     body
@@ -33,7 +33,7 @@ trait BOMSchemaBuilder {
     array(name, lengthXPath, false) { body }
   
   def array(name: String, lengthXPath: String, regular: Boolean)(body: => Unit): BOMSchemaArray = {
-    val a = new BOMSchemaArray(name, stack.top, null)
+    val a = new BOMSchemaArray(name, stack.top, null, stack.top.depth + 1)
     stack.top.add(a)
     a.arrayLengthExpression = lengthXPath
     a.regular = regular
@@ -44,7 +44,7 @@ trait BOMSchemaBuilder {
   }
 
   def switch(xpath: String)(body: => Unit): BOMSchemaSwitch = {
-    val bomSwitch = new BOMSchemaSwitch(stack.top, null)
+    val bomSwitch = new BOMSchemaSwitch(stack.top, null, stack.top.depth)
     stack.top.add(bomSwitch)
     bomSwitch.switchExpression = xpath
     stack.push(bomSwitch)
@@ -55,7 +55,7 @@ trait BOMSchemaBuilder {
 
   // 'case' is a scala keyword, we use 'when' instead
   def when(value: String)(body: => Unit): BOMSchemaCase = {
-    val bomCase = new BOMSchemaCase(stack.top, null)
+    val bomCase = new BOMSchemaCase(stack.top, null, stack.top.depth)
     if ("*".equals(value)) {
       stack.top.asInstanceOf[BOMSchemaSwitch].defaultCase = bomCase
     } else {
@@ -74,7 +74,7 @@ trait BOMSchemaBuilder {
     number(name, numberType, {})
 
   def number(name: String, numberType: BOMType, body: => Unit): BOMSchemaNumber =  {
-    val n = new BOMSchemaNumber(name, stack.top, null)
+    val n = new BOMSchemaNumber(name, stack.top, null, stack.top.depth + 1)
     stack.top.add(n)
     n.numberType = numberType
     stack.push(n)
@@ -101,20 +101,20 @@ trait BOMSchemaBuilder {
   }
 
   def string(name: String, encoding: String, sizeFun: BOMNode => Long): BOMSchemaString = {
-    val s = new BOMSchemaString(name, stack.top, sizeFun)
+    val s = new BOMSchemaString(name, stack.top, sizeFun, stack.top.depth + 1)
     stack.top.add(s)
     s.encoding = encoding
     s
   }
 
   def blob(name: String, sizeFun: BOMNode => Long): BOMSchemaBlob = {
-    val b = new BOMSchemaBlob(name, stack.top, sizeFun)
+    val b = new BOMSchemaBlob(name, stack.top, sizeFun, stack.top.depth + 1)
     stack.top.add(b)
     b
   }
 
   def virtual(name: String, xpath: String): BOMSchemaVirtual = {
-    val v = new BOMSchemaVirtual(name, stack.top)
+    val v = new BOMSchemaVirtual(name, stack.top, stack.top.depth + 1)
     stack.top.add(v)
     v.xpath = xpath
     v

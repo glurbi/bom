@@ -9,7 +9,8 @@ import bom.bin._
 
 case class BOMSchemaNumber(override val name: String,
                            override val parent: BOMSchemaElement,
-                           override val size: BOMNode => Long)
+                           override val size: BOMNode => Long,
+                           override val depth: Int)
   extends BOMSchemaElement {
 
   var numberType: BOMType = null
@@ -19,9 +20,7 @@ case class BOMSchemaNumber(override val name: String,
 
   def add(child: BOMSchemaElement) = throw new BOMException
 
-  def childrenCount: Int = 0
-
-  override def children: List[BOMSchemaElement] = null
+  override def children: List[BOMSchemaElement] = Nil
 
   def hasMapping: Boolean = mappings.size() > 0
 

@@ -14,7 +14,7 @@ case class BOMSchemaDocument() extends BOMSchemaElement {
   def createNode(bspace: BOMBinarySpace, parent: BOMContainer, index: Int): BOMNode =
     new BOMDocument(this, bspace)
 
-  override def depth: Int = 0
+  override val depth: Int = 0
 
   override def children: List[BOMSchemaElement] = root :: Nil
 

@@ -9,14 +9,16 @@ import bom.bin._
 import org.w3c.dom._
 
 case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
-                           override val size: BOMNode => Long)
+                           override val size: BOMNode => Long,
+                           override val depth: Int)
+
   extends BOMSchemaElement {
 
   override val name: String = null
 
   val cases = new JHashMap[Any, BOMSchemaCase]
-  var switchExpression: String = null
-  var defaultCase: BOMSchemaCase = null
+  var switchExpression: String = _
+  var defaultCase: BOMSchemaCase = _
 
   override def add(child: BOMSchemaElement) {
     if (!(child.isInstanceOf[BOMSchemaCase])) {
@@ -60,7 +62,5 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
     }
     scase
   }
-
-  override def depth: Int = parent.depth
 
 }

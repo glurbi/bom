@@ -5,14 +5,13 @@ import bom.bin._
 
 case class BOMSchemaString(override val name: String,
                            override val parent: BOMSchemaElement,
-                           override val size: BOMNode => Long)
+                           override val size: BOMNode => Long,
+                           override val depth: Int)
   extends BOMSchemaElement {
 
-  var encoding: String = null
+  var encoding: String = _
     
   def add(child: BOMSchemaElement) = throw new BOMException
-
-  def childrenCount: Int = 0
 
   override def children: List[BOMSchemaElement] = null
 

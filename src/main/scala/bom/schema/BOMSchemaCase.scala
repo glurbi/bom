@@ -4,7 +4,8 @@ import bom._
 import bom.bin._
 
 case class BOMSchemaCase(override val parent: BOMSchemaElement,
-                         override val size: BOMNode => Long)
+                         override val size: BOMNode => Long,
+                         override val depth: Int)
   extends BOMSchemaElement {
 
   override val name: String = null
@@ -21,7 +22,5 @@ case class BOMSchemaCase(override val parent: BOMSchemaElement,
   def children: List[BOMSchemaElement] = element :: Nil
 
   def childrenCount: Int = 1
-
-  override def depth: Int = parent.depth
 
 }
