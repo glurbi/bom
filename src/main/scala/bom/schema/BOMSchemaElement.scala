@@ -3,8 +3,7 @@ package bom.schema
 import bom._
 import bom.bin._
 
-// TODO: make it a case class
-trait BOMSchemaElement {
+abstract case class BOMSchemaElement() {
 
   /**
    * @return the name of this schema element
