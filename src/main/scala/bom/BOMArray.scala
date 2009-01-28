@@ -36,7 +36,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
 
   override def size: long = {
     if (regular) {
-      val n = schema.children.get(0).createNode(this, 0)
+      val n = schema.children(0).createNode(this, 0)
       childrenCount * n.size
     } else {
       if (sz == NO_SIZE) {
@@ -57,9 +57,9 @@ case class BOMArray(override val schema: BOMSchemaArray,
       if (index >= childrenCount) {
         throw new ArrayIndexOutOfBoundsException(index);
       }
-      schema.children.get(0).createNode(this, index)
+      schema.children(0).createNode(this, index)
     } else {
-      schema.children.get(0).createNode(this, index)
+      schema.children(0).createNode(this, index)
     }
   }
 

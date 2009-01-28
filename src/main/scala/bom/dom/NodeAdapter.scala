@@ -31,7 +31,7 @@ abstract class NodeAdapter(var node: BOMNode) extends Node {
       if (node.parent.isInstanceOf[BOMArray]) {
         result = node.parent.asInstanceOf[BOMArray].child(node.index - 1).asDomNode
       } else if (node.parent.isInstanceOf[BOMSequence]) {
-        val previousNodeName = node.parent.schema.asInstanceOf[BOMSchemaSequence].children.get(node.index - 1).name
+        val previousNodeName = node.parent.schema.asInstanceOf[BOMSchemaSequence].children(node.index - 1).name
         result = node.parent.asInstanceOf[BOMSequence].child(previousNodeName).asDomNode
       } else {
         throw new BOMException

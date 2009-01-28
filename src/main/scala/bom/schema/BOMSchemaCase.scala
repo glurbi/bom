@@ -1,6 +1,5 @@
 package bom.schema
 
-import java.util._
 import bom._
 import bom.bin._
 
@@ -19,11 +18,7 @@ case class BOMSchemaCase(override val parent: BOMSchemaElement,
   def createNode(parent: BOMContainer, index: int): BOMNode =
     child.createNode(parent, index)
 
-  def children: List[BOMSchemaElement] = {
-    val result = new ArrayList[BOMSchemaElement](1)
-    result.add(child);
-    result
-  }
+  def children: List[BOMSchemaElement] = child :: Nil
 
   def childrenCount: int = 1
 

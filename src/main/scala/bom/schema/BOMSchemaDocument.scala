@@ -1,6 +1,5 @@
 package bom.schema
 
-import java.util._
 import bom.bin._
 import bom._
 
@@ -17,11 +16,7 @@ case class BOMSchemaDocument extends BOMSchemaElement {
 
   override def depth: int = 0
 
-  override def children: List[BOMSchemaElement] = {
-    val children = new ArrayList[BOMSchemaElement]
-    children.add(root)
-    children
-  }
+  override def children: List[BOMSchemaElement] = root :: Nil
 
   override def appendChild(schemaElement: BOMSchemaElement) = {
     if (root == null) {

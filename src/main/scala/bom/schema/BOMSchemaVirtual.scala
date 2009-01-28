@@ -1,6 +1,5 @@
 package bom.schema
 
-import java.util._
 import bom._
 import bom.bin._
 

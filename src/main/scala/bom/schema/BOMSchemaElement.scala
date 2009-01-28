@@ -1,6 +1,5 @@
 package bom.schema
 
-import java.util._
 import bom._
 import bom.bin._
 
@@ -29,7 +28,6 @@ trait BOMSchemaElement {
   /**
    * the schema element children of this schema element
    */
-  // TODO: use scala list
   def children: List[BOMSchemaElement]
 
   /**

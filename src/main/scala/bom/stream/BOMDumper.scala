@@ -44,7 +44,7 @@ object BOMDumper {
 
   private def dumpStartArray(array: BOMArray, reader: BOMEventReader) {
     dumpCommon(array)
-    array.schema.children.get(0) match {
+    array.schema.children(0) match {
       case (n: BOMSchemaNumber) => {
         format(" (%d elements)", array.length)
         for (i <- 0 until array.length.intValue) {

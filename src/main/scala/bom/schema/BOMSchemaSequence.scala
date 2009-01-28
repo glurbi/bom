@@ -1,6 +1,6 @@
 package bom.schema
 
-import java.util._
+import java.util.{HashMap => JHashMap}
 import bom._
 import bom.bin._
 
@@ -9,12 +9,12 @@ case class BOMSchemaSequence(override val name:String,
                              override val size: BOMNode => Long)
   extends BOMSchemaElement {
 
-  override val children = new ArrayList[BOMSchemaElement]
-  val name2element = new HashMap[String, BOMSchemaElement]
-  val name2index = new HashMap[String, Int]
+  private var seq: List[BOMSchemaElement] = Nil
+  val name2element = new JHashMap[String, BOMSchemaElement]
+  val name2index = new JHashMap[String, Int]
 
   override def appendChild(schema: BOMSchemaElement) {
-    children.add(schema)
+    seq = seq ::: List(schema)
     name2element.put(schema.name, schema)
     name2index.put(schema.name, children.size - 1);
   }
@@ -25,5 +25,7 @@ case class BOMSchemaSequence(override val name:String,
   def child(name: String): BOMSchemaElement = name2element.get(name)
 
   def childIndex(name: String): int = name2index.get(name)
+
+  def children: List[BOMSchemaElement] = seq
 
 }

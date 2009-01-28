@@ -1,6 +1,7 @@
 package bom.schema
 
-import java.util._
+import java.util.{HashMap => JHashMap}
+import java.util.{Iterator => JIterator}
 import javax.xml.xpath._
 import bom._
 import bom.dom._
@@ -13,7 +14,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
 
   override val name: String = null
 
-  val cases = new HashMap[Any, BOMSchemaCase]
+  val cases = new JHashMap[Any, BOMSchemaCase]
   var switchExpression: String = null
   var defaultCase: BOMSchemaCase = null
 
@@ -43,8 +44,14 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
     matchingCase.createNode(parent, index)
   }
 
-  override def children: List[BOMSchemaElement] =
-    new ArrayList[BOMSchemaElement](cases.values)
+  override def children: List[BOMSchemaElement] = {
+    var res: List[BOMSchemaElement] = Nil
+    val it: JIterator[BOMSchemaCase] = cases.values.iterator
+    while (it.hasNext) {
+      res = it.next :: res
+    }
+    res
+  }
 
   def findMatchingCase(o: Object): BOMSchemaCase = {
     var scase = cases.get(o)

@@ -1,6 +1,8 @@
 package bom.schema
 
-import java.util._
+import java.util.{HashMap => JHashMap}
+import java.util.{HashSet => JHashSet}
+import java.util.{Set => JSet}
 import bom._
 import bom.types._
 import bom.bin._
@@ -11,8 +13,8 @@ case class BOMSchemaNumber(override val name: String,
   extends BOMSchemaElement {
 
   var numberType: BOMType = null
-  val mappings = new HashMap[Object, Object]
-  val masks = new HashMap[String, Long]
+  val mappings = new JHashMap[Object, Object]
+  val masks = new JHashMap[String, Long]
   var defaultMapping: Object = null
 
   def appendChild(schema: BOMSchemaElement) = throw new BOMException
@@ -30,8 +32,8 @@ case class BOMSchemaNumber(override val name: String,
 
   def addMask(name: String, value: long) = masks.put(name, value)
   
-  def getMasks(n: long): Set[String] = {
-    val result = new HashSet[String]
+  def getMasks(n: long): JSet[String] = {
+    val result = new JHashSet[String]
     val it = masks.entrySet.iterator
     while (it.hasNext) {
       val mask = it.next
