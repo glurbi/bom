@@ -7,8 +7,8 @@ import bom.schema._
 import org.w3c.dom._
 
 /**
- * The <code>BOMSequence</code> interface represents a container node where children can be
- * accessed by name.
+ * The <code>BOMSequence</code> interface represents a container node where
+ * children can be accessed by name.
  */
 case class BOMSequence(override val schema: BOMSchemaSequence,
                        override val parent: BOMContainer,
@@ -40,6 +40,12 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
       }
     }
     sz
+  }
+
+  override def childCount = schema.children.size
+
+  override def child(index: Int): BOMNode = {
+      schema.children(index).instance(this, index)
   }
 
   override def toString: String = name

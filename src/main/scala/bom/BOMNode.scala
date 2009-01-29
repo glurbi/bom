@@ -39,6 +39,17 @@ abstract class BOMNode(val schema: BOMSchemaElement,
   def size: Long = sz
 
   /**
+   * @return the number of children of this node
+   */
+  def childCount = 0
+
+  /**
+   * @return the child of this node at the specified index or <code>null<code>
+   *         if it doesn't exist
+   */
+  def child(index: Int): BOMNode = null
+
+  /**
    * @return this node identifier
    */
   def identifier: BOMIdentifier = {

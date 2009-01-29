@@ -12,15 +12,19 @@ object BomTest {
         number("bom_byte", bom_byte)
         number("bom_int", bom_int)
         number("bom_long", bom_long)
+        number("bom_ubyte", bom_ubyte)
       }
     }
   }
+
+  implicit def int2Byte(i: Int): Byte = i.asInstanceOf[Byte]
 
   def bspace: BOMBinarySpace = {
     val bytes: Array[Byte] = List[Byte](
       0x01,
       0x00, 0x00, 0x00, 0x0F,
-      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F,
+      0xFF
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -36,6 +40,8 @@ object BomTest {
     assert(bom_int.intValue.equals(15.asInstanceOf[Int]))
     val bom_long = test.child("bom_long").asInstanceOf[BOMNumber].value
     assert(bom_long.longValue.equals(15.asInstanceOf[Long]))
+    val bom_ubyte = test.child(3).asInstanceOf[BOMNumber].value
+    assert(bom_ubyte.byteValue.equals((-1).asInstanceOf[Byte]))
 
     println(this.getClass.toString + " SUCCESS")
   }

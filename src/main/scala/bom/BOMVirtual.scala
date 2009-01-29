@@ -14,7 +14,6 @@ case class BOMVirtual(override val schema: BOMSchemaVirtual,
                       override val parent: BOMContainer,
                       override val index: Int,
                       val xpath: String)
-
   extends BOMLeaf(schema, parent, index) {
 
 
