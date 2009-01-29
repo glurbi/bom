@@ -3,7 +3,7 @@ package bom.test
 import java.io._
 import bom.bin._
 import bom.schema._
-import bom.examples._
+import bom.examples.schemas._
 import bom.stream._
 
 object BomJavaLangStringTest {

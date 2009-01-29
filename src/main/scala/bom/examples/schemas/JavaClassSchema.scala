@@ -1,4 +1,4 @@
-package bom.examples
+package bom.examples.schemas
 
 import bom.schema._
 import bom.types._
