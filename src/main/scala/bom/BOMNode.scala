@@ -50,6 +50,11 @@ abstract class BOMNode(val schema: BOMSchemaElement,
   def child(index: Int): BOMNode = null
 
   /**
+   * @return the value of this node
+   */
+  def value: Any = null
+
+  /**
    * @return this node identifier
    */
   def identifier: BOMIdentifier = {

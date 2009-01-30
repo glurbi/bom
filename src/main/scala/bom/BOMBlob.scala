@@ -22,7 +22,7 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
   /**
    * @return the value of this blob in the binary space
    */
-  def value: Array[Byte] = {
+  override def value: Array[Byte] = {
     if (bytes == null) {
       binarySpace.position(position)
       bytes = new Array[Byte](byteCount.intValue)

@@ -20,7 +20,7 @@ case class BOMVirtual(override val schema: BOMSchemaVirtual,
   /**
    * @return the value of this virtual node
    */
-  def value: Any = document.queryNumber(this, xpath)
+  override def value: Any = document.queryNumber(this, xpath)
 
   override def size: Long = 0
 

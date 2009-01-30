@@ -19,7 +19,7 @@ case class BOMString(override val schema: BOMSchemaString,
   /**
    * @return the value of this character string in the binary space
    */
-  def value: String = {
+  override def value: String = {
     binarySpace.position(position.intValue)
     val ba = new Array[byte](size.intValue / 8)
     binarySpace.getBytes(ba)

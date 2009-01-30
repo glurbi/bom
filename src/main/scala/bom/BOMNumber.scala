@@ -23,7 +23,7 @@ case class BOMNumber(override val schema: BOMSchemaNumber,
   /**
    * @return the value of this number in the binary space
    */
-  def value: Number = {
+  override def value: Number = {
     binarySpace.position(position)
     numberType.read(binarySpace).asInstanceOf[Number]
   }
