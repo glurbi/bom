@@ -17,11 +17,8 @@ object BomBrowser {
       invoke(null, null).asInstanceOf[BOMSchemaElement]
     val bspace = new MemoryBinarySpace(new FileInputStream(args(1)))
     val doc = new BOMDocument(schema, bspace)
-
     val frame = new JFrame
-    val dataTree = new BOMDataTreePanel(doc)
-
-    frame.add(dataTree)
+    frame.add(new BOMDataTreePanel(doc))
     frame.setTitle("BOM Browser")
     frame.setSize(800, 600)
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
