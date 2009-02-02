@@ -2,15 +2,17 @@ package bom.ui
 
 import org.jdesktop.swingx.treetable._
 
+import bom.schema._
+
 class BOMDataTreeModel(val doc: BOMDocument) extends AbstractTreeTableModel(doc) {
 
   def getColumnCount: Int = 4
 
   def getValueAt(node: Object, column: Int): Object = column match {
     case 0 => node.asInstanceOf[BOMNode].name
-    case 1 => translate(node.asInstanceOf[BOMNode].value)
+    case 1 => translateValue(node.asInstanceOf[BOMNode].value)
     case 2 => "" + node.asInstanceOf[BOMNode].position / 8
-    case 3 => node.asInstanceOf[BOMNode].schema
+    case 3 => translateSchema(node.asInstanceOf[BOMNode].schema)
   }
 
   def getChild(parent: Object, index: Int): Object =
@@ -24,10 +26,20 @@ class BOMDataTreeModel(val doc: BOMDocument) extends AbstractTreeTableModel(doc)
 
   override def isLeaf(node: Object): Boolean = node.isInstanceOf[BOMLeaf]
 
-  private def translate(value: Any): String =
+  private def translateValue(value: Any): String =
     value match {
       case null => ""
       case _ => value.toString
     }
+
+  private def translateSchema(schema: BOMSchemaElement): String = schema match {
+    case BOMSchemaSequence(_, _, _, _) => "sequence"
+    case BOMSchemaArray(_, _, _, _) => "array"
+    case BOMSchemaBlob(_, _, _, _) => "blob"
+    case BOMSchemaNumber(_, _, _, _) => "number"
+    case BOMSchemaString(_, _, _, _) => "string"
+    case BOMSchemaVirtual(_, _, _) => "virtual"
+    case _ => "unknown"
+  }
 
 }
