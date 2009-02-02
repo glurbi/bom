@@ -8,7 +8,7 @@ class BOMInteger3 extends BOMType {
 
   def typeSize(params: Any*): Int = 8 * 3
 
-  def read(bspace: BOMBinarySpace, params: Any*): Any = {
+  def read(bspace: BOMBinarySpace, params: Any*): Int = {
     val b3: Byte = bspace.getByte
     val b2: Byte = bspace.getByte
     val b1: Byte = bspace.getByte

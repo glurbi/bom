@@ -13,6 +13,7 @@ object BomTest {
         number("bom_int", bom_int)
         number("bom_long", bom_long)
         number("bom_ubyte", bom_ubyte)
+        number("bom_uint", bom_uint)
       }
     }
   }
@@ -24,7 +25,8 @@ object BomTest {
       0x01,
       0x00, 0x00, 0x00, 0x0F,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F,
-      0xFF
+      0xFF,
+      0x00, 0x00, 0xFF, 0xFF
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -41,7 +43,9 @@ object BomTest {
     val bom_long = test.child("bom_long").asInstanceOf[BOMNumber].value
     assert(bom_long.longValue.equals(15.asInstanceOf[Long]))
     val bom_ubyte = test.child(3).asInstanceOf[BOMNumber].value
-    assert(bom_ubyte.byteValue.equals((-1).asInstanceOf[Byte]))
+    assert(bom_ubyte.shortValue.equals((0xFF).asInstanceOf[Short]))
+    val bom_uint = test.child(4).asInstanceOf[BOMNumber].value
+    assert(bom_uint.longValue.equals((0xFFFF).asInstanceOf[Long]))
 
     println(this.getClass.toString + " SUCCESS")
   }

@@ -8,8 +8,8 @@ class BOMUnsignedByte extends BOMType {
 
   def typeSize(params: Any*): Int = 8
 
-  def read(bspace: BOMBinarySpace, params: Any*): Any = {
-    (bspace.getByte & 255).asInstanceOf[Byte]
+  def read(bspace: BOMBinarySpace, params: Any*): Short = {
+    (bspace.getByte & 255).asInstanceOf[Short]
   }
 
 }

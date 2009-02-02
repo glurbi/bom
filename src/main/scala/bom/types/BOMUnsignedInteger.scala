@@ -8,7 +8,7 @@ class BOMUnsignedInteger extends BOMType {
 
   def typeSize(params: Any*): Int = 32
 
-  def read(bspace: BOMBinarySpace, params: Any*): Any = {
+  def read(bspace: BOMBinarySpace, params: Any*): Long = {
     ((bspace.getByte.asInstanceOf[Long] & 255) << 24) +
     ((bspace.getByte.asInstanceOf[Long] & 255) << 16) +
     ((bspace.getByte.asInstanceOf[Long] & 255) << 8) +

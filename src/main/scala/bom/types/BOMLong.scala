@@ -8,7 +8,7 @@ class BOMLong extends BOMType {
 
   def typeSize(params: Any*): Int = 64
 
-  def read(bspace: BOMBinarySpace, params: Any*): Any = {
+  def read(bspace: BOMBinarySpace, params: Any*): Long = {
     (bspace.getByte.asInstanceOf[Long] << 56) +
     (bspace.getByte.asInstanceOf[Long] << 48) +
     (bspace.getByte.asInstanceOf[Long] << 40) +

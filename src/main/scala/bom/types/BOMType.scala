@@ -22,7 +22,6 @@ trait BOMType {
      * @param bspace a binary space
      * @return the element read
      */
-    // TODO: make every implementation return a specific type, not Any
     def read(bspace: BOMBinarySpace, params: Any*): Any
 
 }

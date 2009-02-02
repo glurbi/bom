@@ -8,11 +8,11 @@ class BOMInteger extends BOMType {
 
   def typeSize(params: Any*): Int = 32
 
-  def read(bspace: BOMBinarySpace, params: Any*): Any = {
-    (bspace.getByte.asInstanceOf[Long] << 24) +
-    (bspace.getByte.asInstanceOf[Long] << 16) +
-    (bspace.getByte.asInstanceOf[Long] << 8) +
-    (bspace.getByte.asInstanceOf[Long] << 0)
+  def read(bspace: BOMBinarySpace, params: Any*): Int = {
+    (bspace.getByte.asInstanceOf[Int] << 24) +
+    (bspace.getByte.asInstanceOf[Int] << 16) +
+    (bspace.getByte.asInstanceOf[Int] << 8) +
+    (bspace.getByte.asInstanceOf[Int] << 0)
   }
 
 }
