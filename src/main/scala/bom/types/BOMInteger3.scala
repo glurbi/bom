@@ -9,13 +9,14 @@ class BOMInteger3 extends BOMType {
   def typeSize(params: Any*): Int = 8 * 3
 
   def read(bspace: BOMBinarySpace, params: Any*): Int = {
-    val b3: Byte = bspace.getByte
-    val b2: Byte = bspace.getByte
-    val b1: Byte = bspace.getByte
-    if ((b3 & 128) == 0) {
-      ((b3 & 127) << 16) + (b2 << 8) + (b1 << 0)
+    def b: Byte = bspace.getByte
+    val raw = ((((b & 0xFF) << 16) |
+                ((b & 0xFF) <<  8) |
+                ((b & 0xFF) <<  0)))
+    if ((raw & 0x800000) > 0) {
+      -((~raw & 0xFFFFFF) + 1)
     } else {
-      -(~((b3 << 16) + (b2 << 8) + (b1 << 0) + 1))
+      raw
     }
   }
 

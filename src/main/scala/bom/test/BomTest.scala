@@ -9,11 +9,13 @@ object BomTest {
   object TestSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     def schema = document {
       sequence("test") {
-        number("bom_byte", bom_byte)
-        number("bom_int", bom_int)
-        number("bom_long", bom_long)
-        number("bom_ubyte", bom_ubyte)
-        number("bom_uint", bom_uint)
+        number("i1", bom_byte)
+        number("i2", bom_int)
+        number("i3", bom_long)
+        number("i4", bom_ubyte)
+        number("i5", bom_uint)
+        number("i6", bom_int)
+        number("i7", bom_int3)
       }
     }
   }
@@ -26,7 +28,9 @@ object BomTest {
       0x00, 0x00, 0x00, 0x0F,
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0F,
       0xFF,
-      0x00, 0x00, 0xFF, 0xFF
+      0x00, 0x00, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF, 0xFF,
+      0xFF, 0xFF, 0xFF
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -34,18 +38,15 @@ object BomTest {
   def main(args: Array[String]) = {
     val doc = new BOMDocument(TestSchema.schema, bspace)
     val root = doc.rootNode
+    
     assert(root.name.equals("test"))
-    val test = root.asInstanceOf[BOMSequence]
-    val bom_byte = test.child("bom_byte").asInstanceOf[BOMNumber].value
-    assert(bom_byte.byteValue.equals(1.asInstanceOf[Byte]))
-    val bom_int = test.child("bom_int").asInstanceOf[BOMNumber].value
-    assert(bom_int.intValue.equals(15.asInstanceOf[Int]))
-    val bom_long = test.child("bom_long").asInstanceOf[BOMNumber].value
-    assert(bom_long.longValue.equals(15.asInstanceOf[Long]))
-    val bom_ubyte = test.child(3).asInstanceOf[BOMNumber].value
-    assert(bom_ubyte.shortValue.equals((0xFF).asInstanceOf[Short]))
-    val bom_uint = test.child(4).asInstanceOf[BOMNumber].value
-    assert(bom_uint.longValue.equals((0xFFFF).asInstanceOf[Long]))
+    assert(root.child(0).value.equals(1.asInstanceOf[Byte]))
+    assert(root.child(1).value.equals(15))
+    assert(root.child(2).value.equals(15L))
+    assert(root.child(3).value.equals((0xFF).asInstanceOf[Short]))
+    assert(root.child(4).value.equals(0xFFFFL))
+    assert(root.child(5).value.equals(-1))
+    assert(root.child(6).value.equals(-1))
 
     println(this.getClass.toString + " SUCCESS")
   }
