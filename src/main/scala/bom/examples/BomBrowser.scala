@@ -78,10 +78,31 @@ class BomBrowserFoo(val doc: BOMDocument) {
     override def mousePressed(e: MouseEvent) = {
       if (e.isPopupTrigger) {
         val clickedElement = dataTreePanel.getPathForLocation(e.getX, e.getY)
-        println
+        dataTreePanel.getTreeSelectionModel.clearSelection
+        dataTreePanel.getTreeSelectionModel.addSelectionPath(clickedElement)
+        popup.show(dataTreePanel, e.getX, e.getY)
       }
     }
   })
+
+
+  val actionListener = new ActionListener {
+    def actionPerformed(event: ActionEvent) = {
+      println(event.getActionCommand)
+    }
+  }
+
+  val plotMenuItem = {
+    val r = new JMenuItem("Plot")
+    r.addActionListener(actionListener)
+    r
+  }
+
+  val popup = {
+    val r = new JPopupMenu
+    r.add(plotMenuItem)
+    r
+  }
 
   val scrollPane = new JScrollPane(dataTreePanel)
 
