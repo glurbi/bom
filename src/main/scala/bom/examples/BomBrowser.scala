@@ -3,7 +3,9 @@ package bom.examples
 import java.io._
 import javax.swing._
 import javax.swing.event._
+import java.awt._
 import java.awt.event._
+import java.awt.geom._
 
 import org.jdesktop.swingx._
 import org.jdesktop.swingx.treetable._
@@ -15,7 +17,7 @@ import bom.stream._
 
 object BomBrowser {
 
-  def main(args: Array[String]) = {
+  def main(args: Array[String]) {
     val schema = Class.forName(args(0)).getMethod("schema").
       invoke(null, null).asInstanceOf[BOMSchemaElement]
     val bspace = new MemoryBinarySpace(new FileInputStream(args(1)))
@@ -26,37 +28,34 @@ object BomBrowser {
 
 }
 
+// FIXME: for some obscure reason, if the class has the same name as the
+// companion object, netbeans complains with "java.lang.NoSuchMethodError: main"
 class BomBrowserFoo(val doc: BOMDocument) {
 
+  /**
+   * Adapts the BOM tree to a JXTreeTableModel
+   */
   val dataTreeModel = new AbstractTreeTableModel(doc) {
-
     def getColumnCount: Int = 4
-
     def getValueAt(node: Object, column: Int): Object = column match {
       case 0 => node.asInstanceOf[BOMNode].name
       case 1 => translateValue(node.asInstanceOf[BOMNode])
       case 2 => "" + node.asInstanceOf[BOMNode].position / 8
       case 3 => translateSchema(node.asInstanceOf[BOMNode].schema)
     }
-
     def getChild(parent: Object, index: Int): Object =
       parent.asInstanceOf[BOMNode].child(index)
-
     def getChildCount(parent: Object): Int =
       parent.asInstanceOf[BOMNode].childCount
-
     def getIndexOfChild(parent: Object, child: Object): Int =
       child.asInstanceOf[BOMNode].index
-
     override def isLeaf(node: Object): Boolean = node.isInstanceOf[BOMLeaf]
-
     private def translateValue(node: BOMNode): String =
       node match {
         case BOMBlob(_, _, _, _) => "..."
         case BOMContainer(_, _, _) => ""
         case _ => node.value.toString
       }
-
     private def translateSchema(schema: BOMSchemaElement): String = schema match {
       case BOMSchemaSequence(_, _, _, _) => "sequence"
       case BOMSchemaArray(_, _, _, _) => "array"
@@ -66,7 +65,6 @@ class BomBrowserFoo(val doc: BOMDocument) {
       case BOMSchemaVirtual(_, _, _) => "virtual"
       case _ => "unknown"
     }
-
   }
 
   val dataTreePanel = new JXTreeTable(dataTreeModel)
@@ -85,24 +83,51 @@ class BomBrowserFoo(val doc: BOMDocument) {
     }
   })
 
-
   val actionListener = new ActionListener {
     def actionPerformed(event: ActionEvent) = {
-      println(event.getActionCommand)
+      event.getActionCommand match {
+        case "Plot" => plotCurrentSelection
+      }
     }
   }
 
-  val plotMenuItem = {
-    val r = new JMenuItem("Plot")
-    r.addActionListener(actionListener)
-    r
+  def plotCurrentSelection {
+    val node = dataTreePanel.getTreeSelectionModel.getSelectionPath.getLastPathComponent
+    if (isPlotable(node.asInstanceOf[BOMNode])) {
+      val array = node.asInstanceOf[BOMArray]
+      val plot = new JXGraph.Plot {
+        def compute(x: Double) = {
+          val index = x.toInt
+          if (index >= 0 && index < array.childCount) {
+            array.child(index).asInstanceOf[BOMNumber].value.doubleValue
+          } else {
+            0.0
+          }
+        }
+      }
+      val origin = new Point2D.Double(0.0, 0.0)
+      val view = new Rectangle2D.Double(-1.0, -1.0, 2.0, 2.0);
+      val graph = new JXGraph(origin, view)
+      val frame = new JFrame("Plot")
+      graph.addPlots(Color.red, plot)
+      frame.add(graph)
+      frame.setSize(800, 600)
+      frame.setVisible(true)
+    } else {
+      JOptionPane.showMessageDialog(frame, "Choose an array with numbers...",
+                                    null, JOptionPane.WARNING_MESSAGE)
+    }
   }
 
-  val popup = {
-    val r = new JPopupMenu
-    r.add(plotMenuItem)
-    r
-  }
+  def isPlotable(node: BOMNode): Boolean = 
+    node.schema.isInstanceOf[BOMSchemaArray] &&
+    node.schema.asInstanceOf[BOMSchemaArray].children.head.isInstanceOf[BOMSchemaNumber]
+  
+  val plotMenuItem = new JMenuItem("Plot")
+  plotMenuItem.addActionListener(actionListener)
+
+  val popup = new JPopupMenu
+  popup.add(plotMenuItem)
 
   val scrollPane = new JScrollPane(dataTreePanel)
 
@@ -112,6 +137,6 @@ class BomBrowserFoo(val doc: BOMDocument) {
   frame.setSize(800, 600)
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 
-  def show = frame.show
+  def show { frame.setVisible(true) }
 
 }

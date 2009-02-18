@@ -8,6 +8,7 @@ import bom.schema._
  * The <code>BOMNode</code> class is the primary data type for the entire
  * Binary Object Model. It represents a single node in the document tree.
  */
+// TODO: make it a case class
 abstract class BOMNode(val schema: BOMSchemaElement,
                        val parent: BOMContainer,
                        val index: Int) {
@@ -48,6 +49,8 @@ abstract class BOMNode(val schema: BOMSchemaElement,
    *         if it doesn't exist
    */
   def child(index: Int): BOMNode = null
+
+  // TODO: add a "children" method
 
   /**
    * @return the value of this node
