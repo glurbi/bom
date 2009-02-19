@@ -7,7 +7,6 @@ import bom._
 class MemoryBinarySpace(val buffer: ByteBuffer) extends BOMBinarySpace {
 
   var offset: Long = 0
-  var current: Byte = 0
   
   def this(size: Int) {
     this(ByteBuffer.allocateDirect(size))
@@ -28,52 +27,31 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BOMBinarySpace {
     buffer.put(bytes, 0, len)
   }
   
-  def size: Long = buffer.capacity * 8
+  def size: Long = buffer.limit * 8
 
   def capacity: Long = buffer.capacity * 8
 
-  def position: Long = buffer.position * 8
+  def position: Long = buffer.position * 8 + offset
 
   def position(position: Long) = {
     buffer.position((position / 8).intValue)
     offset = position % 8
   }
   
-  def byteOrder: ByteOrder = {
-    if (buffer.order == java.nio.ByteOrder.BIG_ENDIAN) {
-      ByteOrder.BIG_ENDIAN;
-    } else {
-      ByteOrder.LITTLE_ENDIAN;
-    }
-  }
-  def byteOrder(byteOrder: ByteOrder) = {
-    if (byteOrder == ByteOrder.BIG_ENDIAN) {
-      buffer.order(java.nio.ByteOrder.BIG_ENDIAN);
-    } else {
-      buffer.order(java.nio.ByteOrder.LITTLE_ENDIAN);
-    }
-  }
-
   def getByte: Byte = {
-    if (offset != 0) {
-      throw new BOMException("Bad alignment...")
-    }
     buffer.get
   }
 
   def getBytes(bytes: Array[byte]) = {
-    if (offset != 0) {
-      throw new BOMException("Bad alignment...")
-    }
     buffer.get(bytes)
   }
 
   def getBit: Int = {
-    if (offset == 0) {
-      current = getByte
-    }
-    var bit = (current >> (7 - offset)) & 1
+    val old = buffer.position * 8
+    val bit = (getByte >> (7 - offset)) & 1
     offset = (offset + 1) % 8
+    if (offset < 8) position(old + offset)
+    if (offset == 0) position(old + 8)
     bit
   }
   

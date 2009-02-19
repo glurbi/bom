@@ -50,6 +50,11 @@ abstract class BOMNode(val schema: BOMSchemaElement,
    */
   def child(index: Int): BOMNode = null
 
+  /**
+   *
+   */
+  def apply(index: Int): BOMNode = child(index)
+
   // TODO: add a "children" method
 
   /**
