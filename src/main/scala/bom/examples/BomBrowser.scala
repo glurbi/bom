@@ -1,5 +1,7 @@
 package bom.examples
 
+import scala.collection.jcl._
+
 import java.io._
 import javax.swing._
 import javax.swing.event._
@@ -95,20 +97,30 @@ class BomBrowserFoo(val doc: BOMDocument) {
     val node = dataTreePanel.getTreeSelectionModel.getSelectionPath.getLastPathComponent
     if (isPlotable(node.asInstanceOf[BOMNode])) {
       val array = node.asInstanceOf[BOMArray]
+      val numbers = new ArrayList[Double]
+      var min = array.child(0).asInstanceOf[BOMNumber].value.doubleValue
+      var max = min
+      for (i <- 0 until array.childrenCount) {
+        numbers.add(array.child(i).asInstanceOf[BOMNumber].value.doubleValue)
+        if (numbers(i) > max) max = numbers(i)
+        if (numbers(i) < min) min = numbers(i)
+      }
       val plot = new JXGraph.Plot {
         def compute(x: Double) = {
           val index = x.toInt
-          if (index >= 0 && index < array.childCount) {
-            array.child(index).asInstanceOf[BOMNumber].value.doubleValue
+          if (index >= 0 && index < array.childrenCount) {
+            numbers(index)
           } else {
             0.0
           }
         }
       }
-      val origin = new Point2D.Double(0.0, 0.0)
-      val view = new Rectangle2D.Double(-1.0, -1.0, 2.0, 2.0);
-      val graph = new JXGraph(origin, view)
+      val graph = new JXGraph
       val frame = new JFrame("Plot")
+      graph.setOrigin(new Point2D.Double(0.0, 0.0))
+      graph.setView(new Rectangle2D.Double(0.0, min, array.childrenCount, max - min))
+      graph.setGridPainted(false)
+      graph.setTextPainted(false) // if turned on, can be very slow
       graph.addPlots(Color.red, plot)
       frame.add(graph)
       frame.setSize(800, 600)
