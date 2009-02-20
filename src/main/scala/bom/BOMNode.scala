@@ -51,9 +51,16 @@ abstract class BOMNode(val schema: BOMSchemaElement,
   def child(index: Int): BOMNode = null
 
   /**
-   *
+   * @return the child of this node at the specified index or <code>null<code>
+   *         if it doesn't exist
    */
   def apply(index: Int): BOMNode = child(index)
+
+  /**
+   * @return the child of this node with the specified name or <code>null<code>
+   *         if it doesn't exist
+   */
+  def apply(name: String): BOMNode = null
 
   // TODO: add a "children" method
 
