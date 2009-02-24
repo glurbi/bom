@@ -39,13 +39,16 @@ object BomTest {
             }
           }
         }
+        sequence("blobs") {
+          blob("blob1", byteSize(3))
+          blob("blob2", bitSize(32))
+        }
       }
     }
   }
 
-  implicit def int2Byte(i: Int): Byte = i.asInstanceOf[Byte]
-
   def bspace: BOMBinarySpace = {
+    implicit def int2Byte(i: Int): Byte = i.asInstanceOf[Byte]
     val bytes: Array[Byte] = List[Byte](
 
       // integers
@@ -71,7 +74,11 @@ object BomTest {
       0x01, 0x02, 0x03,
       0x04, 0x05, 0x06,
       0x07, 0x08, 0x09,
-      0x0A, 0x0B, 0x0C
+      0x0A, 0x0B, 0x0C,
+
+      // blobs
+      0x01, 0x02, 0x03,
+      0x01, 0x09, 0x07, 0x07
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -107,6 +114,14 @@ object BomTest {
     //array_2
     assert(root("array2")("array2").size == 12 * 8)
     assert(root(3)(0)(3)(1).value == 11)
+
+    // blobs
+    assert(root("blobs")("blob1").size == 3 * 8)
+    assert(root("blobs")("blob2").size == 4 * 8)
+    assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](0) == 1)
+    assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](1) == 9)
+    assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](2) == 7)
+    assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](3) == 7)
 
     println(this.getClass.toString + " SUCCESS")
   }
