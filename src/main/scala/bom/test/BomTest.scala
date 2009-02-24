@@ -26,6 +26,12 @@ object BomTest {
           number("bcd6", bom_bcd6)
           number("bcd8", bom_bcd8)
         }
+        sequence("array1") {
+          number("length_array1", bom_byte)
+          array("array1", "../length_array1", regular) {
+            number("item", bom_byte)
+          }
+        }
       }
     }
   }
@@ -48,7 +54,11 @@ object BomTest {
       0x98, 0x76, 0x54,
       0x12, 0x34,
       0x12, 0x34, 0x56,
-      0x12, 0x34, 0x56, 0x78
+      0x12, 0x34, 0x56, 0x78,
+
+      // array1
+      0x06,
+      0x01, 0x02, 0x03, 0x04, 0x05, 0x06
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -76,6 +86,10 @@ object BomTest {
     assert(root(1)(3).value.equals(1234L))
     assert(root(1)("bcd6").value.equals(123456L))
     assert(root("bcds")(5).value.equals(12345678L))
+
+    // array_1
+    assert(root("array1")("array1").childCount.equals(6))
+    assert(root(2)(1)(5).value.equals(6.asInstanceOf[Byte]))
 
     println(this.getClass.toString + " SUCCESS")
   }
