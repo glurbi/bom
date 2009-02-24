@@ -32,6 +32,13 @@ object BomTest {
             number("item", bom_byte)
           }
         }
+        sequence("array2") {
+          array("array2", "4", regular) {
+            array("nested", "3", regular) {
+              number("item", bom_byte)
+            }
+          }
+        }
       }
     }
   }
@@ -58,7 +65,13 @@ object BomTest {
 
       // array1
       0x06,
-      0x01, 0x02, 0x03, 0x04, 0x05, 0x06
+      0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
+
+      // array2
+      0x01, 0x02, 0x03,
+      0x04, 0x05, 0x06,
+      0x07, 0x08, 0x09,
+      0x0A, 0x0B, 0x0C
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -71,25 +84,29 @@ object BomTest {
     assert(root.name.equals("test"))
 
     // integers
-    assert(root(0)(0).value.equals(1.asInstanceOf[Byte]))
-    assert(root(0)(1).value.equals(15))
-    assert(root(0)(2).value.equals(15L))
-    assert(root(0)(3).value.equals((0xFF).asInstanceOf[Short]))
-    assert(root(0)(4).value.equals(0xFFFFL))
-    assert(root(0)(5).value.equals(-1))
-    assert(root(0)(6).value.equals(-1))
+    assert(root("integers")(0).value == 1.asInstanceOf[Byte])
+    assert(root(0)(1).value == 15)
+    assert(root(0)(2).value == 15L)
+    assert(root(0)(3).value == (0xFF).asInstanceOf[Short])
+    assert(root(0)(4).value == 0xFFFFL)
+    assert(root(0)(5).value == -1)
+    assert(root(0)(6).value == -1)
 
     // bcds
-    assert(root(1)(0).value.equals(9L))
-    assert(root(1)(1).value.equals(87L))
-    assert(root("bcds")("bcd3").value.equals(654L))
-    assert(root(1)(3).value.equals(1234L))
-    assert(root(1)("bcd6").value.equals(123456L))
-    assert(root("bcds")(5).value.equals(12345678L))
+    assert(root("bcds")(0).value == 9L)
+    assert(root(1)(1).value == 87L)
+    assert(root("bcds")("bcd3").value == 654L)
+    assert(root(1)(3).value == 1234L)
+    assert(root(1)("bcd6").value == 123456L)
+    assert(root("bcds")(5).value == 12345678L)
 
     // array_1
-    assert(root("array1")("array1").childCount.equals(6))
-    assert(root(2)(1)(5).value.equals(6.asInstanceOf[Byte]))
+    assert(root("array1")("array1").childCount == 6)
+    assert(root(2)(1)(5).value == 6.asInstanceOf[Byte])
+
+    //array_2
+    assert(root("array2")("array2").size == 12 * 8)
+    assert(root(3)(0)(3)(1).value == 11)
 
     println(this.getClass.toString + " SUCCESS")
   }
