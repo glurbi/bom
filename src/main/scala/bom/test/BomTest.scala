@@ -7,61 +7,86 @@ import bom.bin._
 object BomTest {
 
   object TestSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
-    def schema = document {
-      sequence("test") {
-        sequence("integers") {
-          number("i1", bom_byte)
-          number("i2", bom_int)
-          number("i3", bom_long)
-          number("i4", bom_ubyte)
-          number("i5", bom_uint)
-          number("i6", bom_int)
-          number("i7", bom_int3)
+
+    def integers =
+      sequence("integers") {
+        number("i1", bom_byte)
+        number("i2", bom_int)
+        number("i3", bom_long)
+        number("i4", bom_ubyte)
+        number("i5", bom_uint)
+        number("i6", bom_int)
+        number("i7", bom_int3)
+      }
+
+    def bcds =
+      sequence("bcds") {
+        number("bcd1", bom_bcd1)
+        number("bcd2", bom_bcd2)
+        number("bcd3", bom_bcd3)
+        number("bcd4", bom_bcd4)
+        number("bcd6", bom_bcd6)
+        number("bcd8", bom_bcd8)
+      }
+
+    def blobs =
+      sequence("blobs") {
+        blob("blob1", byteSize(3))
+        blob("blob2", bitSize(32))
+      }
+
+    def strings =
+      sequence("strings") {
+        string("greetings", "utf-8", byteSize("11"))
+      }
+
+    def array1 =
+      sequence("array1") {
+        number("length_array1", bom_byte)
+        array("array1", "../length_array1", regular) {
+          number("item", bom_byte)
         }
-        sequence("bcds") {
-          number("bcd1", bom_bcd1)
-          number("bcd2", bom_bcd2)
-          number("bcd3", bom_bcd3)
-          number("bcd4", bom_bcd4)
-          number("bcd6", bom_bcd6)
-          number("bcd8", bom_bcd8)
-        }
-        sequence("blobs") {
-          blob("blob1", byteSize(3))
-          blob("blob2", bitSize(32))
-        }
-        sequence("strings") {
-          string("greetings", "utf-8", byteSize("11"))
-        }
-        sequence("array1") {
-          number("length_array1", bom_byte)
-          array("array1", "../length_array1", regular) {
+      }
+
+    def array2 =
+      sequence("array2") {
+        array("array2", "4", regular) {
+          array("nested", "3", regular) {
             number("item", bom_byte)
           }
         }
-        sequence("array2") {
-          array("array2", "4", regular) {
-            array("nested", "3", regular) {
-              number("item", bom_byte)
-            }
+      }
+
+    def array3 =
+      sequence("array3") {
+        array("lengths", "3", regular) {
+          number("length", bom_byte)
+        }
+        array("array3", "3", irregular) {
+          array("nested", "../../lengths/length[bom:context()/@index + 1]", regular) {
+            number("item", bom_byte)
           }
         }
-        sequence("array3") {
-          array("lengths", "3", regular) {
-            number("length", bom_byte)
-          }
-          array("array3", "3", irregular) {
-            array("nested", "../../lengths/length[bom:context()/@index + 1]", regular) {
-              number("item", bom_byte)
-            }
-          }
-        }
-        sequence("virtuals") {
-          number("a", bom_int)
-          number("b", bom_int)
-          virtual("v1", "(../a + ../b) * 2")
-          virtual("v2", "bom:power(2, ../a)")
-        }
+      }
+
+    def virtuals =
+      sequence("virtuals") {
+        number("a", bom_int)
+        number("b", bom_int)
+        virtual("v1", "(../a + ../b) * 2")
+        virtual("v2", "bom:power(2, ../a)")
+      }
+
+    def schema = document {
+      sequence("test") {
+        reference(integers)
+        reference(bcds)
+        reference(blobs)
+        reference(strings)
+        reference(array1)
+        reference(array2)
+        reference(array3)
+        reference(virtuals)
       }
     }
   }
