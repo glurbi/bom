@@ -56,6 +56,12 @@ object BomTest {
             }
           }
         }
+        sequence("virtuals") {
+          number("a", bom_int)
+          number("b", bom_int)
+          virtual("v1", "(../a + ../b) * 2")
+          virtual("v2", "bom:power(2, ../a)")
+        }
       }
     }
   }
@@ -100,7 +106,11 @@ object BomTest {
       0x04, 0x05, 0x06,
       0x04, 0x04, 0x04, 0x44,
       0x05, 0x05, 0x05, 0x05, 0x55,
-      0x06, 0x06, 0x06, 0x06, 0x06, 0x66
+      0x06, 0x06, 0x06, 0x06, 0x06, 0x66,
+
+      // virtuals
+      0x00, 0x00, 0x00, 0x10,
+      0x00, 0x00, 0x00, 0x02
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -153,6 +163,10 @@ object BomTest {
     assert(root("array3")("array3")(1).childCount == 5)
     assert(root("array3")("array3")(2).childCount == 6)
     assert(root("array3")("array3")(2)(5).value == 0x66)
+
+    // virtuals
+    assert(root("virtuals")("v1").value == 36)
+    assert(root("virtuals")("v2").value == 65536)
 
     println(this.getClass.toString + " SUCCESS")
   }
