@@ -1,5 +1,7 @@
 package bom.test
 
+import java.util.{Set => JSet}
+
 import bom.schema._
 import bom.types._
 import bom.bin._
@@ -77,6 +79,26 @@ object BomTest {
         virtual("v2", "bom:power(2, ../a)")
       }
 
+    def masking =
+      sequence("masks") {
+        number("nb1", bom_ushort, {
+          masks {
+            mask("BIT_ONE", "0x0001")
+            mask("BIT_TWO", "0x0002")
+            mask("BIT_NINE", "0x0010")
+            mask("BIT_SEVENTEEN", "0x0100")
+          }
+        })
+        number("nb2", bom_ushort, {
+          masks {
+            mask("BIT_ONE", "0x0001")
+            mask("BIT_TWO", "0x0002")
+            mask("BIT_NINE", "0x0010")
+            mask("BIT_SEVENTEEN", "0x0100")
+          }
+        })
+      }
+
     def schema = document {
       sequence("test") {
         reference(integers)
@@ -87,6 +109,7 @@ object BomTest {
         reference(array2)
         reference(array3)
         reference(virtuals)
+        reference(masking)
       }
     }
   }
@@ -135,7 +158,11 @@ object BomTest {
 
       // virtuals
       0x00, 0x00, 0x00, 0x10,
-      0x00, 0x00, 0x00, 0x02
+      0x00, 0x00, 0x00, 0x02,
+
+      // masking
+      0x00, 0x03,
+      0x01, 0x10
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -192,6 +219,18 @@ object BomTest {
     // virtuals
     assert(root("virtuals")("v1").value == 36)
     assert(root("virtuals")("v2").value == 65536)
+
+    // masks
+    val nb1 = root("masks")("nb1").asInstanceOf[BOMNumber]
+    assert(nb1.schema.getMasks(nb1.value.longValue).contains("BIT_ONE"))
+    assert(nb1.schema.getMasks(nb1.value.longValue).contains("BIT_TWO"))
+    assert(!nb1.schema.getMasks(nb1.value.longValue).contains("BIT_NINE"))
+    assert(!nb1.schema.getMasks(nb1.value.longValue).contains("BIT_SEVENTEEN"))
+    val nb2 = root("masks")("nb2").asInstanceOf[BOMNumber]
+    assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_ONE"))
+    assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_TWO"))
+    assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_NINE"))
+    assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_SEVENTEEN"))
 
     println(this.getClass.toString + " SUCCESS")
   }
