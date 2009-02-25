@@ -26,6 +26,13 @@ object BomTest {
           number("bcd6", bom_bcd6)
           number("bcd8", bom_bcd8)
         }
+        sequence("blobs") {
+          blob("blob1", byteSize(3))
+          blob("blob2", bitSize(32))
+        }
+        sequence("strings") {
+          string("greetings", "utf-8", byteSize("11"))
+        }
         sequence("array1") {
           number("length_array1", bom_byte)
           array("array1", "../length_array1", regular) {
@@ -38,10 +45,6 @@ object BomTest {
               number("item", bom_byte)
             }
           }
-        }
-        sequence("blobs") {
-          blob("blob1", byteSize(3))
-          blob("blob2", bitSize(32))
         }
         sequence("array3") {
           array("lengths", "3", regular) {
@@ -76,6 +79,13 @@ object BomTest {
       0x12, 0x34, 0x56,
       0x12, 0x34, 0x56, 0x78,
 
+      // blobs
+      0x01, 0x02, 0x03,
+      0x01, 0x09, 0x07, 0x07,
+
+      // strings
+      0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x2C, 0x20, 0x42, 0x4F, 0x4D, 0x21,
+
       // array1
       0x06,
       0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
@@ -85,10 +95,6 @@ object BomTest {
       0x04, 0x05, 0x06,
       0x07, 0x08, 0x09,
       0x0A, 0x0B, 0x0C,
-
-      // blobs
-      0x01, 0x02, 0x03,
-      0x01, 0x09, 0x07, 0x07,
 
       // array3
       0x04, 0x05, 0x06,
@@ -123,14 +129,6 @@ object BomTest {
     assert(root(1)("bcd6").value == 123456L)
     assert(root("bcds")(5).value == 12345678L)
 
-    // array1
-    assert(root("array1")("array1").childCount == 6)
-    assert(root(2)(1)(5).value == 6.asInstanceOf[Byte])
-
-    //array2
-    assert(root("array2")("array2").size == 12 * 8)
-    assert(root(3)(0)(3)(1).value == 11)
-
     // blobs
     assert(root("blobs")("blob1").size == 3 * 8)
     assert(root("blobs")("blob2").size == 4 * 8)
@@ -138,6 +136,17 @@ object BomTest {
     assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](1) == 9)
     assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](2) == 7)
     assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](3) == 7)
+
+    // strings
+    assert(root("strings")("greetings").value == "Hello, BOM!")
+    
+    // array1
+    assert(root("array1")("array1").childCount == 6)
+    assert(root(4)(1)(5).value == 6.asInstanceOf[Byte])
+
+    //array2
+    assert(root("array2")("array2").size == 12 * 8)
+    assert(root(5)(0)(3)(1).value == 11)
 
     //array3
     assert(root("array3")("array3")(0).childCount == 4)
