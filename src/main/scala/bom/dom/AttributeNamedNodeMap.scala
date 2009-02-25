@@ -17,6 +17,7 @@ class AttributeNamedNodeMap(node: BOMNode) extends AbstractNamedNodeMap {
   }
     
   override def item(index: Int): Node = {
+    // FIXME: shouldn't it return the xpath index (i.e. starting from 1...) ?
     if (index == 0) new AttributeAdapter(node, "index", ""+node.index)
     else throw new BOMException
   }

@@ -43,6 +43,16 @@ object BomTest {
           blob("blob1", byteSize(3))
           blob("blob2", bitSize(32))
         }
+        sequence("array3") {
+          array("lengths", "3", regular) {
+            number("length", bom_byte)
+          }
+          array("array3", "3", irregular) {
+            array("nested", "../../lengths/length[bom:context()/@index + 1]", regular) {
+              number("item", bom_byte)
+            }
+          }
+        }
       }
     }
   }
@@ -78,7 +88,13 @@ object BomTest {
 
       // blobs
       0x01, 0x02, 0x03,
-      0x01, 0x09, 0x07, 0x07
+      0x01, 0x09, 0x07, 0x07,
+
+      // array3
+      0x04, 0x05, 0x06,
+      0x04, 0x04, 0x04, 0x44,
+      0x05, 0x05, 0x05, 0x05, 0x55,
+      0x06, 0x06, 0x06, 0x06, 0x06, 0x66
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -107,11 +123,11 @@ object BomTest {
     assert(root(1)("bcd6").value == 123456L)
     assert(root("bcds")(5).value == 12345678L)
 
-    // array_1
+    // array1
     assert(root("array1")("array1").childCount == 6)
     assert(root(2)(1)(5).value == 6.asInstanceOf[Byte])
 
-    //array_2
+    //array2
     assert(root("array2")("array2").size == 12 * 8)
     assert(root(3)(0)(3)(1).value == 11)
 
@@ -122,6 +138,12 @@ object BomTest {
     assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](1) == 9)
     assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](2) == 7)
     assert(root("blobs")("blob2").value.asInstanceOf[Array[Byte]](3) == 7)
+
+    //array3
+    assert(root("array3")("array3")(0).childCount == 4)
+    assert(root("array3")("array3")(1).childCount == 5)
+    assert(root("array3")("array3")(2).childCount == 6)
+    assert(root("array3")("array3")(2)(5).value == 0x66)
 
     println(this.getClass.toString + " SUCCESS")
   }
