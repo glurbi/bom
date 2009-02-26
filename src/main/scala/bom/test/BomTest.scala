@@ -140,6 +140,13 @@ object BomTest {
         }
       }
 
+    def previousSibling =
+      sequence("previousSibling") {
+        number("n1", bom_ubyte)
+        number("n2", bom_ubyte)
+        virtual("v1", "bom:previous-sibling() + 3")
+      }
+
     def schema = document {
       sequence("test") {
         reference(integers)
@@ -153,6 +160,7 @@ object BomTest {
         reference(masking)
         reference(mapping)
         reference(switch1)
+        reference(previousSibling)
       }
     }
   }
@@ -212,7 +220,11 @@ object BomTest {
 
       // switch1
       0x02, 0x03, 0x46, 0x6F, 0x6F,
-      0x01, 0xFF, 0xFF
+      0x01, 0xFF, 0xFF,
+
+      // previousSibling
+      0x01, 0x02
+
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -291,6 +303,9 @@ object BomTest {
     // switch
     assert(root("switch1")("array")(0)(1)("string").value == "Foo")
     assert(root("switch1")("array")(1)(1).value == 65535)
+
+    // previousSibling
+    assert(root("previousSibling")("v1").value == 5)
 
     println(this.getClass.toString + " SUCCESS")
   }
