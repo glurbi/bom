@@ -3,6 +3,9 @@ package bom.examples.schemas
 import bom.schema._
 import bom.types._
 
+/**
+ * http://www.seg.org/SEGportalWEBproject/prod/SEG-Publications/Pub-Technical-Standards/Documents/seg_d_rev2.1.pdf
+ */
 object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def schema = document {

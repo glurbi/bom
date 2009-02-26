@@ -3,6 +3,9 @@ package bom.examples.schemas
 import bom.schema._
 import bom.types._
 
+/**
+ * http://java.sun.com/docs/books/jvms/second_edition/html/ClassFile.doc.html
+ */
 object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def schema = document {
@@ -50,6 +53,8 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     }
 
   def constantType =
+    // The java class format defines that Long and Double constants will occupy
+    // two units in the index, thus the strange looking structure below...
     switch("number(bom:previous-sibling()/tag)") {
       when("5") {
         sequence("constant") {}

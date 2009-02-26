@@ -99,6 +99,26 @@ object BomTest {
         })
       }
 
+    def mapping =
+      sequence("mapping") {
+        number("mapped_nb1", bom_ubyte,  {
+          map {
+            value("1", "ONE")
+            value("2", "TWO")
+            value("3", "THREE")
+            value("*", "UNKNOWN")
+          }
+        })
+        number("mapped_nb2", bom_ubyte,  {
+          map {
+            value("1", "ONE")
+            value("2", "TWO")
+            value("3", "THREE")
+            value("*", "UNKNOWN")
+          }
+        })
+      }
+
     def schema = document {
       sequence("test") {
         reference(integers)
@@ -110,6 +130,7 @@ object BomTest {
         reference(array3)
         reference(virtuals)
         reference(masking)
+        reference(mapping)
       }
     }
   }
@@ -162,7 +183,10 @@ object BomTest {
 
       // masking
       0x00, 0x03,
-      0x01, 0x10
+      0x01, 0x10,
+
+      // mapping
+      0x00, 0x03
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -231,6 +255,12 @@ object BomTest {
     assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_TWO"))
     assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_NINE"))
     assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_SEVENTEEN"))
+
+    // mapping
+    val mapped_nb1 = root("mapping")("mapped_nb1").asInstanceOf[BOMNumber]
+    assert(mapped_nb1.schema.mappedValue(mapped_nb1.value) == "UNKNOWN")
+    val mapped_nb2 = root("mapping")("mapped_nb2").asInstanceOf[BOMNumber]
+    assert(mapped_nb2.schema.mappedValue(mapped_nb2.value) == "THREE")
 
     println(this.getClass.toString + " SUCCESS")
   }
