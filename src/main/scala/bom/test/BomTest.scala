@@ -119,6 +119,27 @@ object BomTest {
         })
       }
 
+    def switch1 =
+      sequence("switch1") {
+        array("array", "2") {
+          sequence("item") {
+            number("nb", bom_ubyte)
+            switch("../nb") {
+              when("1") {
+                number("choice1", bom_ushort)
+              }
+              when("2") {
+                sequence("choice2") {
+                  number("length", bom_ubyte)
+                  string("string", "utf-8", byteSize("../length"))
+                }
+              }
+            }
+
+          }
+        }
+      }
+
     def schema = document {
       sequence("test") {
         reference(integers)
@@ -131,6 +152,7 @@ object BomTest {
         reference(virtuals)
         reference(masking)
         reference(mapping)
+        reference(switch1)
       }
     }
   }
@@ -186,7 +208,11 @@ object BomTest {
       0x01, 0x10,
 
       // mapping
-      0x00, 0x03
+      0x00, 0x03,
+
+      // switch1
+      0x02, 0x03, 0x46, 0x6F, 0x6F,
+      0x01, 0xFF, 0xFF
 
     ).toArray
     new MemoryBinarySpace(bytes)
@@ -261,6 +287,10 @@ object BomTest {
     assert(mapped_nb1.schema.mappedValue(mapped_nb1.value) == "UNKNOWN")
     val mapped_nb2 = root("mapping")("mapped_nb2").asInstanceOf[BOMNumber]
     assert(mapped_nb2.schema.mappedValue(mapped_nb2.value) == "THREE")
+
+    // switch
+    assert(root("switch1")("array")(0)(1)("string").value == "Foo")
+    assert(root("switch1")("array")(1)(1).value == 65535)
 
     println(this.getClass.toString + " SUCCESS")
   }
