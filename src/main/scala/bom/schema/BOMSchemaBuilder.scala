@@ -121,11 +121,11 @@ trait BOMSchemaBuilder {
   def byteSize(xpath: String): BOMNode => Long =
     (n: BOMNode) => n.document.queryNumber(n, xpath).intValue * 8
 
-  def byteSize(size: Long): BOMNode=> Long = (n: BOMNode) => size * 8
+  def byteSize(size: Long): BOMNode => Long = (n: BOMNode) => size * 8
 
   def bitSize(xpath: String): BOMNode => Long =
     (n: BOMNode) => n.document.queryNumber(n, xpath).intValue
 
-  def bitSize(size: Long): BOMNode=> Long = (n: BOMNode) => size
+  def bitSize(size: Long): BOMNode => Long = (n: BOMNode) => size
 
 }

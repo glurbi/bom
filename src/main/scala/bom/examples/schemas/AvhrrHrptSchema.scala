@@ -20,7 +20,7 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("hrpt") {
       ars
       header
-      array("records", "3") {
+      array("records", "/hrpt/header/recordCount", regular) {
         record
       }
     }
@@ -30,6 +30,37 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
    */
   def ars =
     sequence("ars") {
+      string("COST number", "us-ascii", byteSize(6))
+      string("CLASS number", "us-ascii", byteSize(8))
+      string("Order creation date", "us-ascii", byteSize(4))
+      string("Order creation day", "us-ascii", byteSize(3))
+      string("Processing site code", "us-ascii", byteSize(1))
+      string("Processing Software ID", "us-ascii", byteSize(8))
+      string("Data set name", "us-ascii", byteSize(42))
+      blob("blank", byteSize(2))
+      string("Select Flag", "us-ascii", byteSize(1))
+      string("Beginning Latitude", "us-ascii", byteSize(3))
+      string("Ending Latitude", "us-ascii", byteSize(3))
+      string("Beginning Longitude", "us-ascii", byteSize(4))
+      string("Ending Longitude", "us-ascii", byteSize(4))
+      string("Start Hour", "us-ascii", byteSize(2))
+      string("Start Minute", "us-ascii", byteSize(2))
+      string("Number of minute", "us-ascii", byteSize(3))
+      string("Appended data flag", "us-ascii", byteSize(1))
+      array("Channel Select Flags", "20") {
+        string("flag", "us-ascii", byteSize(1))
+      }
+      string("Sensor Data Word Size", "us-ascii", byteSize(2))
+      blob("blank", byteSize(27))
+      string("Ascend/Descend Flag", "us-ascii", byteSize(1))
+      string("First Latitude", "us-ascii", byteSize(3))
+      string("Last Latitude", "us-ascii", byteSize(3))
+      string("First Longitude", "us-ascii", byteSize(4))
+      string("Last Longitude", "us-ascii", byteSize(4))
+      string("Data Format", "us-ascii", byteSize(20))
+      string("Size of Records", "us-ascii", byteSize(6))
+      string("Number of Records", "us-ascii", byteSize(6))
+      blob("filler", byteSize(319))
     }
 
   /**
@@ -37,6 +68,11 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
    */
   def header =
     sequence("header") {
+      blob("tmp", byteSize(128))
+      number("recordCount", bom_ushort)
+      number("earthLocatedScanLines", bom_ushort)
+      number("missingScanLines", bom_ushort)
+      blob("tmp", byteSize(15737))
     }
 
   /**
