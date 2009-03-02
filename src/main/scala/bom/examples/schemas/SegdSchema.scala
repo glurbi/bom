@@ -14,19 +14,19 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def segd =
     sequence("segd") {
-      reference(generalHeader1)
-      reference(generalHeader2)
+      generalHeader1
+      generalHeader2
       array("scan_type_headers", "../general_header_1/scan_type_per_record") {
         array("channel_set_headers", "../../general_header_1/channel_sets_per_scan_type") {
-          reference(channelSetHeader)
+          channelSetHeader
         }
       }
-      reference(extendedHeader)
-      reference(externalHeader)
+      extendedHeader
+      externalHeader
       array("data", "/segd/general_header_1/scan_type_per_record") {
         array("scan type", "/segd/general_header_1/channel_sets_per_scan_type") {
           array("channel set", "/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels", regular) {
-            reference(trace)
+            trace
           }
         }
       }
@@ -98,16 +98,16 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def trace =
     sequence("trace") {
-      reference(traceHeader)
+      traceHeader
       array("trace header extensions", "../trace_header/trace_header_extensions", regular) {
-        reference(traceHeaderExtension)
+        traceHeaderExtension
       }
       virtual("start_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/start_time")
       virtual("end_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/end_time")
       virtual("subscan", "bom:power(2, /segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/sc)")
       virtual("trace_size", "(../end_time - ../start_time) * ../subscan * 3")
       virtual("sample_count", "(../end_time - ../start_time) * ../subscan")
-      reference(traceData)
+      traceData
     }
 
   def traceHeader =

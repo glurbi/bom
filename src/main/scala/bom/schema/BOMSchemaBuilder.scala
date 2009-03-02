@@ -68,8 +68,6 @@ trait BOMSchemaBuilder {
     bomCase
   }
 
-  def reference(schemaElement: BOMSchemaElement) = {}
-  
   def number(name: String, numberType: BOMType): Unit =
     number(name, numberType, {})
 

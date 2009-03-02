@@ -149,18 +149,18 @@ object BomTest {
 
     def schema = document {
       sequence("test") {
-        reference(integers)
-        reference(bcds)
-        reference(blobs)
-        reference(strings)
-        reference(array1)
-        reference(array2)
-        reference(array3)
-        reference(virtuals)
-        reference(masking)
-        reference(mapping)
-        reference(switch1)
-        reference(previousSibling)
+        integers
+        bcds
+        blobs
+        strings
+        array1
+        array2
+        array3
+        virtuals
+        masking
+        mapping
+        switch1
+        previousSibling
       }
     }
   }

@@ -21,7 +21,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       }
       number("constant_pool_count", bom_ushort)
       array("constant_pool", "../constant_pool_count - 1", irregular) {
-        reference(constantType)
+        constantType
       }
       number("access_flags", bom_ushort, {
         masks {
@@ -36,19 +36,19 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("super_class", bom_ushort)
       number("interfaces_count", bom_ushort)
       array("interfaces", "../interfaces_count", irregular) {
-        reference(interfaceType)
+        interfaceType
       }
       number("fields_count", bom_ushort)
       array("fields", "../fields_count", irregular) {
-        reference(fieldType)
+        fieldType
       }
       number("methods_count", bom_ushort)
       array("methods", "../methods_count", irregular) {
-        reference(methodType)
+        methodType
       }
       number("attributes_count", bom_ushort)
       array("attributes", "../attributes_count", irregular) {
-        reference(attributeType)
+        attributeType
       }
     }
 
@@ -170,7 +170,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
       array("attributes", "../attributes_count") {
-        reference(fieldAttributeType)
+        fieldAttributeType
       }
     }
 
@@ -193,7 +193,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
       array("attributes", "../attributes_count") {
-        reference(methodAttributeType)
+        methodAttributeType
       }
     }
 
@@ -312,7 +312,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
             number("max_stack", bom_ushort)
             number("max_locals", bom_ushort)
             number("code_length", bom_uint)
-            reference(bytecodeBlock)
+            bytecodeBlock
             number("exception_table_length", bom_ushort)
             array("exception_table", "../exception_table_length") {
               sequence("exception") {
@@ -324,7 +324,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
             }
             number("attributes_count", bom_ushort)
             array("attributes", "../attributes_count") {
-              reference(codeAttributeType)
+              codeAttributeType
             }
           }
         }

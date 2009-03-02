@@ -13,7 +13,7 @@ import bom.types._
 object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def schema = document {
-    reference(hrpt)
+    hrpt
   }
 
   def hrpt =
