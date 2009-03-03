@@ -7,7 +7,7 @@ trait BOMType {
     /**
      * @return the type size (in bits)
      */
-    def typeSize(params: Any*): Int
+    def size: Int
 
     /**
      * Reads one element of this type in the binary space.
@@ -17,6 +17,6 @@ trait BOMType {
      * @param bspace a binary space
      * @return the element read
      */
-    def read(bspace: BOMBinarySpace, params: Any*): Any
+    def read(bspace: BOMBinarySpace): Any
 
 }

@@ -4,9 +4,9 @@ import bom.bin._
 
 class BOMLong extends BOMType {
 
-  def typeSize(params: Any*): Int = 64
+  def size: Int = 64
 
-  def read(bspace: BOMBinarySpace, params: Any*): Long = {
+  def read(bspace: BOMBinarySpace): Long = {
     (bspace.getByte.asInstanceOf[Long] << 56) +
     (bspace.getByte.asInstanceOf[Long] << 48) +
     (bspace.getByte.asInstanceOf[Long] << 40) +

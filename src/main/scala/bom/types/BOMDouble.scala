@@ -5,9 +5,9 @@ import java.lang.{Double => JDouble}
 
 class BOMDouble extends BOMType {
 
-  def typeSize(params: Any*): Int = 64
+  def size: Int = 64
 
-  def read(bspace: BOMBinarySpace , params: Any*): Double = {
+  def read(bspace: BOMBinarySpace): Double = {
     JDouble.longBitsToDouble((new BOMLong).read(bspace).asInstanceOf[Long])
   }
 
