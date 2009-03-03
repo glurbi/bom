@@ -4,8 +4,6 @@ import bom.bin._
 
 class BOMUnsignedShort extends BOMType {
 
-  def typeName: String = "unsigned-short"
-
   def typeSize(params: Any*): Int = 16
 
   def read(bspace: BOMBinarySpace, params: Any*): Int = {

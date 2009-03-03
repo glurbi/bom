@@ -5,11 +5,6 @@ import bom.bin.BOMBinarySpace
 trait BOMType {
 
     /**
-     * @return the type name
-     */
-    def typeName: String
-
-    /**
      * @return the type size (in bits)
      */
     def typeSize(params: Any*): Int

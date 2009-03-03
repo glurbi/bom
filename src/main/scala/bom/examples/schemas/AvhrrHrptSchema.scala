@@ -80,6 +80,8 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
    */
   def record =
     sequence("record") {
+      number("scanLineNumber", bom_ushort)
+      blob("undefined", byteSize(22))
     }
 
 }

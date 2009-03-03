@@ -7,8 +7,6 @@ import bom.bin._
  */
 class BOMBinaryCodedDecimal(val digits: Int) extends BOMType {
   
-  def typeName: String = "bcd"
-  
   def typeSize(params: Any*): Int = 4 * digits
   
   def read(bspace: BOMBinarySpace, params: Any*): Long = {

@@ -4,8 +4,6 @@ import bom.bin._
 
 class BOMInteger3 extends BOMType {
 
-  def typeName: String = "integer-3"
-
   def typeSize(params: Any*): Int = 8 * 3
 
   def read(bspace: BOMBinarySpace, params: Any*): Int = {

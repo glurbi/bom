@@ -4,8 +4,6 @@ import bom.bin._
 
 class BOMLong extends BOMType {
 
-  def typeName: String = "long"
-
   def typeSize(params: Any*): Int = 64
 
   def read(bspace: BOMBinarySpace, params: Any*): Long = {

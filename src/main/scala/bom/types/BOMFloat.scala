@@ -5,8 +5,6 @@ import java.lang.{Float => JFloat}
 
 class BOMFloat extends BOMType {
 
-  def typeName = "float"
-
   def typeSize(params: Any*): Int = 32
 
   def read(bspace: BOMBinarySpace, params: Any*): Float = {
