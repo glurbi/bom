@@ -72,7 +72,7 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("recordCount", bom_ushort)
       number("earthLocatedScanLines", bom_ushort)
       number("missingScanLines", bom_ushort)
-      blob("tmp", byteSize(15737))
+      blob("tmp", byteSize(15738))
     }
 
   /**
@@ -80,8 +80,10 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
    */
   def record =
     sequence("record") {
-      number("scanLineNumber", bom_ushort)
-      blob("undefined", byteSize(22))
+      sequence("Scan Line Information") {
+        number("scanLineNumber", bom_ushort)
+        blob("undefined", byteSize(22))
+      }
       sequence("Quality indicators") {
         number("do not use scan", bom_boolean)
         number("time sequence error detected", bom_boolean)
@@ -102,6 +104,28 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         number("reflected sunlight detected ch 5", bom_bitint2)
         number("resync occurred on this frame ", bom_boolean)
         number("pseudonoise occurred on this frame ", bom_boolean)
+        blob("undefined", byteSize(20))
+      }
+      sequence("Calibration coefficient") {
+        blob("undefined", byteSize(264))
+      }
+      sequence("Navigation") {
+        blob("undefined", byteSize(744))
+      }
+      sequence("Frame telemetry") {
+        blob("undefined", byteSize(208))
+      }
+      sequence("Earth Observations") {
+        blob("undefined", byteSize(13664))
+      }
+      sequence("Digital B Housekeeping Telemetry") {
+        blob("undefined", byteSize(16))
+      }
+      sequence("Analog Housekeeping Telemetry") {
+        blob("undefined", byteSize(32))
+      }
+      sequence("Clouds From Avhrr") {
+        blob("undefined", byteSize(896))
       }
     }
 
