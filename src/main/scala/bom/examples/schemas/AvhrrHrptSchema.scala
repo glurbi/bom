@@ -116,7 +116,15 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         blob("undefined", byteSize(208))
       }
       sequence("Earth Observations") {
-        blob("undefined", byteSize(13664))
+        array("data", "3414", regular) {
+          sequence("word") {
+            blob("blank", bitSize(2))
+            number("sample1", bom_bitint10)
+            number("sample2", bom_bitint10)
+            number("sample3", bom_bitint10)
+          }
+        }
+        blob("undefined", byteSize(8))
       }
       sequence("Digital B Housekeeping Telemetry") {
         blob("undefined", byteSize(16))

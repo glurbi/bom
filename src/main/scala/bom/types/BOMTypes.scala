@@ -28,5 +28,6 @@ trait BOMTypes {
   def bom_bitint2 = new BOMBitInteger(2)
   def bom_bitint3 = new BOMBitInteger(3)
   def bom_bitint4 = new BOMBitInteger(4)
+  def bom_bitint10 = new BOMBitInteger(10)
   
 }
