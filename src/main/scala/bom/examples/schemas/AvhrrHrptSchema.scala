@@ -82,6 +82,27 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("record") {
       number("scanLineNumber", bom_ushort)
       blob("undefined", byteSize(22))
+      sequence("Quality indicators") {
+        number("do not use scan", bom_boolean)
+        number("time sequence error detected", bom_boolean)
+        number("data gap precedes this scan", bom_boolean)
+        number("insufficient data for calibration", bom_boolean)
+        number("earth location data not available", bom_boolean)
+        number("first good time following a clock update", bom_boolean)
+        number("instrument status changed with this scan", bom_boolean)
+        number("sync lock dropped during this frame", bom_boolean)
+        number("frame sync word has errors", bom_boolean)
+        number("frame sync returned to lock", bom_boolean)
+        number("frame sync word not valid", bom_boolean)
+        number("bit slippage occurred during this frame", bom_boolean)
+        blob("blank", bitSize(11))
+        number("TIP parity error detected", bom_boolean)
+        number("reflected sunlight detected ch 3B", bom_bitint2)
+        number("reflected sunlight detected ch 4", bom_bitint2)
+        number("reflected sunlight detected ch 5", bom_bitint2)
+        number("resync occurred on this frame ", bom_boolean)
+        number("pseudonoise occurred on this frame ", bom_boolean)
+      }
     }
 
 }

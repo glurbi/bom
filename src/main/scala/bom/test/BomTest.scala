@@ -147,6 +147,19 @@ object BomTest {
         virtual("v1", "bom:previous-sibling() + 3")
       }
 
+    def bitFields =
+      sequence("bitFields") {
+        sequence("bitField") {
+          number("bit15", bom_bitint1)
+          number("bit14", bom_bitint1)
+          number("bit13", bom_bitint1)
+          number("bit12", bom_bitint1)
+          blob("bitblob", bitSize(9))
+          number("bit2", bom_bitint1)
+          number("bit1and0", bom_bitint2)
+        }
+      }
+
     def schema = document {
       sequence("test") {
         integers
@@ -161,6 +174,7 @@ object BomTest {
         mapping
         switch1
         previousSibling
+        bitFields
       }
     }
   }
@@ -223,9 +237,10 @@ object BomTest {
       0x01, 0xFF, 0xFF,
 
       // previousSibling
-      0x01, 0x02
+      0x01, 0x02,
 
-
+      // bitfields
+      0xB0, 0x07 // bitfield: 1011 000000000 111
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -306,6 +321,16 @@ object BomTest {
 
     // previousSibling
     assert(root("previousSibling")("v1").value == 5)
+
+    // bitfield
+    assert(root("bitFields")("bitField")("bit15").value == 1)
+    assert(root("bitFields")("bitField")("bit14").value == 0)
+    assert(root("bitFields")("bitField")("bit13").value == 1)
+    assert(root("bitFields")("bitField")("bit13").value == 1)
+    assert(root("bitFields")("bitField")("bit15").value == 1)
+    assert(root("bitFields")("bitField")("bit14").value == 0)
+    assert(root("bitFields")("bitField")("bit2").value == 1)
+    assert(root("bitFields")("bitField")("bit1and0").value == 3)
 
     println(this.getClass.toString + " SUCCESS")
   }

@@ -4,6 +4,7 @@ trait BOMTypes {
 
   def bom_byte = new BOMByte
   def bom_int = new BOMInteger
+  def bom_int3 = new BOMInteger3
   def bom_long = new BOMLong
 
   def bom_uint = new BOMUnsignedInteger
@@ -20,5 +21,12 @@ trait BOMTypes {
   def bom_bcd6 = new BOMBinaryCodedDecimal(6)
   def bom_bcd8 = new BOMBinaryCodedDecimal(8)
 
-  def bom_int3 = new BOMInteger3
+
+  def bom_boolean = new BOMBitInteger(1)
+
+  def bom_bitint1 = new BOMBitInteger(1)
+  def bom_bitint2 = new BOMBitInteger(2)
+  def bom_bitint3 = new BOMBitInteger(3)
+  def bom_bitint4 = new BOMBitInteger(4)
+  
 }
