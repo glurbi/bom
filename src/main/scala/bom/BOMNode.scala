@@ -90,7 +90,9 @@ abstract class BOMNode(val schema: BOMSchemaElement,
    */
   def position: Long = {
     if (pos == -1) {
-      if (index == 0) {
+      if (schema.positionFun != null)  {
+        pos = schema.positionFun(this)
+      } else if (index == 0) {
         pos = parent.position;
       } else if (parent.isInstanceOf[BOMSequence]) {
         val previousSibling = parent.schema.children(index - 1).

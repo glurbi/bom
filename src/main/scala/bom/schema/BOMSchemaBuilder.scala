@@ -80,7 +80,7 @@ trait BOMSchemaBuilder {
     stack.pop
     n
   }
-  
+
   def masks(body: => Unit) = { body }
 
   def mask(name: String, value: String) = {
@@ -127,5 +127,9 @@ trait BOMSchemaBuilder {
     (n: BOMNode) => n.document.queryNumber(n, xpath).intValue
 
   def bitSize(size: Long): BOMNode => Long = (n: BOMNode) => size
+
+  def position(fun: BOMNode => Long) = {
+    stack.top.positionFun = fun
+  }
 
 }

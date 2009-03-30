@@ -160,6 +160,13 @@ object BomTest {
         }
       }
 
+    def overrides =
+      sequence("overrides") {
+        number("n1", bom_ubyte, {
+          position(n => n.parent.position + 8)
+        })
+      }
+
     def schema = document {
       sequence("test") {
         integers
@@ -175,6 +182,7 @@ object BomTest {
         switch1
         previousSibling
         bitFields
+        overrides
       }
     }
   }
@@ -240,7 +248,11 @@ object BomTest {
       0x01, 0x02,
 
       // bitfields
-      0xB0, 0x07 // bitfield: 1011 000000000 111
+      0xB0, 0x07, // bitfield: 1011 000000000 111
+
+      // overrides
+      0x12, 0x34
+
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -331,6 +343,10 @@ object BomTest {
     assert(root("bitFields")("bitField")("bit14").value == 0)
     assert(root("bitFields")("bitField")("bit2").value == 1)
     assert(root("bitFields")("bitField")("bit1and0").value == 3)
+
+    // overrides
+    assert(root("overrides")("n1").position == root("overrides").position + 8)
+    assert(root("overrides")("n1").value == 0x34)
 
     println(this.getClass.toString + " SUCCESS")
   }

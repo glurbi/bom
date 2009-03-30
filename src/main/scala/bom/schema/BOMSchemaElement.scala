@@ -8,6 +8,8 @@ import bom.bin._
  */
 abstract case class BOMSchemaElement() {
 
+  var positionFun: BOMNode => Long = _
+
   /**
    * @return the name of this schema element
    */
