@@ -81,42 +81,42 @@ object BomTest {
 
     def masking =
       sequence("masks") {
-        number("nb1", bom_ushort, {
+        number("nb1", bom_ushort) {
           masks {
             mask("BIT_ONE", "0x0001")
             mask("BIT_TWO", "0x0002")
             mask("BIT_NINE", "0x0010")
             mask("BIT_SEVENTEEN", "0x0100")
           }
-        })
-        number("nb2", bom_ushort, {
+        }
+        number("nb2", bom_ushort) {
           masks {
             mask("BIT_ONE", "0x0001")
             mask("BIT_TWO", "0x0002")
             mask("BIT_NINE", "0x0010")
             mask("BIT_SEVENTEEN", "0x0100")
           }
-        })
+        }
       }
 
     def mapping =
       sequence("mapping") {
-        number("mapped_nb1", bom_ubyte,  {
+        number("mapped_nb1", bom_ubyte) {
           map {
             value("1", "ONE")
             value("2", "TWO")
             value("3", "THREE")
             value("*", "UNKNOWN")
           }
-        })
-        number("mapped_nb2", bom_ubyte,  {
+        }
+        number("mapped_nb2", bom_ubyte) {
           map {
             value("1", "ONE")
             value("2", "TWO")
             value("3", "THREE")
             value("*", "UNKNOWN")
           }
-        })
+        }
       }
 
     def switch1 =
@@ -162,9 +162,9 @@ object BomTest {
 
     def overrides =
       sequence("overrides") {
-        number("n1", bom_ubyte, {
+        number("n1", bom_ubyte) {
           position(n => n.parent.position + 8)
-        })
+        }
       }
 
     def schema = document {

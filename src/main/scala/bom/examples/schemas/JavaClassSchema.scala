@@ -23,7 +23,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       array("constant_pool", "../constant_pool_count - 1", irregular) {
         constantType
       }
-      number("access_flags", bom_ushort, {
+      number("access_flags", bom_ushort) {
         masks {
           mask("ACC_PUBLIC", "0x0001")
           mask("ACC_FINAL", "0x0010")
@@ -31,7 +31,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           mask("ACC_INTERFACE", "0x0200")
           mask("ACC_ABSTRACT", "0x0400")
         }
-      })
+      }
       number("this_class", bom_ushort)
       number("super_class", bom_ushort)
       number("interfaces_count", bom_ushort)
@@ -64,7 +64,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       }
       when("*") {
         sequence("constant") {
-          number("tag", bom_ubyte,  {
+          number("tag", bom_ubyte) {
             map {
               value("1", "Utf8")
               value("3", "Integer")
@@ -79,7 +79,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
               value("12", "NameAndType")
               value("*", "UNKNOWN")
             }
-          })
+          }
           switch("../tag") {
             when("1") {
               sequence("content") {
@@ -155,7 +155,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def fieldType =
     sequence("field") {
-      number("access_flags", bom_ushort, {
+      number("access_flags", bom_ushort) {
         masks {
           mask("ACC_PUBLIC", "0x0001")
           mask("ACC_PRIVATE", "0x0002")
@@ -165,7 +165,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           mask("ACC_VOLATILE", "0x0040")
           mask("ACC_TRANSIENT", "0x0080")
         }
-      })
+      }
       number("name_index", bom_ushort)
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
@@ -176,7 +176,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def methodType =
     sequence("method") {
-      number("access_flags", bom_ushort, {
+      number("access_flags", bom_ushort) {
         masks {
           mask("ACC_PUBLIC", "0x0001")
           mask("ACC_PRIVATE", "0x0002")
@@ -188,7 +188,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           mask("ACC_ABSTRACT", "0x0400")
           mask("ACC_STRICT", "0x0800")
         }
-      })
+      }
       number("name_index", bom_ushort)
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
@@ -219,7 +219,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
                 number("inner_class_info_index", bom_ushort)
                 number("outer_class_info_index", bom_ushort)
                 number("inner_name_index", bom_ushort)
-                number("inner_class_access_flags", bom_ushort, {
+                number("inner_class_access_flags", bom_ushort) {
                   masks {
                     mask("ACC_PUBLIC", "0x0001")
                     mask("ACC_PRIVATE", "0x0002")
@@ -229,7 +229,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
                     mask("ACC_INTERFACE", "0x0200")
                     mask("ACC_ABSTRACT", "0x0400")
                   }
-                })
+                }
               }
             }
           }

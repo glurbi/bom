@@ -68,27 +68,25 @@ trait BOMSchemaBuilder {
     bomCase
   }
 
-  def number(name: String, numberType: BOMType): Unit =
-    number(name, numberType, {})
-
-  def number(name: String, numberType: BOMType, body: => Unit): BOMSchemaNumber =  {
+  implicit val body = () => {}
+  def number(name: String, numberType: BOMType)(implicit body: () => Unit): BOMSchemaNumber =  {
     val n = new BOMSchemaNumber(name, stack.top, null, stack.top.depth + 1)
     stack.top.add(n)
     n.numberType = numberType
     stack.push(n)
-    body
+    body()
     stack.pop
     n
   }
 
-  def masks(body: => Unit) = { body }
+  def masks(body: => Unit): () => Unit = () => { body }
 
   def mask(name: String, value: String) = {
     val longValue = JLong.decode(value).asInstanceOf[Long]
     stack.top.asInstanceOf[BOMSchemaNumber].addMask(name, longValue)
   }
   
-  def map(body: => Unit) = { body }
+  def map(body: => Unit): () => Unit = () => { body }
 
   def value(from: String, to: String) {
     val n = stack.top.asInstanceOf[BOMSchemaNumber]
@@ -128,7 +126,7 @@ trait BOMSchemaBuilder {
 
   def bitSize(size: Long): BOMNode => Long = (n: BOMNode) => size
 
-  def position(fun: BOMNode => Long) = {
+  def position(fun: BOMNode => Long): () => Unit = () => {
     stack.top.positionFun = fun
   }
 
