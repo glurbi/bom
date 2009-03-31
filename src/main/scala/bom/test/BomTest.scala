@@ -163,9 +163,9 @@ object BomTest {
     def overrides =
       sequence("overrides") {
         size(byteSize(2))
-        number("n1", bom_ubyte) {
+        number("n1", bom_ubyte) (() => {
           position(n => n.parent.position + 8)
-        }
+        })
       }
 
     def schema = document {

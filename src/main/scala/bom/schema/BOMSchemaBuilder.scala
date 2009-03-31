@@ -128,7 +128,7 @@ trait BOMSchemaBuilder {
 
   def bitSize(size: Long): BOMNode => Long = (n: BOMNode) => size
 
-  def position(fun: BOMNode => Long) = () => {
+  def position(fun: BOMNode => Long) = {
     stack.top.positionFun = fun
   }
 
