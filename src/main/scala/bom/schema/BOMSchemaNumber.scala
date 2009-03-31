@@ -10,7 +10,6 @@ import bom.bin._
 // TODO: it should be possible to define the mask separately
 case class BOMSchemaNumber(override val name: String,
                            override val parent: BOMSchemaElement,
-                           override val size: BOMNode => Long,
                            override val depth: Int)
   extends BOMSchemaElement {
 

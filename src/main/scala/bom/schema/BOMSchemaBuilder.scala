@@ -8,9 +8,6 @@ import java.lang.{Long => JLong}
 
 trait BOMSchemaBuilder {
 
-  val regular = true
-  val irregular = false
-
   protected val stack = new Stack[BOMSchemaElement]
 
   def document(body: => Unit): BOMSchemaDocument = {
@@ -21,7 +18,7 @@ trait BOMSchemaBuilder {
   }
 
   def sequence(name: String)(body: => Unit): BOMSchemaSequence = {
-    val seq = new BOMSchemaSequence(name, stack.top, null, stack.top.depth + 1)
+    val seq = new BOMSchemaSequence(name, stack.top, stack.top.depth + 1)
     stack.top.add(seq)
     stack.push(seq)
     body
@@ -29,11 +26,14 @@ trait BOMSchemaBuilder {
     seq
   }
 
+  val regular = true
+  val irregular = false
+
   def array(name: String, lengthXPath: String)(body: => Unit): BOMSchemaArray =
     array(name, lengthXPath, false) { body }
   
   def array(name: String, lengthXPath: String, regular: Boolean)(body: => Unit): BOMSchemaArray = {
-    val a = new BOMSchemaArray(name, stack.top, null, stack.top.depth + 1)
+    val a = new BOMSchemaArray(name, stack.top, stack.top.depth + 1)
     stack.top.add(a)
     a.arrayLengthExpression = lengthXPath
     a.regular = regular
@@ -44,7 +44,7 @@ trait BOMSchemaBuilder {
   }
 
   def switch(xpath: String)(body: => Unit): BOMSchemaSwitch = {
-    val bomSwitch = new BOMSchemaSwitch(stack.top, null, stack.top.depth)
+    val bomSwitch = new BOMSchemaSwitch(stack.top, stack.top.depth)
     stack.top.add(bomSwitch)
     bomSwitch.switchExpression = xpath
     stack.push(bomSwitch)
@@ -55,7 +55,7 @@ trait BOMSchemaBuilder {
 
   // 'case' is a scala keyword, we use 'when' instead
   def when(value: String)(body: => Unit): BOMSchemaCase = {
-    val bomCase = new BOMSchemaCase(stack.top, null, stack.top.depth)
+    val bomCase = new BOMSchemaCase(stack.top, stack.top.depth)
     if ("*".equals(value)) {
       stack.top.asInstanceOf[BOMSchemaSwitch].defaultCase = bomCase
     } else {
@@ -70,7 +70,7 @@ trait BOMSchemaBuilder {
 
   implicit val body = () => {}
   def number(name: String, numberType: BOMType)(implicit body: () => Unit): BOMSchemaNumber =  {
-    val n = new BOMSchemaNumber(name, stack.top, null, stack.top.depth + 1)
+    val n = new BOMSchemaNumber(name, stack.top, stack.top.depth + 1)
     stack.top.add(n)
     n.numberType = numberType
     stack.push(n)
@@ -79,14 +79,14 @@ trait BOMSchemaBuilder {
     n
   }
 
-  def masks(body: => Unit): () => Unit = () => { body }
+  def masks(body: => Unit) = () => { body }
 
   def mask(name: String, value: String) = {
     val longValue = JLong.decode(value).asInstanceOf[Long]
     stack.top.asInstanceOf[BOMSchemaNumber].addMask(name, longValue)
   }
   
-  def map(body: => Unit): () => Unit = () => { body }
+  def map(body: => Unit) = () => { body }
 
   def value(from: String, to: String) {
     val n = stack.top.asInstanceOf[BOMSchemaNumber]
@@ -97,14 +97,16 @@ trait BOMSchemaBuilder {
   }
 
   def string(name: String, encoding: String, sizeFun: BOMNode => Long): BOMSchemaString = {
-    val s = new BOMSchemaString(name, stack.top, sizeFun, stack.top.depth + 1)
+    val s = new BOMSchemaString(name, stack.top, stack.top.depth + 1)
+    s.sizeFun = sizeFun
     stack.top.add(s)
     s.encoding = encoding
     s
   }
 
   def blob(name: String, sizeFun: BOMNode => Long): BOMSchemaBlob = {
-    val b = new BOMSchemaBlob(name, stack.top, sizeFun, stack.top.depth + 1)
+    val b = new BOMSchemaBlob(name, stack.top, stack.top.depth + 1)
+    b.sizeFun = sizeFun
     stack.top.add(b)
     b
   }
@@ -126,8 +128,12 @@ trait BOMSchemaBuilder {
 
   def bitSize(size: Long): BOMNode => Long = (n: BOMNode) => size
 
-  def position(fun: BOMNode => Long): () => Unit = () => {
+  def position(fun: BOMNode => Long) = () => {
     stack.top.positionFun = fun
+  }
+
+  def size(fun: BOMNode => Long) = {
+    stack.top.sizeFun = fun
   }
 
 }

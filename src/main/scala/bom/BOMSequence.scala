@@ -33,10 +33,14 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
 
   override def size: Long = {
     if (sz == -1) {
-      sz = 0
-      val it = iterator
-      while (it.hasNext) {
-        sz += it.next.size
+      if (schema.sizeFun != null)  {
+        sz = schema.sizeFun(this)
+      } else {
+        sz = 0
+        val it = iterator
+        while (it.hasNext) {
+          sz += it.next.size
+        }
       }
     }
     sz

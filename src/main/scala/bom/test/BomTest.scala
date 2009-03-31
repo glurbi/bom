@@ -162,6 +162,7 @@ object BomTest {
 
     def overrides =
       sequence("overrides") {
+        size(byteSize(2))
         number("n1", bom_ubyte) {
           position(n => n.parent.position + 8)
         }
@@ -347,6 +348,7 @@ object BomTest {
     // overrides
     assert(root("overrides")("n1").position == root("overrides").position + 8)
     assert(root("overrides")("n1").value == 0x34)
+    assert(root("overrides").size == 2 * 8)
 
     println(this.getClass.toString + " SUCCESS")
   }

@@ -59,11 +59,11 @@ class BomBrowserFoo(val doc: BOMDocument) {
         case _ => node.value.toString
       }
     private def translateSchema(schema: BOMSchemaElement): String = schema match {
-      case BOMSchemaSequence(_, _, _, _) => "sequence"
-      case BOMSchemaArray(_, _, _, _) => "array"
-      case BOMSchemaBlob(_, _, _, _) => "blob"
-      case BOMSchemaNumber(_, _, _, _) => "number"
-      case BOMSchemaString(_, _, _, _) => "string"
+      case BOMSchemaSequence(_, _, _) => "sequence"
+      case BOMSchemaArray(_, _, _) => "array"
+      case BOMSchemaBlob(_, _, _) => "blob"
+      case BOMSchemaNumber(_, _, _) => "number"
+      case BOMSchemaString(_, _, _) => "string"
       case BOMSchemaVirtual(_, _, _) => "virtual"
       case _ => "unknown"
     }

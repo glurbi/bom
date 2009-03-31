@@ -10,6 +10,8 @@ abstract case class BOMSchemaElement() {
 
   var positionFun: BOMNode => Long = _
 
+  var sizeFun: BOMNode => Long = _
+
   /**
    * @return the name of this schema element
    */
@@ -19,11 +21,6 @@ abstract case class BOMSchemaElement() {
    * @return the schema element parent of this schema element
    */
   def parent: BOMSchemaElement
-
-  /**
-   * @return the function that will calculate the size of the BOMNode
-   */
-  def size: BOMNode => Long
 
   /**
    * @return the depth of the schema element in the schema hierarchy

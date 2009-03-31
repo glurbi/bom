@@ -9,7 +9,6 @@ import bom.bin._
 import org.w3c.dom._
 
 case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
-                           override val size: BOMNode => Long,
                            override val depth: Int)
   extends BOMSchemaElement {
 
