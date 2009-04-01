@@ -9,9 +9,9 @@ import bom.schema._
  * Binary Object Model. It represents a single node in the document tree.
  */
 // TODO: make it a case class
-abstract class BOMNode(val schema: BOMSchemaElement,
-                       val parent: BOMContainer,
-                       val index: Int) {
+abstract case class BOMNode(val schema: BOMSchemaElement,
+                            val parent: BOMContainer,
+                            val index: Int) {
 
   protected var pos: Long = -1
   protected var sz: Long = -1

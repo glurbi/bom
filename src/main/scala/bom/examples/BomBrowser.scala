@@ -12,6 +12,7 @@ import java.awt.geom._
 import org.jdesktop.swingx._
 import org.jdesktop.swingx.treetable._
 
+import bom._
 import bom.bin._
 import bom.schema._
 import bom.types._
@@ -40,13 +41,18 @@ class BomBrowserFoo(val doc: BOMDocument) {
   val dataTreeModel = new AbstractTreeTableModel(doc) {
     def getColumnCount: Int = 6
     def getValueAt(node: Object, column: Int): Object = column match {
-      case 0 => node.asInstanceOf[BOMNode].name
+      case 0 => prettyName(node.asInstanceOf[BOMNode])
       case 1 => translateValue(node.asInstanceOf[BOMNode])
       case 2 => "" + node.asInstanceOf[BOMNode].position / 8
       case 3 => "" + node.asInstanceOf[BOMNode].position
       case 4 => "" + node.asInstanceOf[BOMNode].size / 8
       case 5 => translateSchema(node.asInstanceOf[BOMNode].schema)
     }
+    def prettyName(n: BOMNode) =
+      if (n.parent.schema.isInstanceOf[BOMSchemaArray])
+        n.name + " " + n.index
+      else
+        n.name
     def getChild(parent: Object, index: Int): Object =
       parent.asInstanceOf[BOMNode].child(index)
     def getChildCount(parent: Object): Int =

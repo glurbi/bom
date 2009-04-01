@@ -125,38 +125,38 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
               case (dividend: Int, 2) => dividend * 160 + 2 + 10 + 10 + 10 + 2 + 10 + 10 + 10 + 2 + 10 + 10 + 10 + 2 + 10 + n.parent.position
             })
             number("channel1", bom_bitint10) ( () => {
-              position(n => (n.parent.index /  3, n.parent.index % 3) match {
-                case (dividend: Int, 0) => 2 + n.parent.position
-                case (dividend: Int, 1) => n.parent.position
-                case (dividend: Int, 2) => n.parent.position
+              position(n => (n.parent.index %  3) match {
+                case 0 => 2 + n.parent.position
+                case 1 => n.parent.position
+                case 2 => n.parent.position
               })
             })
             number("channel2", bom_bitint10) ( () => {
-              position(n => (n.parent.index /  3, n.parent.index % 3) match {
-                case (dividend: Int, 0) => 2 + 10 + n.parent.position
-                case (dividend: Int, 1) => 10 + 2 + n.parent.position
-                case (dividend: Int, 2) => 10 + n.parent.position
+              position(n => (n.parent.index %  3) match {
+                case 0 => 2 + 10 + n.parent.position
+                case 1 => 10 + 2 + n.parent.position
+                case 2 => 10 + n.parent.position
               })
             })
             number("channel3", bom_bitint10) ( () => {
-              position(n => (n.parent.index /  3, n.parent.index % 3) match {
-                case (dividend: Int, 0) => 2 + 10 + 10 + n.parent.position
-                case (dividend: Int, 1) => 10 + 2 + n.parent.position
-                case (dividend: Int, 2) => 10 + 10 + 2 + n.parent.position
+              position(n => (n.parent.index %  3) match {
+                case 0 => 2 + 10 + 10 + n.parent.position
+                case 1 => 10 + 2 + 10 + n.parent.position
+                case 2 => 10 + 10 + 2 + n.parent.position
               })
             })
             number("channel4", bom_bitint10) ( () => {
-              position(n => (n.parent.index /  3, n.parent.index % 3) match {
-                case (dividend: Int, 0) => 2 + 10 + 10 + 10 + 2 + n.parent.position
-                case (dividend: Int, 1) => 10 + 2 + 10 + 10 + n.parent.position
-                case (dividend: Int, 2) => 10 + 10 + 2 + 10 + n.parent.position
+              position(n => (n.parent.index %  3) match {
+                case 0 => 2 + 10 + 10 + 10 + 2 + n.parent.position
+                case 1 => 10 + 2 + 10 + 10 + n.parent.position
+                case 2 => 10 + 10 + 2 + 10 + n.parent.position
               })
             })
             number("channel5", bom_bitint10) ( () => {
-              position(n => (n.parent.index /  3, n.parent.index % 3) match {
-                case (dividend: Int, 0) => 10 + 10 + 10 + 2 + 10 + n.parent.position
-                case (dividend: Int, 1) => 10 + 2 + 10 + 10 + 10 + 2 + n.parent.position
-                case (dividend: Int, 2) => 10 + 10 + 2 + 10 + 10 + n.parent.position
+              position(n => (n.parent.index % 3) match {
+                case 0 => 2 + 10 + 10 + 10 + 2 + 10 + n.parent.position
+                case 1 => 10 + 2 + 10 + 10 + 10 + 2 + n.parent.position
+                case 2 => 10 + 10 + 2 + 10 + 10 + n.parent.position
               })
             })
           }
