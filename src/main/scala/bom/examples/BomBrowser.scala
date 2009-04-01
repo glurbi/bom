@@ -38,12 +38,14 @@ class BomBrowserFoo(val doc: BOMDocument) {
    * Adapts the BOM tree to a JXTreeTableModel
    */
   val dataTreeModel = new AbstractTreeTableModel(doc) {
-    def getColumnCount: Int = 4
+    def getColumnCount: Int = 6
     def getValueAt(node: Object, column: Int): Object = column match {
       case 0 => node.asInstanceOf[BOMNode].name
       case 1 => translateValue(node.asInstanceOf[BOMNode])
       case 2 => "" + node.asInstanceOf[BOMNode].position / 8
-      case 3 => translateSchema(node.asInstanceOf[BOMNode].schema)
+      case 3 => "" + node.asInstanceOf[BOMNode].position
+      case 4 => "" + node.asInstanceOf[BOMNode].size / 8
+      case 5 => translateSchema(node.asInstanceOf[BOMNode].schema)
     }
     def getChild(parent: Object, index: Int): Object =
       parent.asInstanceOf[BOMNode].child(index)
@@ -72,8 +74,10 @@ class BomBrowserFoo(val doc: BOMDocument) {
   val dataTreePanel = new JXTreeTable(dataTreeModel)
   dataTreePanel.getTableHeader.getColumnModel.getColumn(0).setHeaderValue("Node")
   dataTreePanel.getTableHeader.getColumnModel.getColumn(1).setHeaderValue("Value")
-  dataTreePanel.getTableHeader.getColumnModel.getColumn(2).setHeaderValue("Position")
-  dataTreePanel.getTableHeader.getColumnModel.getColumn(3).setHeaderValue("Type")
+  dataTreePanel.getTableHeader.getColumnModel.getColumn(2).setHeaderValue("Position (bytes)")
+  dataTreePanel.getTableHeader.getColumnModel.getColumn(3).setHeaderValue("Position (bits)")
+  dataTreePanel.getTableHeader.getColumnModel.getColumn(4).setHeaderValue("Size (bytes)")
+  dataTreePanel.getTableHeader.getColumnModel.getColumn(5).setHeaderValue("Type")
   dataTreePanel.addMouseListener(new MouseAdapter {
     override def mousePressed(e: MouseEvent) = {
       if (e.isPopupTrigger) {
@@ -146,7 +150,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
   val frame = new JFrame
   frame.add(scrollPane)
   frame.setTitle("BOM Browser")
-  frame.setSize(800, 600)
+  frame.setSize(1280, 600)
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
 
   def show { frame.setVisible(true) }

@@ -116,12 +116,49 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         blob("undefined", byteSize(208))
       }
       sequence("Earth Observations") {
-        array("data", "3414", regular) {
-          sequence("word") {
-            blob("blank", bitSize(2))
-            number("sample1", bom_bitint10)
-            number("sample2", bom_bitint10)
-            number("sample3", bom_bitint10)
+        array("data", "2048", regular) {
+          size(byteSize(3414 * 4))
+          sequence("channels") {
+            position(n => (n.index /  3, n.index % 3) match {
+              case (dividend: Int, 0) => dividend * 160 + n.parent.position
+              case (dividend: Int, 1) => dividend * 160 + 2 + 10 + 10 + 10 + 2 + 10 + 10 + n.parent.position
+              case (dividend: Int, 2) => dividend * 160 + 2 + 10 + 10 + 10 + 2 + 10 + 10 + 10 + 2 + 10 + 10 + 10 + 2 + 10 + n.parent.position
+            })
+            number("channel1", bom_bitint10) ( () => {
+              position(n => (n.parent.index /  3, n.parent.index % 3) match {
+                case (dividend: Int, 0) => 2 + n.parent.position
+                case (dividend: Int, 1) => n.parent.position
+                case (dividend: Int, 2) => n.parent.position
+              })
+            })
+            number("channel2", bom_bitint10) ( () => {
+              position(n => (n.parent.index /  3, n.parent.index % 3) match {
+                case (dividend: Int, 0) => 2 + 10 + n.parent.position
+                case (dividend: Int, 1) => 10 + 2 + n.parent.position
+                case (dividend: Int, 2) => 10 + n.parent.position
+              })
+            })
+            number("channel3", bom_bitint10) ( () => {
+              position(n => (n.parent.index /  3, n.parent.index % 3) match {
+                case (dividend: Int, 0) => 2 + 10 + 10 + n.parent.position
+                case (dividend: Int, 1) => 10 + 2 + n.parent.position
+                case (dividend: Int, 2) => 10 + 10 + 2 + n.parent.position
+              })
+            })
+            number("channel4", bom_bitint10) ( () => {
+              position(n => (n.parent.index /  3, n.parent.index % 3) match {
+                case (dividend: Int, 0) => 2 + 10 + 10 + 10 + 2 + n.parent.position
+                case (dividend: Int, 1) => 10 + 2 + 10 + 10 + n.parent.position
+                case (dividend: Int, 2) => 10 + 10 + 2 + 10 + n.parent.position
+              })
+            })
+            number("channel5", bom_bitint10) ( () => {
+              position(n => (n.parent.index /  3, n.parent.index % 3) match {
+                case (dividend: Int, 0) => 10 + 10 + 10 + 2 + 10 + n.parent.position
+                case (dividend: Int, 1) => 10 + 2 + 10 + 10 + 10 + 2 + n.parent.position
+                case (dividend: Int, 2) => 10 + 10 + 2 + 10 + 10 + n.parent.position
+              })
+            })
           }
         }
         blob("undefined", byteSize(8))

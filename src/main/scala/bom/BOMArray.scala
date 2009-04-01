@@ -33,7 +33,9 @@ case class BOMArray(override val schema: BOMSchemaArray,
   def length: Long = childrenCount
 
   override def size: Long = {
-    if (regular) {
+    if (schema.sizeFun != null)  {
+      schema.sizeFun(this)
+    } else if (regular) {
       val n = schema.children(0).instance(this, 0)
       childrenCount * n.size
     } else {
