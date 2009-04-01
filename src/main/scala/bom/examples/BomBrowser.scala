@@ -39,20 +39,16 @@ class BomBrowserFoo(val doc: BOMDocument) {
    * Adapts the BOM tree to a JXTreeTableModel
    */
   val dataTreeModel = new AbstractTreeTableModel(doc) {
-    def getColumnCount: Int = 6
+    def getColumnCount: Int = 7
     def getValueAt(node: Object, column: Int): Object = column match {
-      case 0 => prettyName(node.asInstanceOf[BOMNode])
+      case 0 => node.asInstanceOf[BOMNode].name
       case 1 => translateValue(node.asInstanceOf[BOMNode])
       case 2 => "" + node.asInstanceOf[BOMNode].position / 8
       case 3 => "" + node.asInstanceOf[BOMNode].position
       case 4 => "" + node.asInstanceOf[BOMNode].size / 8
       case 5 => translateSchema(node.asInstanceOf[BOMNode].schema)
+      case 6 => "" + node.asInstanceOf[BOMNode].index
     }
-    def prettyName(n: BOMNode) =
-      if (n.parent.schema.isInstanceOf[BOMSchemaArray])
-        n.name + " " + n.index
-      else
-        n.name
     def getChild(parent: Object, index: Int): Object =
       parent.asInstanceOf[BOMNode].child(index)
     def getChildCount(parent: Object): Int =
@@ -84,6 +80,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
   dataTreePanel.getTableHeader.getColumnModel.getColumn(3).setHeaderValue("Position (bits)")
   dataTreePanel.getTableHeader.getColumnModel.getColumn(4).setHeaderValue("Size (bytes)")
   dataTreePanel.getTableHeader.getColumnModel.getColumn(5).setHeaderValue("Type")
+  dataTreePanel.getTableHeader.getColumnModel.getColumn(6).setHeaderValue("Index")
   dataTreePanel.addMouseListener(new MouseAdapter {
     override def mousePressed(e: MouseEvent) = {
       if (e.isPopupTrigger) {
