@@ -45,15 +45,15 @@ object BomTest {
     def array1 =
       sequence("array1") {
         number("length_array1", bom_byte)
-        array("array1", "../length_array1", regular) {
+        array("array1", length("../length_array1"), regular) {
           number("item", bom_byte)
         }
       }
 
     def array2 =
       sequence("array2") {
-        array("array2", "4", regular) {
-          array("nested", "3", regular) {
+        array("array2", length(4), regular) {
+          array("nested", length(3), regular) {
             number("item", bom_byte)
           }
         }
@@ -61,11 +61,11 @@ object BomTest {
 
     def array3 =
       sequence("array3") {
-        array("lengths", "3", regular) {
+        array("lengths", length(3), regular) {
           number("length", bom_byte)
         }
-        array("array3", "3", irregular) {
-          array("nested", "../../lengths/length[bom:context()/@index + 1]", regular) {
+        array("array3", length(3), irregular) {
+          array("nested", length("../../lengths/length[bom:context()/@index + 1]"), regular) {
             number("item", bom_byte)
           }
         }
@@ -121,7 +121,7 @@ object BomTest {
 
     def switch1 =
       sequence("switch1") {
-        array("array", "2") {
+        array("array", length(2)) {
           sequence("item") {
             number("nb", bom_ubyte)
             switch("../nb") {
@@ -166,7 +166,7 @@ object BomTest {
         number("n1", bom_ubyte) (() => {
           position(n => n.parent.position + 8)
         })
-        array("a", "3") {
+        array("a", length(3)) {
           size(byteSize(4))
           number("n2", bom_ubyte)
         }

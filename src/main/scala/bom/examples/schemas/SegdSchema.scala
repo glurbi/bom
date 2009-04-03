@@ -16,16 +16,16 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("segd") {
       generalHeader1
       generalHeader2
-      array("scan_type_headers", "../general_header_1/scan_type_per_record") {
-        array("channel_set_headers", "../../general_header_1/channel_sets_per_scan_type") {
+      array("scan_type_headers", length("../general_header_1/scan_type_per_record")) {
+        array("channel_set_headers", length("../../general_header_1/channel_sets_per_scan_type")) {
           channelSetHeader
         }
       }
       extendedHeader
       externalHeader
-      array("data", "/segd/general_header_1/scan_type_per_record") {
-        array("scan type", "/segd/general_header_1/channel_sets_per_scan_type") {
-          array("channel set", "/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels", regular) {
+      array("data", length("/segd/general_header_1/scan_type_per_record")) {
+        array("scan type", length("/segd/general_header_1/channel_sets_per_scan_type")) {
+          array("channel set", length("/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels"), regular) {
             trace
           }
         }
@@ -99,7 +99,7 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
   def trace =
     sequence("trace") {
       traceHeader
-      array("trace header extensions", "../trace_header/trace_header_extensions", regular) {
+      array("trace header extensions", length("../trace_header/trace_header_extensions"), regular) {
         traceHeaderExtension
       }
       virtual("start_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/start_time")
@@ -125,7 +125,7 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     blob("trace header extension", byteSize(32))
 
   def traceData =
-    array("trace data", "../sample_count", regular) {
+    array("trace data", length("../sample_count"), regular) {
       number("sample", bom_int3)
     }
 

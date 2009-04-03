@@ -29,13 +29,13 @@ trait BOMSchemaBuilder {
   val regular = true
   val irregular = false
 
-  def array(name: String, lengthXPath: String)(body: => Unit): BOMSchemaArray =
-    array(name, lengthXPath, false) { body }
+  def array(name: String, lengthFun: BOMNode => Long)(body: => Unit): BOMSchemaArray =
+    array(name, lengthFun, false) { body }
   
-  def array(name: String, lengthXPath: String, regular: Boolean)(body: => Unit): BOMSchemaArray = {
+  def array(name: String, lengthFun: BOMNode => Long, regular: Boolean)(body: => Unit): BOMSchemaArray = {
     val a = new BOMSchemaArray(name, stack.top, stack.top.depth + 1)
     stack.top.add(a)
-    a.arrayLengthExpression = lengthXPath
+    a.lengthFun = lengthFun
     a.regular = regular
     stack.push(a)
     body
@@ -134,6 +134,12 @@ trait BOMSchemaBuilder {
 
   def size(fun: BOMNode => Long) = {
     stack.top.sizeFun = fun
+  }
+
+  def length(len: Long): BOMNode => Long = (n: BOMNode) => len
+
+  def length(xpath: String): BOMNode => Long = (n: BOMNode) => {
+      n.document.queryNumber(n, xpath).intValue
   }
 
 }

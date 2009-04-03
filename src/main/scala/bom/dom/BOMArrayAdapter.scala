@@ -11,9 +11,7 @@ class BOMArrayAdapter(bomArray: BOMArray) extends ElementAdapter(bomArray) {
       override def getLength: Int = super.getLength + 1
       override def item(index: Int): Node = {
         if (index == getLength() - 1) {
-          val value = if (bomArray.arrayLengthExpression == null)
-            ""+bomArray.arrayLength else bomArray.arrayLengthExpression
-          new AttributeAdapter(bomArray, "length", value)
+          new AttributeAdapter(bomArray, "length", "dummy")
         } else super.item(index)
       }
     }

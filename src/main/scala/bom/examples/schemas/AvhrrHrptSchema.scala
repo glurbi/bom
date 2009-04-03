@@ -20,7 +20,7 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("hrpt") {
       ars
       header
-      array("records", "/hrpt/header/recordCount", regular) {
+      array("records", length("/hrpt/header/recordCount"), regular) {
         record
       }
     }
@@ -47,7 +47,7 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       string("Start Minute", "us-ascii", byteSize(2))
       string("Number of minute", "us-ascii", byteSize(3))
       string("Appended data flag", "us-ascii", byteSize(1))
-      array("Channel Select Flags", "20") {
+      array("Channel Select Flags", length(20)) {
         string("flag", "us-ascii", byteSize(1))
       }
       string("Sensor Data Word Size", "us-ascii", byteSize(2))
@@ -116,7 +116,7 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         blob("undefined", byteSize(208))
       }
       sequence("Earth Observations") {
-        array("data", "2048", regular) {
+        array("data", length(2048), regular) {
           size(byteSize(3414 * 4))
           sequence("channels") {
             position(n => (n.index /  3, n.index % 3) match {
