@@ -6,16 +6,6 @@ import bom.dom._
 
 class BOMArrayAdapter(bomArray: BOMArray) extends ElementAdapter(bomArray) {
 
-  override def getAttributes: NamedNodeMap =
-    new AttributeNamedNodeMap(bomArray) {
-      override def getLength: Int = super.getLength + 1
-      override def item(index: Int): Node = {
-        if (index == getLength() - 1) {
-          new AttributeAdapter(bomArray, "length", "dummy")
-        } else super.item(index)
-      }
-    }
-    
   override def getChildNodes: NodeList =
     new NodeList {
       def getLength: Int = bomArray.childrenCount
