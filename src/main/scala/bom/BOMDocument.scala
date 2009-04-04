@@ -89,6 +89,8 @@ case class BOMDocument(override val schema: BOMSchemaElement,
   def apply(index: Int): BOMNode =
     if (index == 0) schema.children(0).instance(BOMDocument.this, 0) else null
 
+  def apply(name: String): BOMNode = null
+
   override def childCount: Int = 1
   
 }

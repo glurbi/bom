@@ -14,4 +14,6 @@ abstract case class BOMLeaf(override val schema: BOMSchemaElement,
 
   def apply(index: Int): BOMNode = null
 
+  def apply(name: String): BOMNode = null
+  
 }

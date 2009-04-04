@@ -51,7 +51,9 @@ case class BOMArray(override val schema: BOMSchemaArray,
   /**
    * @return the array element at the specified index
    */
-  override def apply(index: Int): BOMNode = schema.children(0).instance(this, index)
+  def apply(index: Int): BOMNode = schema.children(0).instance(this, index)
+
+  def apply(name: String): BOMNode = null
 
   def asDomNode: Node = new BOMArrayAdapter(this)
 

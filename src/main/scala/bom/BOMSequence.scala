@@ -15,18 +15,6 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
                        override val index: Int)
   extends BOMContainer(schema, parent, index) {
 
-  /**
-   * @return the child with the name given in parameter
-   */
-  def child(name: String): BOMNode = {
-    val childSchema = schema.child(name)
-    if (childSchema == null) {
-      null
-    }
-    val index = schema.childIndex(name)
-    childSchema.instance(this, index)
-  }
-
   def asDomNode: Node = new BOMSequenceAdapter(this)
 
   def iterator: Iterator[BOMNode] = new SequenceIterator
@@ -46,7 +34,14 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
     sz
   }
 
-  override def apply(name: String): BOMNode = child(name)
+  override def apply(name: String): BOMNode = {
+    val childSchema = schema.child(name)
+    if (childSchema == null) {
+      null
+    }
+    val index = schema.childIndex(name)
+    childSchema.instance(this, index)
+  }
 
   override def childCount = schema.children.size
 
