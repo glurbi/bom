@@ -48,15 +48,9 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    * @return the child of this node at the specified index or <code>null<code>
    *         if it doesn't exist
    */
-  def child(index: Int): BOMNode = null
-
-  /**
-   * @return the child of this node at the specified index or <code>null<code>
-   *         if it doesn't exist
-   */
   // TODO: use the / operator
   // TODO: add support for -1 (parent)
-  def apply(index: Int): BOMNode = child(index)
+  def apply(index: Int): BOMNode
 
   /**
    * @return the child of this node with the specified name or <code>null<code>
@@ -105,8 +99,8 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
         if (parent.schema.asInstanceOf[BOMSchemaArray].regular) {
           pos = parent.position + index * parent.schema.children(0).instance(parent, 0).size;
         } else {
-          pos = parent.asInstanceOf[BOMArray].child(index - 1).position +
-            parent.asInstanceOf[BOMArray].child(index - 1).size
+          pos = parent.asInstanceOf[BOMArray](index - 1).position +
+            parent.asInstanceOf[BOMArray](index - 1).size
         }
       }
     }

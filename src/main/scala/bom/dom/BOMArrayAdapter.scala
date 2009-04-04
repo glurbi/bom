@@ -9,7 +9,7 @@ class BOMArrayAdapter(bomArray: BOMArray) extends ElementAdapter(bomArray) {
   override def getChildNodes: NodeList =
     new NodeList {
       def getLength: Int = bomArray.childrenCount
-      def item(index: Int): Node = bomArray.child(index).asDomNode
+      def item(index: Int): Node = bomArray(index).asDomNode
     }
 
 }

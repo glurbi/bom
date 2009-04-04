@@ -39,7 +39,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
       if (sz == -1) {
         sz = 0
         for (i <- 0 until childrenCount) {
-          sz += child(i).size
+          sz += this(i).size
         }
       }
       sz
@@ -51,7 +51,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
   /**
    * @return the array element at the specified index
    */
-  override def child(index: Int): BOMNode = schema.children(0).instance(this, index)
+  override def apply(index: Int): BOMNode = schema.children(0).instance(this, index)
 
   def asDomNode: Node = new BOMArrayAdapter(this)
 
@@ -65,7 +65,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
         throw new NoSuchElementException();
       }
       index += 1
-      child(index)
+      BOMArray.this(index)
     }
     def remove = throw new UnsupportedOperationException
   }
