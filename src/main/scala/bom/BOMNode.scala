@@ -54,12 +54,15 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    * @return the child of this node at the specified index or <code>null<code>
    *         if it doesn't exist
    */
+  // TODO: use the / operator
+  // TODO: add support for -1 (parent)
   def apply(index: Int): BOMNode = child(index)
 
   /**
    * @return the child of this node with the specified name or <code>null<code>
    *         if it doesn't exist
    */
+  // TODO: use the / operator
   def apply(name: String): BOMNode = null
 
   // TODO: add a "children" method
@@ -113,6 +116,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return the DOM node corresponding to this BOM node
    */
+  // TODO: remove this dependency, use an implicit conversion instead
   def asDomNode: Node
 
   /**
@@ -127,6 +131,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
         => false
     }
 
+  // TODO: check if this is used at all...
   override def hashCode: Int = index
 
   override def toString: String = name
