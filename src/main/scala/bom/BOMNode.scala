@@ -116,23 +116,13 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return the DOM node corresponding to this BOM node
    */
-  // TODO: remove this dependency, use an implicit conversion instead
+  // TODO: remove the dependency to bom.dom
   def asDomNode: Node
 
   /**
    * @return the binary space associated with this node
    */
   def binarySpace: BOMBinarySpace = document.binarySpace
-
-  override def equals(that: Any): Boolean = that match {
-      case other: BOMNode
-        => this.index == other.index && this.parent.equals(other.parent)
-      case _
-        => false
-    }
-
-  // TODO: check if this is used at all...
-  override def hashCode: Int = index
 
   override def toString: String = name
   
