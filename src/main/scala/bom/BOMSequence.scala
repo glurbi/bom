@@ -19,7 +19,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
 
   def iterator: Iterator[BOMNode] = new SequenceIterator
 
-  override def size: Long = {
+  override lazy val size: Long = {
     var sz = 0L
     if (schema.sizeFun != null)  {
       sz = schema.sizeFun(this)

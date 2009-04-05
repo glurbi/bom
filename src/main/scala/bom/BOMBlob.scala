@@ -31,7 +31,7 @@ case class BOMBlob(override val schema: BOMSchemaBlob,
     bytes
   }
 
-  override def size: Long = sizeFun(this)
+  override lazy val size: Long = sizeFun(this)
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 

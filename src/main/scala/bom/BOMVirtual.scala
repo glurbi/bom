@@ -22,7 +22,7 @@ case class BOMVirtual(override val schema: BOMSchemaVirtual,
    */
   override def value: Any = document.queryNumber(this, xpath)
 
-  override def size: Long = 0
+  override lazy val size: Long = 0
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 

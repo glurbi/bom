@@ -28,7 +28,7 @@ case class BOMNumber(override val schema: BOMSchemaNumber,
     numberType.read(binarySpace).asInstanceOf[Number]
   }
 
-  override def size: Long = numberType.size
+  override lazy val size: Long = numberType.size
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 

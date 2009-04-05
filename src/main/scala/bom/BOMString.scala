@@ -28,7 +28,7 @@ case class BOMString(override val schema: BOMSchemaString,
     charset.decode(ByteBuffer.wrap(ba)).toString
   }
  
-  override def size: Long = schema.sizeFun(this)
+  override lazy val size: Long = schema.sizeFun(this)
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 

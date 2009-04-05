@@ -33,7 +33,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    * 
    * @return the node size (number of bits)
    */
-  def size: Long
+  lazy val size: Long = 0
 
   /**
    * @return the number of children of this node
