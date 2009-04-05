@@ -20,20 +20,18 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
   def iterator: Iterator[BOMNode] = new SequenceIterator
 
   override def size: Long = {
-    if (sz == -1) {
-      if (schema.sizeFun != null)  {
-        sz = schema.sizeFun(this)
-      } else {
-        sz = 0
-        val it = iterator
-        while (it.hasNext) {
-          sz += it.next.size
-        }
+    var sz = 0L
+    if (schema.sizeFun != null)  {
+      sz = schema.sizeFun(this)
+    } else {
+      val it = iterator
+      while (it.hasNext) {
+        sz += it.next.size
       }
     }
     sz
   }
-
+  
   override def apply(name: String): BOMNode = {
     val childSchema = schema.child(name)
     if (childSchema == null) {

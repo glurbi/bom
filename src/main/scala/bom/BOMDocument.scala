@@ -55,8 +55,8 @@ case class BOMDocument(override val schema: BOMSchemaElement,
   val xpathEvaluator = new XPathEvaluator
 
   override def document: BOMDocument = this
-  override def size: Long = rootNode.size
-  override def position: Long = 0
+  override lazy val size: Long = rootNode.size
+  override lazy val position: Long = 0
   
   override def binarySpace: BOMBinarySpace = bspace
   

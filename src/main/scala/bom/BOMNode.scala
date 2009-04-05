@@ -13,10 +13,6 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
                             val parent: BOMContainer,
                             val index: Int) {
 
-  // TODO: use lazy initialization
-  protected var pos: Long = -1
-  protected var sz: Long = -1
-  
   /**
    * @return the name of this node
    */
@@ -37,7 +33,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    * 
    * @return the node size (number of bits)
    */
-  def size: Long = sz
+  def size: Long
 
   /**
    * @return the number of children of this node
@@ -85,27 +81,21 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return the position (in bits) of this node in the binary space
    */
-  def position: Long = {
-    if (pos == -1) {
-      if (schema.positionFun != null)  {
-        pos = schema.positionFun(this)
-      } else if (index == 0) {
-        pos = parent.position;
-      } else if (parent.isInstanceOf[BOMSequence]) {
-        val previousSibling = parent.schema.children(index - 1).
-          instance(parent, index - 1)
-        pos = previousSibling.position + previousSibling.size
-      } else if (parent.isInstanceOf[BOMArray]) {
-        if (parent.schema.asInstanceOf[BOMSchemaArray].regular) {
-          pos = parent.position + index * parent.schema.children(0).instance(parent, 0).size;
-        } else {
-          pos = parent.asInstanceOf[BOMArray](index - 1).position +
-            parent.asInstanceOf[BOMArray](index - 1).size
-        }
-      }
+  lazy val position: Long =
+    if (schema.positionFun != null)  {
+      schema.positionFun(this)
+    } else if (index == 0) {
+      parent.position;
+    } else if (parent.isInstanceOf[BOMSequence]) {
+      val previousSibling = parent.schema.children(index - 1).instance(parent, index - 1)
+      previousSibling.position + previousSibling.size
+    } else if (parent.isInstanceOf[BOMArray] && parent.schema.asInstanceOf[BOMSchemaArray].regular) {
+      parent.position + index * parent.schema.children(0).instance(parent, 0).size
+    } else if (parent.isInstanceOf[BOMArray]) {
+      parent.asInstanceOf[BOMArray](index - 1).position + parent.asInstanceOf[BOMArray](index - 1).size
+    } else {
+      throw new BOMException
     }
-    pos
-  }
 
   /**
    * @return the DOM node corresponding to this BOM node

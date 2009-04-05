@@ -29,22 +29,19 @@ case class BOMArray(override val schema: BOMSchemaArray,
 
   def length: Long = childrenCount
 
-  override def size: Long = {
+  override lazy val size: Long =
     if (schema.sizeFun != null)  {
       schema.sizeFun(this)
     } else if (regular) {
       val n = schema.children(0).instance(this, 0)
       childrenCount * n.size
     } else {
-      if (sz == -1) {
-        sz = 0
-        for (i <- 0 until childrenCount) {
-          sz += this(i).size
-        }
+      var sz = 0L
+      for (i <- 0 until childrenCount) {
+        sz += this(i).size
       }
       sz
     }
-  }
 
   override def childCount: Int = childrenCount
 
