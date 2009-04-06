@@ -2,6 +2,7 @@ package bom.test
 
 import java.util.{Set => JSet}
 
+import bom.BOM._
 import bom.schema._
 import bom.types._
 import bom.bin._
@@ -269,50 +270,50 @@ object BomTest {
     assert(root.name.equals("test"))
 
     // integers
-    assert((root/"integers"/0).value == 1.asInstanceOf[Byte])
-    assert((root/0/1).value == 15)
-    assert((root/0/2).value == 15L)
-    assert((root/0/3).value == (0xFF).asInstanceOf[Short])
-    assert((root/0/4).value == 0xFFFFL)
-    assert((root/0/5).value == -1)
-    assert((root/0/6).value == -1)
+    assert(value(root/"integers"/0) == 1.asInstanceOf[Byte])
+    assert(value(root/0/1) == 15)
+    assert(value(root/0/2) == 15L)
+    assert(value(root/0/3) == (0xFF).asInstanceOf[Short])
+    assert(value(root/0/4) == 0xFFFFL)
+    assert(value(root/0/5) == -1)
+    assert(value(root/0/6) == -1)
 
     // bcds
-    assert((root/"bcds"/0).value == 9L)
-    assert((root/1/1).value == 87L)
-    assert((root/"bcds"/"bcd3").value == 654L)
-    assert((root/1/3).value == 1234L)
-    assert((root/1/"bcd6").value == 123456L)
-    assert((root/"bcds"/5).value == 12345678L)
+    assert(value(root/"bcds"/0) == 9L)
+    assert(value(root/1/1) == 87L)
+    assert(value(root/"bcds"/"bcd3") == 654L)
+    assert(value(root/1/3) == 1234L)
+    assert(value(root/1/"bcd6") == 123456L)
+    assert(value(root/"bcds"/5) == 12345678L)
 
     // blobs
     assert((root/"blobs"/"blob1").size == 3 * 8)
     assert((root/"blobs"/"blob2").size == 4 * 8)
-    assert((root/"blobs"/"blob2").value.asInstanceOf[Array[Byte]](0) == 1)
-    assert((root/"blobs"/"blob2").value.asInstanceOf[Array[Byte]](1) == 9)
-    assert((root/"blobs"/"blob2").value.asInstanceOf[Array[Byte]](2) == 7)
-    assert((root/"blobs"/"blob2").value.asInstanceOf[Array[Byte]](3) == 7)
+    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](0) == 1)
+    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](1) == 9)
+    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](2) == 7)
+    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](3) == 7)
 
     // strings
-    assert((root/"strings"/"greetings").value == "Hello, BOM!")
+    assert(value(root/"strings"/"greetings") == "Hello, BOM!")
     
     // array1
     assert((root/"array1"/"array1").childCount == 6)
-    assert((root/4/1/5).value == 6.asInstanceOf[Byte])
+    assert(value(root/4/1/5) == 6.asInstanceOf[Byte])
 
     //array2
     assert((root/"array2"/"array2").size == 12 * 8)
-    assert((root/5/0/3/1).value == 11)
+    assert(value(root/5/0/3/1) == 11)
 
     //array3
     assert((root/"array3"/"array3"/0).childCount == 4)
     assert((root/"array3"/"array3"/1).childCount == 5)
     assert((root/"array3"/"array3"/2).childCount == 6)
-    assert((root/"array3"/"array3"/2/5).value == 0x66)
+    assert(value(root/"array3"/"array3"/2/5) == 0x66)
 
     // virtuals
-    assert((root/"virtuals"/"v1").value == 36)
-    assert((root/"virtuals"/"v2").value == 65536)
+    assert(value(root/"virtuals"/"v1") == 36)
+    assert(value(root/"virtuals"/"v2") == 65536)
 
     // masks
     val nb1 = (root/"masks"/"nb1").asInstanceOf[BOMNumber]
@@ -333,30 +334,30 @@ object BomTest {
     assert(mapped_nb2.schema.mappedValue(mapped_nb2.value) == "THREE")
 
     // switch
-    assert((root/"switch1"/"array"/0/1/"string").value == "Foo")
-    assert((root/"switch1"/"array"/1/1).value == 65535)
+    assert(value(root/"switch1"/"array"/0/1/"string") == "Foo")
+    assert(value(root/"switch1"/"array"/1/1) == 65535)
 
     // previousSibling
-    assert((root/"previousSibling"/"v1").value == 5)
+    assert(value(root/"previousSibling"/"v1") == 5)
 
     // bitfield
-    assert((root/"bitFields"/"bitField"/"bit15").value == 1)
-    assert((root/"bitFields"/"bitField"/"bit14").value == 0)
-    assert((root/"bitFields"/"bitField"/"bit13").value == 1)
-    assert((root/"bitFields"/"bitField"/"bit13").value == 1)
-    assert((root/"bitFields"/"bitField"/"bit15").value == 1)
-    assert((root/"bitFields"/"bitField"/"bit14").value == 0)
-    assert((root/"bitFields"/"bitField"/"bit2").value == 1)
-    assert((root/"bitFields"/"bitField"/"bit1and0").value == 3)
+    assert(value(root/"bitFields"/"bitField"/"bit15") == 1)
+    assert(value(root/"bitFields"/"bitField"/"bit14") == 0)
+    assert(value(root/"bitFields"/"bitField"/"bit13") == 1)
+    assert(value(root/"bitFields"/"bitField"/"bit13") == 1)
+    assert(value(root/"bitFields"/"bitField"/"bit15") == 1)
+    assert(value(root/"bitFields"/"bitField"/"bit14") == 0)
+    assert(value(root/"bitFields"/"bitField"/"bit2") == 1)
+    assert(value(root/"bitFields"/"bitField"/"bit1and0") == 3)
 
     // overrides
-    assert((root/"overrides"/"n1").position == (root/"overrides").position + 8)
-    assert((root/"overrides"/"n1").value == 0x34)
-    assert((root/"overrides").size == 6 * 8)
-    assert((root/"overrides"/"a"/0).value == 0x01)
-    assert((root/"overrides"/"a"/1).value == 0x02)
-    assert((root/"overrides"/"a"/2).value == 0x03)
-    assert((root/"overrides"/"a").size == 4 * 8)
+    assert(position(root/"overrides"/"n1") == position(root/"overrides") + 8)
+    assert(value(root/"overrides"/"n1") == 0x34)
+    assert(size(root/"overrides") == 6 * 8)
+    assert(value(root/"overrides"/"a"/0) == 0x01)
+    assert(value(root/"overrides"/"a"/1) == 0x02)
+    assert(value(root/"overrides"/"a"/2) == 0x03)
+    assert(size(root/"overrides"/"a") == 4 * 8)
 
     println(this.getClass.toString + " SUCCESS")
   }
