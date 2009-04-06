@@ -50,7 +50,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
       case 6 => "" + node.asInstanceOf[BOMNode].index
     }
     def getChild(parent: Object, index: Int): Object =
-      parent.asInstanceOf[BOMNode](index)
+      parent.asInstanceOf[BOMNode]/index
     def getChildCount(parent: Object): Int =
       parent.asInstanceOf[BOMNode].childCount
     def getIndexOfChild(parent: Object, child: Object): Int =
@@ -105,10 +105,10 @@ class BomBrowserFoo(val doc: BOMDocument) {
     if (isPlotable(node.asInstanceOf[BOMNode])) {
       val array = node.asInstanceOf[BOMArray]
       val numbers = new ArrayList[Double]
-      var min = array(0).asInstanceOf[BOMNumber].value.doubleValue
+      var min = (array/0).asInstanceOf[BOMNumber].value.doubleValue
       var max = min
       for (i <- 0 until array.childrenCount) {
-        numbers.add(array(i).asInstanceOf[BOMNumber].value.doubleValue)
+        numbers.add((array/i).asInstanceOf[BOMNumber].value.doubleValue)
         if (numbers(i) > max) max = numbers(i)
         if (numbers(i) < min) min = numbers(i)
       }

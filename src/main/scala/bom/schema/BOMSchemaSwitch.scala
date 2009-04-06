@@ -35,11 +35,11 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
       override def getNodeName: String = ""
     }
     val node = new BOMNode(this, parent, index) {
-      override lazy val size: Long = throw new BOMException
       def asDomNode: Node = elementAdapter
       override def depth: Int = parent.depth + 1;
-      def apply(index: Int): BOMNode = throw new BOMException
-      def apply(name: String): BOMNode = throw new BOMException
+      override lazy val size: Long = throw new BOMException
+      def /(index: Int): BOMNode = throw new BOMException
+      def /(name: String): BOMNode = throw new BOMException
     }
     elementAdapter.node = node
     val matchingCase = findMatchingCase(

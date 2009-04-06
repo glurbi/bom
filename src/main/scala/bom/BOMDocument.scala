@@ -86,10 +86,10 @@ case class BOMDocument(override val schema: BOMSchemaElement,
 
   override def equals(that: Any): Boolean = this.eq(that.asInstanceOf[AnyRef])
 
-  def apply(index: Int): BOMNode =
+  def /(index: Int): BOMNode =
     if (index == 0) schema.children(0).instance(BOMDocument.this, 0) else null
 
-  def apply(name: String): BOMNode = null
+  def /(name: String): BOMNode = null
 
   override def childCount: Int = 1
   
