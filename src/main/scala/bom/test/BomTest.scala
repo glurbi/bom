@@ -7,6 +7,7 @@ import bom.schema._
 import bom.types._
 import bom.bin._
 
+// TODO: split the test in many...
 object BomTest {
 
   object TestSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
@@ -273,6 +274,7 @@ object BomTest {
     assert(value(root/"integers"/0) == 1.asInstanceOf[Byte])
     assert(value(root/0/1) == 15)
     assert(value(root/0/2) == 15L)
+    assert(value(root / 0 / -1 / 0 / 2) == 15L)
     assert(value(root/0/3) == (0xFF).asInstanceOf[Short])
     assert(value(root/0/4) == 0xFFFFL)
     assert(value(root/0/5) == -1)
@@ -285,6 +287,7 @@ object BomTest {
     assert(value(root/1/3) == 1234L)
     assert(value(root/1/"bcd6") == 123456L)
     assert(value(root/"bcds"/5) == 12345678L)
+    assert(value(root / "bcds" / -1 / "bcds" / 5) == 12345678L)
 
     // blobs
     assert((root/"blobs"/"blob1").size == 3 * 8)

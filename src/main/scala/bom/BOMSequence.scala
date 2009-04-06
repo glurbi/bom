@@ -43,8 +43,9 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
 
   override def childCount = schema.children.size
 
-  def /(index: Int): BOMNode = {
-      schema.children(index).instance(this, index)
+  def /(index: Int): BOMNode = index match {
+    case -1 => parent
+    case _ => schema.children(index).instance(this, index)
   }
 
   override def toString: String = name

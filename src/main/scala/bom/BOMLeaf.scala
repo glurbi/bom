@@ -12,7 +12,10 @@ abstract case class BOMLeaf(override val schema: BOMSchemaElement,
    */
   def value: Any
 
-  def /(index: Int): BOMNode = null
+  def /(index: Int): BOMNode = index match {
+    case -1 => parent
+    case _ => error("A leaf node doesn't have children.")
+  }
 
   def /(name: String): BOMNode = null
   

@@ -48,7 +48,10 @@ case class BOMArray(override val schema: BOMSchemaArray,
   /**
    * @return the array element at the specified index
    */
-  def /(index: Int): BOMNode = schema.children(0).instance(this, index)
+  def /(index: Int): BOMNode = index match {
+        case -1 => parent
+        case _ => schema.children(0).instance(this, index)
+  }
 
   def /(name: String): BOMNode = null
 

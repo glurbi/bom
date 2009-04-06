@@ -3,6 +3,9 @@ package bom
 /**
  * The Binary Object Model exception base class.
  */
+
+//TODO: replace by calls to error()...
+
 @SerialVersionUID(1)
 case class BOMException(message: String, cause: Throwable)
   extends RuntimeException {

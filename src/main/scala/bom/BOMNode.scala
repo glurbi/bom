@@ -41,10 +41,9 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   def childCount = 0
 
   /**
-   * @return the child of this node at the specified index or <code>null<code>
-   *         if it doesn't exist
+   * @param index the index of the child or -1 if
+   * @return the parent of this node or the child at the specified index
    */
-  // TODO: add support for -1 (parent)
   def /(index: Int): BOMNode
 
   /**
