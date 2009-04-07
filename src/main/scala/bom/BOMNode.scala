@@ -33,7 +33,10 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    * 
    * @return the node size (number of bits)
    */
-  lazy val size: Long = 0
+  lazy val size: Long = error("Not implemented!")
+  // Ideally, I would like to define an abstract method:
+  // def size: Long
+  // instead of the lazy val, but the tests fail (at least with version 2.7.3)
 
   /**
    * @return the number of children of this node

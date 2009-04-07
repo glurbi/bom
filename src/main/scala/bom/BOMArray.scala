@@ -15,15 +15,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
                     val regular: Boolean)
   extends BOMContainer(schema, parent, index) {
 
-  // TODO: lazyfy
-  private var arrayLength = -1
-
-  def length: Long = {
-    if (arrayLength == -1) {
-      arrayLength = schema.lengthFun(this).asInstanceOf[Int]
-    }
-    arrayLength;
-  }
+  lazy val length: Long = schema.lengthFun(this).asInstanceOf[Int]
 
   override lazy val size: Long =
     if (schema.sizeFun != null)  {
