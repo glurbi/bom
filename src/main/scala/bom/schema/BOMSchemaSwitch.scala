@@ -41,6 +41,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
       def /(index: Int): BOMNode = error("Not implemented!")
       def /(name: String): BOMNode = error("Not implemented!")
       def length: Long = error("Not implemented!")
+      def iterator: JIterator[BOMNode] = error("Not implemented!")
     }
     elementAdapter.node = node
     val matchingCase = findMatchingCase(

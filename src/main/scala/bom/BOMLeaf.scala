@@ -1,5 +1,7 @@
 package bom
 
+import java.util._
+
 import bom.schema._
 
 abstract case class BOMLeaf(override val schema: BOMSchemaElement,
@@ -16,4 +18,10 @@ abstract case class BOMLeaf(override val schema: BOMSchemaElement,
 
   def /(name: String): BOMNode = null
   
+  def iterator: Iterator[BOMNode] = new Iterator[BOMNode]() {
+    def hasNext: Boolean = false
+    def next: BOMNode = throw new NoSuchElementException
+    def remove = throw new UnsupportedOperationException
+  }
+
 }

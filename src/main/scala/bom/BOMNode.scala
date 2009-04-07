@@ -1,5 +1,7 @@
 package bom
 
+import java.util._
+
 import org.w3c.dom._
 import bom.bin._
 import bom.schema._
@@ -39,6 +41,11 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   // instead of the lazy val, but the tests fail (at least with version 2.7.3)
 
   /**
+   * @return an iterator over the children elements of this container
+   */
+  def iterator: Iterator[BOMNode]
+
+  /**
    * @return the number of children of this node
    */
   def length: Long
@@ -54,8 +61,6 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    *         if it doesn't exist
    */
   def /(name: String): BOMNode
-
-  // TODO: add a "children" method
 
   /**
    * @return the value of this node
