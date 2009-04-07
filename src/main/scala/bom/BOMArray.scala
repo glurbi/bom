@@ -11,8 +11,7 @@ import bom.schema._
  */
 case class BOMArray(override val schema: BOMSchemaArray,
                     override val parent: BOMContainer,
-                    override val index: Int,
-                    val regular: Boolean)
+                    override val index: Int)
   extends BOMContainer(schema, parent, index) {
 
   lazy val length: Long = schema.lengthFun(this).asInstanceOf[Int]
@@ -20,7 +19,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
   override lazy val size: Long =
     if (schema.sizeFun != null)  {
       schema.sizeFun(this)
-    } else if (regular) {
+    } else if (schema.regular) {
       val n = schema.children(0).instance(this, 0)
       length * n.size
     } else {

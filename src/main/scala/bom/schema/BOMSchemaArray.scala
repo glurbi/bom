@@ -23,9 +23,6 @@ case class BOMSchemaArray(override val name: String,
 
   override def children: List[BOMSchemaElement] = element :: Nil
 
-  def instance(parent: BOMContainer, index: Int): BOMNode = {
-    val array = new BOMArray(this, parent, index, regular)
-    array
-  }
+  def instance(parent: BOMContainer, index: Int): BOMNode = new BOMArray(this, parent, index)
 
 }
