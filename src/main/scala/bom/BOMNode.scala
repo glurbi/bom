@@ -38,8 +38,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return the number of children of this node
    */
-  // TODO: call it length
-  def childCount = 0
+  def length: Long
 
   /**
    * @param index the index of the child or -1 if
@@ -69,6 +68,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
     new BOMIdentifier(ia);
   }
 
+  // TODO: hide in identifier method + use scala immutable Lists
   private def populateId(id: Array[Int]): Unit = {
     if (!isInstanceOf[BOMDocument]) {
       id(depth - 1) = index

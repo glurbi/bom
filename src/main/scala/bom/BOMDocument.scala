@@ -94,6 +94,6 @@ case class BOMDocument(override val schema: BOMSchemaElement,
 
   def /(name: String): BOMNode = null
 
-  override def childCount: Int = 1
+  def length: Long = 1
   
 }

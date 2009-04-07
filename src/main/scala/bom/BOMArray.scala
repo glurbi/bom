@@ -15,35 +15,29 @@ case class BOMArray(override val schema: BOMSchemaArray,
                     val regular: Boolean)
   extends BOMContainer(schema, parent, index) {
 
+  // TODO: lazyfy
   private var arrayLength = -1
 
-  /**
-   * @return the number of element in this array
-   */
-  def childrenCount: Int = {
+  def length: Long = {
     if (arrayLength == -1) {
       arrayLength = schema.lengthFun(this).asInstanceOf[Int]
     }
     arrayLength;
   }
 
-  def length: Long = childrenCount
-
   override lazy val size: Long =
     if (schema.sizeFun != null)  {
       schema.sizeFun(this)
     } else if (regular) {
       val n = schema.children(0).instance(this, 0)
-      childrenCount * n.size
+      length * n.size
     } else {
       var sz = 0L
-      for (i <- 0 until childrenCount) {
+      for (i <- 0 until length.toInt) {
         sz += (this/i).size
       }
       sz
     }
-
-  override def childCount: Int = childrenCount
 
   /**
    * @return the array element at the specified index
@@ -61,7 +55,7 @@ case class BOMArray(override val schema: BOMSchemaArray,
 
   class ArrayIterator extends Iterator[BOMNode] {
     var index = -1
-    def hasNext: Boolean = index < childrenCount - 1;
+    def hasNext: Boolean = index < length - 1;
     def next: BOMNode = {
       if (!hasNext) {
         throw new NoSuchElementException();

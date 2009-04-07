@@ -7,10 +7,7 @@ abstract case class BOMLeaf(override val schema: BOMSchemaElement,
                             override val index: Int)
   extends BOMNode(schema, parent, index) {
 
-  /**
-   * @return the value of this instance in the binary space
-   */
-  def value: Any
+  def length: Long = 0
 
   def /(index: Int): BOMNode = index match {
     case -1 => parent

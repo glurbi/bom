@@ -52,7 +52,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
     def getChild(parent: Object, index: Int): Object =
       parent.asInstanceOf[BOMNode]/index
     def getChildCount(parent: Object): Int =
-      parent.asInstanceOf[BOMNode].childCount
+      parent.asInstanceOf[BOMNode].length.toInt
     def getIndexOfChild(parent: Object, child: Object): Int =
       child.asInstanceOf[BOMNode].index
     override def isLeaf(node: Object): Boolean = node.isInstanceOf[BOMLeaf]
@@ -107,7 +107,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
       val numbers = new ArrayList[Double]
       var min = (array/0).asInstanceOf[BOMNumber].value.doubleValue
       var max = min
-      for (i <- 0 until array.childrenCount) {
+      for (i <- 0 until array.length.toInt) {
         numbers.add((array/i).asInstanceOf[BOMNumber].value.doubleValue)
         if (numbers(i) > max) max = numbers(i)
         if (numbers(i) < min) min = numbers(i)
@@ -115,7 +115,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
       val plot = new JXGraph.Plot {
         def compute(x: Double) = {
           val index = x.toInt
-          if (index >= 0 && index < array.childrenCount) {
+          if (index >= 0 && index < array.length) {
             numbers(index)
           } else {
             0.0
@@ -125,7 +125,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
       val graph = new JXGraph
       val frame = new JFrame("Plot")
       graph.setOrigin(new Point2D.Double(0.0, 0.0))
-      graph.setView(new Rectangle2D.Double(0.0, min, array.childrenCount, max - min))
+      graph.setView(new Rectangle2D.Double(0.0, min, array.length, max - min))
       graph.setGridPainted(false)
       graph.setTextPainted(false) // if turned on, can be very slow
       graph.addPlots(Color.red, plot)

@@ -290,8 +290,8 @@ object BomTest {
     assert(value(root / "bcds" / -1 / "bcds" / 5) == 12345678L)
 
     // blobs
-    assert((root/"blobs"/"blob1").size == 3 * 8)
-    assert((root/"blobs"/"blob2").size == 4 * 8)
+    assert(size(root/"blobs"/"blob1") == 3 * 8)
+    assert(size(root/"blobs"/"blob2") == 4 * 8)
     assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](0) == 1)
     assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](1) == 9)
     assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](2) == 7)
@@ -301,17 +301,17 @@ object BomTest {
     assert(value(root/"strings"/"greetings") == "Hello, BOM!")
     
     // array1
-    assert((root/"array1"/"array1").childCount == 6)
+    assert(length(root/"array1"/"array1") == 6)
     assert(value(root/4/1/5) == 6.asInstanceOf[Byte])
 
     //array2
-    assert((root/"array2"/"array2").size == 12 * 8)
+    assert(size(root/"array2"/"array2") == 12 * 8)
     assert(value(root/5/0/3/1) == 11)
 
     //array3
-    assert((root/"array3"/"array3"/0).childCount == 4)
-    assert((root/"array3"/"array3"/1).childCount == 5)
-    assert((root/"array3"/"array3"/2).childCount == 6)
+    assert(length(root/"array3"/"array3"/0) == 4)
+    assert(length(root/"array3"/"array3"/1) == 5)
+    assert(length(root/"array3"/"array3"/2) == 6)
     assert(value(root/"array3"/"array3"/2/5) == 0x66)
 
     // virtuals
