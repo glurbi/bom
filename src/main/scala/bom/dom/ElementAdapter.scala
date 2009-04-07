@@ -11,51 +11,51 @@ class ElementAdapter(node: BOMNode) extends NodeAdapter(node) with Element {
 
   override def getNodeValue: String = null
 
-  def getAttribute(name: String): String = throw new BOMException
+  def getAttribute(name: String): String = error("Not implemented!")
 
   def getAttributeNS(namespaceURI: String, localName: String): String =
-    throw new BOMException
+    error("Not implemented!")
 
-  def getAttributeNode(name: String): Attr = throw new BOMException
+  def getAttributeNode(name: String): Attr = error("Not implemented!")
 
   def getAttributeNodeNS(namespaceURI: String, localName: String): Attr =
-    throw new BOMException
+    error("Not implemented!")
 
-  def getElementsByTagName(name: String): NodeList = throw new BOMException
+  def getElementsByTagName(name: String): NodeList = error("Not implemented!")
 
   def getElementsByTagNameNS(namespaceURI: String, localName: String): NodeList =
-    throw new BOMException
+    error("Not implemented!")
 
-  def getSchemaTypeInfo: TypeInfo = throw new BOMException
+  def getSchemaTypeInfo: TypeInfo = error("Not implemented!")
 
-  def getTagName: String = throw new BOMException
+  def getTagName: String = error("Not implemented!")
 
-  def hasAttribute(name: String): Boolean = throw new BOMException
+  def hasAttribute(name: String): Boolean = error("Not implemented!")
 
   def hasAttributeNS(namespaceURI: String, localName: String): Boolean =
-    throw new BOMException
+    error("Not implemented!")
 
-  def removeAttribute(name: String) = throw new BOMException
+  def removeAttribute(name: String) = error("Not implemented!")
 
   def removeAttributeNS(namespaceURI: String, localName: String) =
-    throw new BOMException
+    error("Not implemented!")
 
-  def removeAttributeNode(oldAttr: Attr): Attr = throw new BOMException
+  def removeAttributeNode(oldAttr: Attr): Attr = error("Not implemented!")
 
-  def setAttribute(name: String, value: String) = throw new BOMException
+  def setAttribute(name: String, value: String) = error("Not implemented!")
 
   def setAttributeNS(namespaceURI: String, qualifiedName: String, value: String) =
-    throw new BOMException
+    error("Not implemented!")
 
-  def setAttributeNode(newAttr: Attr): Attr = throw new BOMException
+  def setAttributeNode(newAttr: Attr): Attr = error("Not implemented!")
 
-  def setAttributeNodeNS(newAttr: Attr): Attr = throw new BOMException
+  def setAttributeNodeNS(newAttr: Attr): Attr = error("Not implemented!")
 
-  def setIdAttribute(name: String, isId: Boolean) = throw new BOMException
+  def setIdAttribute(name: String, isId: Boolean) = error("Not implemented!")
 
   def setIdAttributeNS(namespaceURI: String, localName: String, isId: Boolean) =
-    throw new BOMException
+    error("Not implemented!")
 
-  def setIdAttributeNode(idAttr: Attr, isId: Boolean) = throw new BOMException
+  def setIdAttributeNode(idAttr: Attr, isId: Boolean) = error("Not implemented!")
 
 }

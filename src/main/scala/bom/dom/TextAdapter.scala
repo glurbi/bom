@@ -9,28 +9,28 @@ class TextAdapter(node: BOMLeaf) extends NodeAdapter(node) with Text {
 
   override def getNodeValue: String = node.value.toString
   
-  def getWholeText: String = throw new BOMException
+  def getWholeText: String = error("Not implemented!")
 
-  def isElementContentWhitespace: Boolean = throw new BOMException
+  def isElementContentWhitespace: Boolean = error("Not implemented!")
 
-  def replaceWholeText(content: String): Text = throw new BOMException
+  def replaceWholeText(content: String): Text = error("Not implemented!")
 
-  def splitText(offset: Int): Text = throw new BOMException
+  def splitText(offset: Int): Text = error("Not implemented!")
 
-  def appendData(arg: String) = throw new BOMException
+  def appendData(arg: String) = error("Not implemented!")
 
-  def deleteData(offset: Int, count: Int) = throw new BOMException
+  def deleteData(offset: Int, count: Int) = error("Not implemented!")
 
-  def getData: String = throw new BOMException
+  def getData: String = error("Not implemented!")
 
-  def getLength: Int = throw new BOMException
+  def getLength: Int = error("Not implemented!")
 
-  def insertData(offset: Int, arg: String) = throw new BOMException
+  def insertData(offset: Int, arg: String) = error("Not implemented!")
 
-  def replaceData(offset: Int, count: Int, arg: String) = throw new BOMException
+  def replaceData(offset: Int, count: Int, arg: String) = error("Not implemented!")
 
-  def setData(data: String) = throw new BOMException
+  def setData(data: String) = error("Not implemented!")
 
-  def substringData(offset: Int, count: Int): String = throw new BOMException
+  def substringData(offset: Int, count: Int): String = error("Not implemented!")
 
 }

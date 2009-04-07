@@ -9,7 +9,7 @@ class BOMLeafAdapter(bomLeaf: BOMLeaf) extends ElementAdapter(bomLeaf) {
       def getLength: Int = 1
       def item(index: Int): Node = {
         if (index != 0) {
-          throw new BOMException("Index out of bound!")
+          error("Invalid index: " + index)
         }
         new TextAdapter(bomLeaf)
       }

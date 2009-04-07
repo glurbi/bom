@@ -34,7 +34,7 @@ abstract class NodeAdapter(var node: BOMNode) extends Node {
         val previousNodeName = node.parent.schema.asInstanceOf[BOMSchemaSequence].children(node.index - 1).name
         result = (node.parent.asInstanceOf[BOMSequence]/previousNodeName).asDomNode
       } else {
-        throw new BOMException
+        error("Unreachable code?")
       }
     }
     result
@@ -48,63 +48,63 @@ abstract class NodeAdapter(var node: BOMNode) extends Node {
 
   def getNodeName: String = node.name
   
-  def setNodeValue(nodeValue: String) = throw new BOMException
+  def setNodeValue(nodeValue: String) = error("Not implemented!")
 
-  def appendChild(newChild: Node): Node = throw new BOMException
+  def appendChild(newChild: Node): Node = error("Not implemented!")
 
-  def compareDocumentPosition(other: Node): Short = throw new BOMException
+  def compareDocumentPosition(other: Node): Short = error("Not implemented!")
 
-  def setPrefix(prefix: String) = throw new BOMException
+  def setPrefix(prefix: String) = error("Not implemented!")
 
-  def getTextContent: String = throw new BOMException
+  def getTextContent: String = error("Not implemented!")
 
-  def cloneNode(deep: Boolean): Node = throw new BOMException
+  def cloneNode(deep: Boolean): Node = error("Not implemented!")
 
-  def getBaseURI: String = throw new BOMException
+  def getBaseURI: String = error("Not implemented!")
 
-  def getChildNodes: NodeList = throw new BOMException
+  def getChildNodes: NodeList = error("Not implemented!")
 
   def getFeature(feature: String, version: String): Object =
-    throw new BOMException
+    error("Not implemented!")
 
-  def getFirstChild: Node = throw new BOMException
+  def getFirstChild: Node = error("Not implemented!")
 
-  def getLastChild: Node = throw new BOMException
+  def getLastChild: Node = error("Not implemented!")
 
-  def getNextSibling: Node = throw new BOMException
+  def getNextSibling: Node = error("Not implemented!")
 
-  def getNodeValue: String = throw new BOMException
+  def getNodeValue: String = error("Not implemented!")
 
-  def getUserData(key: String): Object = throw new BOMException
+  def getUserData(key: String): Object = error("Not implemented!")
 
-  def hasAttributes: Boolean = throw new BOMException
+  def hasAttributes: Boolean = error("Not implemented!")
 
   def insertBefore(newChild: Node , refChild: Node): Node =
-    throw new BOMException
+    error("Not implemented!")
 
-  def isDefaultNamespace(namespaceURI: String): Boolean = throw new BOMException
+  def isDefaultNamespace(namespaceURI: String): Boolean = error("Not implemented!")
 
-  def isEqualNode(arg: Node): Boolean = throw new BOMException
+  def isEqualNode(arg: Node): Boolean = error("Not implemented!")
 
-  def isSameNode(other: Node): Boolean = throw new BOMException
+  def isSameNode(other: Node): Boolean = error("Not implemented!")
 
   def isSupported(feature: String, version: String): Boolean =
-    throw new BOMException
+    error("Not implemented!")
 
-  def lookupNamespaceURI(prefix: String): String = throw new BOMException
+  def lookupNamespaceURI(prefix: String): String = error("Not implemented!")
 
-  def lookupPrefix(namespaceURI: String): String = throw new BOMException
+  def lookupPrefix(namespaceURI: String): String = error("Not implemented!")
 
-  def normalize = throw new BOMException
+  def normalize = error("Not implemented!")
 
-  def removeChild(oldChild: Node): Node = throw new BOMException
+  def removeChild(oldChild: Node): Node = error("Not implemented!")
 
   def replaceChild(newChild: Node, oldChild: Node): Node =
-    throw new BOMException
+    error("Not implemented!")
 
-  def setTextContent(textContent: String) = throw new BOMException
+  def setTextContent(textContent: String) = error("Not implemented!")
 
   def setUserData(key: String, data: Any, handler: UserDataHandler): Object =
-    throw new BOMException
+    error("Not implemented!")
 
 }

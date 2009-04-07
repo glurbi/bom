@@ -18,7 +18,7 @@ case class BOMSchemaNumber(override val name: String,
   val masks = new JHashMap[String, Long]
   var defaultMapping: Object = null
 
-  def add(child: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = error("A number cannot have a child element.")
 
   override def children: List[BOMSchemaElement] = Nil
 

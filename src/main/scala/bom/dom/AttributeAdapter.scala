@@ -1,6 +1,5 @@
 package bom.dom
 
-import bom.BOMException;
 import bom.BOMNode;
 
 import org.w3c.dom.Attr;
@@ -26,14 +25,14 @@ class AttributeAdapter(node: BOMNode, name: String, value: String)
 
   override def getNodeValue: String = value
 
-  def getOwnerElement: Element = throw new BOMException
+  def getOwnerElement: Element = error("Not implemented!")
 
-  def getSchemaTypeInfo: TypeInfo = throw new BOMException
+  def getSchemaTypeInfo: TypeInfo = error("Not implemented!")
 
-  def getSpecified: Boolean = throw new BOMException
+  def getSpecified: Boolean = error("Not implemented!")
 
-  def isId: Boolean = throw new BOMException
+  def isId: Boolean = error("Not implemented!")
 
-  def setValue(value: String) = throw new BOMException
+  def setValue(value: String) = error("Not implemented!")
 
 }

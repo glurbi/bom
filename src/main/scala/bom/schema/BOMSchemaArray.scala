@@ -18,7 +18,7 @@ case class BOMSchemaArray(override val name: String,
     if (element == null) {
       element = child;
     } else {
-      throw new BOMException
+      error("Only one child element can be added to an array.")
     }
 
   override def children: List[BOMSchemaElement] = element :: Nil

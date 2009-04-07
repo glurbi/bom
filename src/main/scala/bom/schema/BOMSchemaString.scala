@@ -10,7 +10,7 @@ case class BOMSchemaString(override val name: String,
 
   var encoding: String = _
     
-  def add(child: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = error("A string cannot have a child element.")
 
   override def children: List[BOMSchemaElement] = null
 

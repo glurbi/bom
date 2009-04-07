@@ -22,7 +22,7 @@ case class BOMSchemaDocument() extends BOMSchemaElement {
     if (root == null) {
       root = child
     } else {
-      throw new BOMException("Cannot have more than one root in a document.")
+      error("A document cannot have more than one root.")
     }
   }
 

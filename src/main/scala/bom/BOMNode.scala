@@ -92,7 +92,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
       (parent.asInstanceOf[BOMArray]/(index - 1)).position +
       (parent.asInstanceOf[BOMArray]/(index - 1)).size
     } else {
-      throw new BOMException
+      error("unreachable statement?")
     }
 
   /**

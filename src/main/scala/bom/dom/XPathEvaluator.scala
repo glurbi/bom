@@ -56,7 +56,7 @@ class XPathEvaluator {
       }
       result
     } catch {
-      case xpee: XPathExpressionException => throw new BOMException(xpee)
+      case xpee: XPathExpressionException => error(xpee.getMessage)
     } finally {
       contexts.pop();
     }
@@ -71,7 +71,7 @@ class XPathEvaluator {
         result = xpathExpression(xpath).
           evaluate(context.asDomNode, XPathConstants.STRING).asInstanceOf[String]
       } catch {
-        case xpee: XPathExpressionException => throw new BOMException(xpee)
+        case xpee: XPathExpressionException => error(xpee.getMessage)
       }
       stringResultCache.put(id, result)
     }
@@ -88,7 +88,7 @@ class XPathEvaluator {
         result = xpathExpression(xpath).
           evaluate(context.asDomNode, XPathConstants.NUMBER).asInstanceOf[Number]
       } catch {
-        case xpee: XPathExpressionException => throw new BOMException(xpee)
+        case xpee: XPathExpressionException => error(xpee.getMessage)
       }
       numberResultCache.put(id, result)
     }
@@ -104,7 +104,7 @@ class XPathEvaluator {
       val result = if (n != null) n.node else null
       result
     } catch {
-      case xpee: XPathExpressionException => throw new BOMException(xpee)
+      case xpee: XPathExpressionException => error(xpee.getMessage)
     } finally {
       contexts.pop
     }

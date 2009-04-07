@@ -20,7 +20,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
 
   override def add(child: BOMSchemaElement) {
     if (!(child.isInstanceOf[BOMSchemaCase])) {
-      throw new BOMException();
+      error("Invalid child type: " + child.getClass)
     }
     val scase = child.asInstanceOf[BOMSchemaCase]
     cases.put(scase.caseValue, scase)
@@ -37,9 +37,9 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
     val node = new BOMNode(this, parent, index) {
       def asDomNode: Node = elementAdapter
       override def depth: Int = parent.depth + 1;
-      override lazy val size: Long = throw new BOMException
-      def /(index: Int): BOMNode = throw new BOMException
-      def /(name: String): BOMNode = throw new BOMException
+      override lazy val size: Long = error("Not implemented!")
+      def /(index: Int): BOMNode = error("Not implemented!")
+      def /(name: String): BOMNode = error("Not implemented!")
     }
     elementAdapter.node = node
     val matchingCase = findMatchingCase(

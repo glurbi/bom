@@ -12,7 +12,7 @@ case class BOMSchemaVirtual(override val name: String,
 
   var xpath: String = _
 
-  def add(child: BOMSchemaElement) = throw new BOMException
+  def add(child: BOMSchemaElement) = error("A virtual element cannot have a child.")
 
   override def children: List[BOMSchemaElement] = null
 
