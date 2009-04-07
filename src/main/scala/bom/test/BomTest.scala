@@ -84,12 +84,7 @@ object BomTest {
     def masking =
       sequence("masks") {
         number("nb1", bom_ushort) {
-          masks {
-            mask("BIT_ONE", "0x0001")
-            mask("BIT_TWO", "0x0002")
-            mask("BIT_NINE", "0x0010")
-            mask("BIT_SEVENTEEN", "0x0100")
-          }
+          externalMaskDef
         }
         number("nb2", bom_ushort) {
           masks {
@@ -99,6 +94,13 @@ object BomTest {
             mask("BIT_SEVENTEEN", "0x0100")
           }
         }
+      }
+    def externalMaskDef =
+      masks {
+        mask("BIT_ONE", "0x0001")
+        mask("BIT_TWO", "0x0002")
+        mask("BIT_NINE", "0x0010")
+        mask("BIT_SEVENTEEN", "0x0100")
       }
 
     def mapping =
