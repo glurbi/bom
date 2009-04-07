@@ -8,6 +8,7 @@ import javax.xml.xpath._
 import bom.dom._
 import bom.schema._
 import bom.bin._
+import bom.BOM._
 
 /**
  * The <code>BOMDocument</code> interface defines the entry point for accessing
@@ -59,7 +60,9 @@ case class BOMDocument(override val schema: BOMSchemaElement,
   override lazy val position: Long = 0
   
   override def binarySpace: BOMBinarySpace = bspace
-  
+
+  override lazy val identifier: BOMIdentifier = Nil
+
   def asDomNode: Node = {
     // the only reason for caching the document node is that saxon test equality based on
     // identity and not using the equals method (net.sf.saxon.dom.DocumentWrapper#wrap).

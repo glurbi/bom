@@ -3,8 +3,10 @@ package bom
 import java.util._
 
 import org.w3c.dom._
+import bom.BOM._
 import bom.bin._
 import bom.schema._
+
 
 /**
  * The <code>BOMNode</code> class is the primary data type for the entire
@@ -70,20 +72,8 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return this node identifier
    */
-  def identifier: BOMIdentifier = {
-    val ia = new Array[Int](depth)
-    populateId(ia);
-    new BOMIdentifier(ia);
-  }
+  lazy val identifier: BOMIdentifier = index :: parent.identifier
 
-  // TODO: hide in identifier method + use scala immutable Lists
-  private def populateId(id: Array[Int]): Unit = {
-    if (!isInstanceOf[BOMDocument]) {
-      id(depth - 1) = index
-      parent.asInstanceOf[BOMNode].populateId(id);
-    }
-  }
-  
   /**
    * @return the position (in bits) of this node in the binary space
    */

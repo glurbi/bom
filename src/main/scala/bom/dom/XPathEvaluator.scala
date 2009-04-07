@@ -3,6 +3,7 @@ package bom.dom
 import java.util._
 import javax.xml.namespace._
 import javax.xml.xpath._
+import bom.BOM._
 import bom.dom._
 import org.w3c.dom._
 
