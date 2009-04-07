@@ -25,7 +25,7 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       externalHeader
       array("data", length("/segd/general_header_1/scan_type_per_record")) {
         array("scan type", length("/segd/general_header_1/channel_sets_per_scan_type")) {
-          array("channel set", length("/segd/scan_type_headers/channel_set_headers[bom:context()/../@index + 1]/channel_set_header[bom:context()/@index + 1]/number_of_channels"), regular) {
+          array("channel set", length("/segd/scan_type_headers/channel_set_headers[number(bom:context()/../@index)]/channel_set_header[number(bom:context()/@index)]/number_of_channels"), regular) {
             trace
           }
         }
@@ -102,9 +102,9 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       array("trace header extensions", length("../trace_header/trace_header_extensions"), regular) {
         traceHeaderExtension
       }
-      virtual("start_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/start_time")
-      virtual("end_time", "/segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/end_time")
-      virtual("subscan", "bom:power(2, /segd/scan_type_headers/channel_set_headers[bom:context()/../../../@index + 1]/channel_set_header[bom:context()/../../@index + 1]/sc)")
+      virtual("start_time", "/segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/start_time")
+      virtual("end_time", "/segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/end_time")
+      virtual("subscan", "bom:power(2, /segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/sc)")
       virtual("trace_size", "(../end_time - ../start_time) * ../subscan * 3")
       virtual("sample_count", "(../end_time - ../start_time) * ../subscan")
       traceData

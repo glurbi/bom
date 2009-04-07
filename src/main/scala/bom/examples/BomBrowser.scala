@@ -31,7 +31,7 @@ object BomBrowser {
 
 }
 
-// FIXME: for some obscure reason, if the class has the same name as the
+// NB: for some obscure reason, if the class has the same name as the
 // companion object, netbeans complains with "java.lang.NoSuchMethodError: main"
 class BomBrowserFoo(val doc: BOMDocument) {
 

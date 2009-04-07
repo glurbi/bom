@@ -67,7 +67,7 @@ object BomTest {
           number("length", bom_byte)
         }
         array("array3", length(3), irregular) {
-          array("nested", length("../../lengths/length[bom:context()/@index + 1]"), regular) {
+          array("nested", length("../../lengths/length[number(bom:context()/@index)]"), regular) {
             number("item", bom_byte)
           }
         }

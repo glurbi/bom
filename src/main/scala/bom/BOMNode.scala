@@ -38,6 +38,7 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
   /**
    * @return the number of children of this node
    */
+  // TODO: call it length
   def childCount = 0
 
   /**
