@@ -7,12 +7,13 @@ import bom.schema._
 import org.w3c.dom._
 
 /**
- * The <code>BOMSequence</code> interface represents a container node where
- * children can be accessed by name.
+ * The <code>BOMSequence</code> class represents a container node of different
+ * element type. The children can be looked up by name or index.
  */
-case class BOMSequence(override val schema: BOMSchemaSequence,
-                       override val parent: BOMContainer,
-                       override val index: Int)
+case class BOMSequence(
+  override val schema: BOMSchemaSequence,
+  override val parent: BOMContainer,
+  override val index: Int)
   extends BOMContainer(schema, parent, index) {
 
   def asDomNode: Node = new BOMSequenceAdapter(this)
@@ -32,7 +33,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
     sz
   }
   
-  override def /(name: String): BOMNode = {
+  override def / (name: String): BOMNode = {
     val childSchema = schema.child(name)
     if (childSchema == null) {
       null
@@ -43,7 +44,7 @@ case class BOMSequence(override val schema: BOMSchemaSequence,
 
   def length: Long = schema.children.size
 
-  def /(index: Int): BOMNode = index match {
+  def / (index: Int): BOMNode = index match {
     case -1 => parent
     case _ => schema.children(index).instance(this, index)
   }

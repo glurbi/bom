@@ -7,12 +7,13 @@ import org.w3c.dom._
 import bom.types._
 
 /**
- * The <code>BOMNumber</code> interface defines a concrete node in the Binary Object Model, that
- * can be interpreted as a number. It occupies physical space in the binary space.
+ * The <code>BOMNumber</code> class defines a leaf node that can is interpreted
+ * as a number.
  */
-case class BOMNumber(override val schema: BOMSchemaNumber,
-                     override val parent: BOMContainer,
-                     override val index: Int)
+case class BOMNumber(
+  override val schema: BOMSchemaNumber,
+  override val parent: BOMContainer,
+  override val index: Int)
   extends BOMLeaf(schema, parent, index) {
 
   /**

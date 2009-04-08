@@ -8,12 +8,13 @@ import bom.schema._
 import org.w3c.dom._
 
 /**
- * The <code>BOMString</code> interface defines a concrete node in the Binary Object Model, that
- * can be interpreted as a character string. It occupies physical space in the binary space.
+ * The <code>BOMString</code> class defines a node that is interpreted as a
+ * character string.
  */
-case class BOMString(override val schema: BOMSchemaString,
-                     override val parent: BOMContainer,
-                     override val index: Int)
+case class BOMString(
+  override val schema: BOMSchemaString,
+  override val parent: BOMContainer,
+  override val index: Int)
   extends BOMLeaf(schema, parent, index) {
 
   /**

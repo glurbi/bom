@@ -7,21 +7,20 @@ import org.w3c.dom._
 import bom.types._
 
 /**
- * The <code>BOMBlob</code> interface defines a concrete node in the Binary
- * Object Model, that is interpreted as an "opaque" byte array. It occupies
- * physical space in the binary space.
+ * The <code>BOMBlob</code> class defines a leaf node that is interpreted as an
+ * "opaque" byte array.
  */
-case class BOMBlob(override val schema: BOMSchemaBlob,
-                   override val parent: BOMContainer,
-                   override val index: Int,
-                   val sizeFun: BOMNode => Long)
+case class BOMBlob(
+  override val schema: BOMSchemaBlob,
+  override val parent: BOMContainer,
+  override val index: Int,
+  //TODO: move into schema
+  val sizeFun: BOMNode => Long)
   extends BOMLeaf(schema, parent, index) {
 
+  //TODO: lazify
   private var bytes: Array[Byte] = _
 
-  /**
-   * @return the value of this blob in the binary space
-   */
   override def value: Array[Byte] = {
     if (bytes == null) {
       binarySpace.position(position)

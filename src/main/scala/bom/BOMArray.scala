@@ -6,12 +6,13 @@ import bom.dom._
 import bom.schema._
 
 /**
- * The <code>BOMArray</code> class represents a container node where children
- * are indexed.
+ * The <code>BOMArray</code> class represents a container node of the same
+ * element type. The children can be lookep up by index.
  */
-case class BOMArray(override val schema: BOMSchemaArray,
-                    override val parent: BOMContainer,
-                    override val index: Int)
+case class BOMArray(
+  override val schema: BOMSchemaArray,
+  override val parent: BOMContainer,
+  override val index: Int)
   extends BOMContainer(schema, parent, index) {
 
   lazy val length: Long = schema.lengthFun(this).asInstanceOf[Int]
@@ -30,21 +31,16 @@ case class BOMArray(override val schema: BOMSchemaArray,
       sz
     }
 
-  /**
-   * @return the array element at the specified index
-   */
-  def /(index: Int): BOMNode = index match {
+  def / (index: Int): BOMNode = index match {
         case -1 => parent
         case _ => schema.children(0).instance(this, index)
   }
 
-  def /(name: String): BOMNode = null
+  def / (name: String): BOMNode = null
 
   def asDomNode: Node = new BOMArrayAdapter(this)
 
-  def iterator: Iterator[BOMNode] = new ArrayIterator
-
-  class ArrayIterator extends Iterator[BOMNode] {
+  def iterator: Iterator[BOMNode] = new Iterator[BOMNode] {
     var index = -1
     def hasNext: Boolean = index < length - 1;
     def next: BOMNode = {

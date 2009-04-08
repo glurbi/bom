@@ -1,18 +1,16 @@
 package bom
 
 import java.util._
-
 import org.w3c.dom._
 import bom.BOM._
 import bom.bin._
 import bom.schema._
 
-
 /**
  * The <code>BOMNode</code> class is the primary data type for the entire
  * Binary Object Model. It represents a single node in the document tree.
  */
-abstract class BOMNode(
+abstract case class BOMNode(
 
   /**
    * @return the schema of this node
@@ -68,13 +66,13 @@ abstract class BOMNode(
    * @param index the index of the child or -1 if
    * @return the parent of this node or the child at the specified index
    */
-  def /(index: Int): BOMNode
+  def / (index: Int): BOMNode
 
   /**
    * @return the child of this node with the specified name or <code>null<code>
    *         if it doesn't exist
    */
-  def /(name: String): BOMNode
+  def / (name: String): BOMNode
 
   /**
    * @return the value of this node

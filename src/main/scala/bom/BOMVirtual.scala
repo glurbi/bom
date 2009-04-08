@@ -7,15 +7,15 @@ import org.w3c.dom._
 import bom.types._
 
 /**
- * The <code>BOMVirtual</code> interface defines a virtual node in the Binary
- * Object Model. It doesn't occupy physical space in the binary space.
+ * The <code>BOMVirtual</code> class defines a virtual node. It doesn't occupy
+ * physical space in the binary space.
  */
-case class BOMVirtual(override val schema: BOMSchemaVirtual,
-                      override val parent: BOMContainer,
-                      override val index: Int,
-                      val xpath: String)
+case class BOMVirtual(
+  override val schema: BOMSchemaVirtual,
+  override val parent: BOMContainer,
+  override val index: Int,
+  val xpath: String)
   extends BOMLeaf(schema, parent, index) {
-
 
   /**
    * @return the value of this virtual node

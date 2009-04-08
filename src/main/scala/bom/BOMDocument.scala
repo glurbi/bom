@@ -11,11 +11,17 @@ import bom.bin._
 import bom.BOM._
 
 /**
- * The <code>BOMDocument</code> interface defines the entry point for accessing
+ * The <code>BOMDocument</code> class defines the entry point for accessing
  * a concrete binary structure.
  */
-case class BOMDocument(override val schema: BOMSchemaElement,
-                       val bspace: BOMBinarySpace)
+case class BOMDocument(
+  override val schema: BOMSchemaElement,
+
+  /**
+   * @return the binary space associated with this document.
+   */
+  val bspace: BOMBinarySpace)
+
   extends BOMContainer(schema, null, 0) {
 
     /**
@@ -72,8 +78,7 @@ case class BOMDocument(override val schema: BOMSchemaElement,
     domDocument
   }
   
-  def iterator: Iterator[BOMNode] = {
-    new Iterator[BOMNode] {
+  def iterator: Iterator[BOMNode] = new Iterator[BOMNode] {
       var used: Boolean = false
       def hasNext: Boolean = !used && (schema.children.size != 0)
       def next: BOMNode = {
@@ -85,17 +90,16 @@ case class BOMDocument(override val schema: BOMSchemaElement,
       }
       def remove = throw new UnsupportedOperationException
     }
-  }
 
   override def equals(that: Any): Boolean = this.eq(that.asInstanceOf[AnyRef])
 
-  def /(index: Int): BOMNode = index match {
+  def / (index: Int): BOMNode = index match {
         case 0 => schema.children(0).instance(BOMDocument.this, 0)
         case -1 => error("A document node doesn't have a parent.")
         case _ => error("Illegal index value.")
   }
 
-  def /(name: String): BOMNode = null
+  def / (name: String): BOMNode = null
 
   def length: Long = 1
   
