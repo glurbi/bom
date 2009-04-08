@@ -58,7 +58,7 @@ class BomBrowserFoo(val doc: BOMDocument) {
     override def isLeaf(node: Object): Boolean = node.isInstanceOf[BOMLeaf]
     private def translateValue(node: BOMNode): String =
       node match {
-        case BOMBlob(_, _, _, _) => "..."
+        case BOMBlob(_, _, _) => "..."
         case BOMContainer(_, _, _) => ""
         case _ => node.value.toString
       }

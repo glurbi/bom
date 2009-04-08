@@ -13,9 +13,7 @@ import bom.types._
 case class BOMBlob(
   override val schema: BOMSchemaBlob,
   override val parent: BOMContainer,
-  override val index: Int,
-  //TODO: move into schema
-  val sizeFun: BOMNode => Long)
+  override val index: Int)
   extends BOMLeaf(schema, parent, index) {
 
   override lazy val value: Array[Byte] = {
@@ -25,7 +23,7 @@ case class BOMBlob(
     bytes
   }
 
-  override lazy val size: Long = sizeFun(this)
+  override lazy val size: Long = schema.sizeFun(this)
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 
