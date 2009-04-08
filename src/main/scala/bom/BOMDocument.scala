@@ -91,9 +91,6 @@ case class BOMDocument(
       def remove = throw new UnsupportedOperationException
     }
 
-  //TODO: is it necessary?
-  override def equals(that: Any): Boolean = this.eq(that.asInstanceOf[AnyRef])
-
   def / (index: Int): BOMNode = index match {
         case 0 => schema.children(0).instance(BOMDocument.this, 0)
         case -1 => error("A document node doesn't have a parent.")
