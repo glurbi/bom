@@ -18,15 +18,10 @@ case class BOMBlob(
   val sizeFun: BOMNode => Long)
   extends BOMLeaf(schema, parent, index) {
 
-  //TODO: lazify
-  private var bytes: Array[Byte] = _
-
-  override def value: Array[Byte] = {
-    if (bytes == null) {
-      binarySpace.position(position)
-      bytes = new Array[Byte](byteCount.intValue)
-      binarySpace.getBytes(bytes)
-    }
+  override lazy val value: Array[Byte] = {
+    binarySpace.position(position)
+    val bytes = new Array[Byte](byteCount.intValue)
+    binarySpace.getBytes(bytes)
     bytes
   }
 
