@@ -136,6 +136,8 @@ trait BOMSchemaBuilder {
     stack.top.sizeFun = fun
   }
 
+  def length(lengthFun: BOMNode => Long): BOMNode => Long = lengthFun
+
   def length(len: Long): BOMNode => Long = (n: BOMNode) => len
 
   def length(xpath: String): BOMNode => Long = (n: BOMNode) => {
