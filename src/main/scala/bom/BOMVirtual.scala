@@ -26,6 +26,4 @@ case class BOMVirtual(
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 
-  override def toString: String = name + " " + value
-
 }

@@ -49,8 +49,6 @@ case class BOMSequence(
     case _ => schema.children(index).instance(this, index)
   }
 
-  override def toString: String = name
-
   class SequenceIterator extends Iterator[BOMNode] {
     var curr: BOMNode = null
     def hasNext: Boolean = {

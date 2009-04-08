@@ -34,8 +34,6 @@ case class BOMBlob(
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 
-  override def toString: String = name + " " + value.length + " bytes"
-
   def byteCount: Long = size / 8
 
 }

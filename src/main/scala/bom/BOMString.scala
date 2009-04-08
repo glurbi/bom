@@ -33,6 +33,4 @@ case class BOMString(
 
   def asDomNode: Node = new BOMLeafAdapter(this)
 
-  override def toString: String = name + " " + value
-
 }

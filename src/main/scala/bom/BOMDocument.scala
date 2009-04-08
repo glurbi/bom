@@ -91,6 +91,7 @@ case class BOMDocument(
       def remove = throw new UnsupportedOperationException
     }
 
+  //TODO: is it necessary?
   override def equals(that: Any): Boolean = this.eq(that.asInstanceOf[AnyRef])
 
   def / (index: Int): BOMNode = index match {

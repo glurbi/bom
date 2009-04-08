@@ -115,9 +115,4 @@ abstract case class BOMNode(
    */
   def binarySpace: BOMBinarySpace = document.binarySpace
 
-  /**
-   * @return a string representation of this node
-   */
-  override def toString: String = name
-  
 }
