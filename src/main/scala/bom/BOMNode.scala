@@ -12,10 +12,22 @@ import bom.schema._
  * The <code>BOMNode</code> class is the primary data type for the entire
  * Binary Object Model. It represents a single node in the document tree.
  */
-// TODO: make it a case class with an extractor
-abstract case class BOMNode(val schema: BOMSchemaElement,
-                            val parent: BOMContainer,
-                            val index: Int) {
+abstract class BOMNode(
+
+  /**
+   * @return the schema of this node
+   */
+  val schema: BOMSchemaElement,
+
+  /**
+   * @return the parent node of this node
+   */
+  val parent: BOMContainer,
+
+  /**
+   * @return the index of this node
+   */
+  val index: Int) {
 
   /**
    * @return the name of this node
@@ -105,6 +117,9 @@ abstract case class BOMNode(val schema: BOMSchemaElement,
    */
   def binarySpace: BOMBinarySpace = document.binarySpace
 
+  /**
+   * @return a string representation of this node
+   */
   override def toString: String = name
   
 }
