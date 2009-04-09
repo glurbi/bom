@@ -2,6 +2,7 @@ package bom.examples.schemas
 
 import bom.schema._
 import bom.types._
+import bom.BOM._
 
 /**
  * http://www.seg.org/SEGportalWEBproject/prod/SEG-Publications/Pub-Technical-Standards/Documents/seg_d_rev2.1.pdf
@@ -16,16 +17,16 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("segd") {
       generalHeader1
       generalHeader2
-      array("scan_type_headers", length("../general_header_1/scan_type_per_record")) {
-        array("channel_set_headers", length("../../general_header_1/channel_sets_per_scan_type")) {
+      array("scan_type_headers", length(_ / -1 / "general_header_1" / "scan_type_per_record")) {
+        array("channel_set_headers", length(_ / -1 / -1 / "general_header_1" / "channel_sets_per_scan_type")) {
           channelSetHeader
         }
       }
       extendedHeader
       externalHeader
-      array("data", length("/segd/general_header_1/scan_type_per_record")) {
-        array("scan type", length("/segd/general_header_1/channel_sets_per_scan_type")) {
-          array("channel set", length("/segd/scan_type_headers/channel_set_headers[number(bom:context()/../@index)]/channel_set_header[number(bom:context()/@index)]/number_of_channels"), regular) {
+      array("data", length(root(_) / "general_header_1" / "scan_type_per_record")) {
+        array("scan type", length(root(_) / "general_header_1" / "channel_sets_per_scan_type")) {
+          array("channel set", length(n => root(n) / "scan_type_headers" / (n / -1).index / n.index / "number_of_channels"), regular) {
             trace
           }
         }
@@ -99,7 +100,7 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
   def trace =
     sequence("trace") {
       traceHeader
-      array("trace header extensions", length("../trace_header/trace_header_extensions"), regular) {
+      array("trace header extensions", length(_ / -1 / "trace_header" / "trace_header_extensions"), regular) {
         traceHeaderExtension
       }
       virtual("start_time", "/segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/start_time")
@@ -125,7 +126,7 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     blob("trace header extension", byteSize(32))
 
   def traceData =
-    array("trace data", length("../sample_count"), regular) {
+    array("trace data", length(_ / -1 / "sample_count"), regular) {
       number("sample", bom_int3)
     }
 

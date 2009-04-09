@@ -144,4 +144,5 @@ trait BOMSchemaBuilder {
       n.document.queryNumber(n, xpath).intValue
   }
 
+  def root(n: BOMNode): BOMNode = n.document.rootNode
 }

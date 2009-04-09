@@ -14,7 +14,11 @@ object BOM {
 
   implicit def longValue(node: BOMNode): Long = node.value match {
       case l: Long => l
-      case i: Int => i
+      case i: Int => i.toLong
+      case s: Short => s.toLong
+      case b: Byte => b.toLong
+      case f: Float => f.toLong
+      case d: Double => d.toLong
       case _ => error ("unexpected type")
   }
 
