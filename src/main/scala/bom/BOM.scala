@@ -22,5 +22,15 @@ object BOM {
       case _ => error ("unexpected type")
   }
 
+  implicit def doubleValue(node: BOMNode): Double = node.value match {
+      case l: Long => l.toDouble
+      case i: Int => i.toDouble
+      case s: Short => s.toDouble
+      case b: Byte => b.toDouble
+      case f: Float => f.toDouble
+      case d: Double => d
+      case _ => error ("unexpected type")
+  }
+
   type BOMIdentifier = List[Int]
 }

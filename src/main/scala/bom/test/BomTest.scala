@@ -77,8 +77,8 @@ object BomTest {
       sequence("virtuals") {
         number("a", bom_int)
         number("b", bom_int)
-        virtual("v1", "(../a + ../b) * 2")
-        virtual("v2", "bom:power(2, ../a)")
+        virtual("v1", n => (longValue(n / -1 / "a") + longValue(n / -1 / "b")) * 2)
+        virtual("v2", n => Math.pow(2, n / -1 / "a"))
       }
 
     def masking =
@@ -148,7 +148,7 @@ object BomTest {
       sequence("previousSibling") {
         number("n1", bom_ubyte)
         number("n2", bom_ubyte)
-        virtual("v1", "bom:previous-sibling() + 3")
+        virtual("v1", n => longValue(n / -1 / (n.index -1)) + 3)
       }
 
     def bitFields =

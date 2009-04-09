@@ -103,11 +103,11 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       array("trace header extensions", length(_ / -1 / "trace_header" / "trace_header_extensions"), regular) {
         traceHeaderExtension
       }
-      virtual("start_time", "/segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/start_time")
-      virtual("end_time", "/segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/end_time")
-      virtual("subscan", "bom:power(2, /segd/scan_type_headers/channel_set_headers[number(bom:context()/../../../@index)]/channel_set_header[number(bom:context()/../../@index)]/sc)")
-      virtual("trace_size", "(../end_time - ../start_time) * ../subscan * 3")
-      virtual("sample_count", "(../end_time - ../start_time) * ../subscan")
+      virtual("start_time", n => longValue(root(n) / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "start_time"))
+      virtual("end_time", n => longValue(root(n) / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "end_time"))
+      virtual("subscan", n => Math.pow(2, root(n) / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "sc"))
+      virtual("trace_size", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan") * 3)
+      virtual("sample_count", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan"))
       traceData
     }
 

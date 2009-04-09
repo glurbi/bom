@@ -10,14 +10,14 @@ case class BOMSchemaVirtual(override val name: String,
 
   def size: BOMNode => Long = (n:BOMNode) => 0
 
-  var xpath: String = _
+  var valueFun: BOMNode => Any = _
 
   def add(child: BOMSchemaElement) = error("A virtual element cannot have a child.")
 
   override def children: List[BOMSchemaElement] = null
 
   override def instance(parent: BOMContainer, index: Int): BOMNode = {
-    new BOMVirtual(this, parent, index, xpath)
+    new BOMVirtual(this, parent, index)
   }
 
 }

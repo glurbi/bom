@@ -111,10 +111,10 @@ trait BOMSchemaBuilder {
     b
   }
 
-  def virtual(name: String, xpath: String): BOMSchemaVirtual = {
+  def virtual(name: String, valueFun: BOMNode => Any): BOMSchemaVirtual = {
     val v = new BOMSchemaVirtual(name, stack.top, stack.top.depth + 1)
     stack.top.add(v)
-    v.xpath = xpath
+    v.valueFun = valueFun
     v
   }
 

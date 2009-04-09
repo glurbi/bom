@@ -21,7 +21,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         number("major", bom_ushort)
       }
       number("constant_pool_count", bom_ushort)
-      array("constant_pool", length(_ / -1 / "constant_pool_count" - 1), irregular) {
+      array("constant_pool", length(n => longValue(n / -1 / "constant_pool_count") - 1), irregular) {
         constantType
       }
       number("access_flags", bom_ushort) {
