@@ -47,7 +47,7 @@ object BomTest {
     def array1 =
       sequence("array1") {
         number("length_array1", bom_byte)
-        array("array1", length("../length_array1"), regular) {
+        array("array1", length(_ / -1 / "length_array1"), regular) {
           number("item", bom_byte)
         }
       }
@@ -67,7 +67,7 @@ object BomTest {
           number("length", bom_byte)
         }
         array("array3", length(3), irregular) {
-          array("nested", length("../../lengths/length[number(bom:context()/@index)]"), regular) {
+          array("nested", length(n => n / -1 / -1 / "lengths" / n.index), regular) {
             number("item", bom_byte)
           }
         }

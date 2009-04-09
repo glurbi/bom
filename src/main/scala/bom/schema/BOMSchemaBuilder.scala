@@ -140,9 +140,5 @@ trait BOMSchemaBuilder {
 
   def length(len: Long): BOMNode => Long = (n: BOMNode) => len
 
-  def length(xpath: String): BOMNode => Long = (n: BOMNode) => {
-      n.document.queryNumber(n, xpath).intValue
-  }
-
   def root(n: BOMNode): BOMNode = n.document.rootNode
 }
