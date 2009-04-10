@@ -32,7 +32,8 @@ case class BOMSequence(
     }
     sz
   }
-  
+
+  // TODO: handle the case where there are switch children (i.e. the name is not static)
   override def / (name: String): BOMNode = {
     val childSchema = schema.child(name)
     if (childSchema == null) {

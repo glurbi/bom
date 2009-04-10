@@ -43,10 +43,10 @@ trait BOMSchemaBuilder {
     a
   }
 
-  def switch(xpath: String)(body: => Unit): BOMSchemaSwitch = {
+  def switch(switchFun: BOMNode => Any)(body: => Unit): BOMSchemaSwitch = {
     val bomSwitch = new BOMSchemaSwitch(stack.top, stack.top.depth)
     stack.top.add(bomSwitch)
-    bomSwitch.switchExpression = xpath
+    bomSwitch.switchFun = switchFun
     stack.push(bomSwitch)
     body
     stack.pop

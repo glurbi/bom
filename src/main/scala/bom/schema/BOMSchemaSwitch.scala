@@ -15,7 +15,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
   override val name: String = null
 
   val cases = new JHashMap[Any, BOMSchemaCase]
-  var switchExpression: String = _
+  var switchFun: BOMNode => Any = _
   var defaultCase: BOMSchemaCase = _
 
   override def add(child: BOMSchemaElement) {
@@ -27,26 +27,19 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
   }
 
   def instance(parent: BOMContainer, index: Int): BOMNode = {
-    val elementAdapter = new ElementAdapter(null) {
-      override def hasChildNodes: Boolean = false
-      def ownerDocument: Document = parent.document.asDomNode.asInstanceOf[Document]
-      def parentNode: Node = parent.asDomNode
-      override def getLocalName: String = ""
-      override def getNodeName: String = ""
-    }
     val node = new BOMNode(this, parent, index) {
-      def asDomNode: Node = elementAdapter
+      def asDomNode: Node = error("Not implemented!")
       override def depth: Int = parent.depth + 1;
       override lazy val size: Long = error("Not implemented!")
-      def /(index: Int): BOMNode = error("Not implemented!")
+      def /(index: Int): BOMNode = index match {
+          case -1 => parent
+          case _ => error("Illegal argument!")
+      }
       def /(name: String): BOMNode = error("Not implemented!")
       def length: Long = error("Not implemented!")
       def iterator: JIterator[BOMNode] = error("Not implemented!")
     }
-    elementAdapter.node = node
-    val matchingCase = findMatchingCase(
-      parent.document.queryString(node, switchExpression))
-    matchingCase.instance(parent, index)
+    findMatchingCase(switchFun(node)).instance(parent, index)
   }
 
   override def children: List[BOMSchemaElement] = {
@@ -58,7 +51,7 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
     res
   }
 
-  def findMatchingCase(o: Object): BOMSchemaCase = {
+  def findMatchingCase(o: Any): BOMSchemaCase = {
     var scase = cases.get(o)
     if (scase == null) {
       scase = defaultCase

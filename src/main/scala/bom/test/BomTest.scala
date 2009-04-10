@@ -128,7 +128,7 @@ object BomTest {
         array("array", length(2)) {
           sequence("item") {
             number("nb", bom_ubyte)
-            switch("../nb") {
+            switch(n => stringValue(n / -1 / "nb")) {
               when("1") {
                 number("choice1", bom_ushort)
               }
@@ -139,7 +139,6 @@ object BomTest {
                 }
               }
             }
-
           }
         }
       }
