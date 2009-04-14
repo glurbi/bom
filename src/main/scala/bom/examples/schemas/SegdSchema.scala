@@ -35,8 +35,8 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
   def storageUnitLabel =
     sequence("storage unit label") {
-      string("segd revision", "utf-8", byteSize("10"))
-      string("sequence number", "utf-8", byteSize("4"))
+      string("segd revision", "utf-8", byteSize(10))
+      string("sequence number", "utf-8", byteSize(4))
     }
 
   def generalHeader1 =
@@ -92,10 +92,10 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     }
 
   def extendedHeader =
-    blob("extended header", byteSize("32 * ../general_header_2/extended_header_blocks"))
+    blob("extended header", byteSize(n => 32 * (n / -1 / "general_header_2" / "extended_header_blocks")))
 
   def externalHeader =
-    blob("external header", byteSize("32 * ../general_header_2/external_header_blocks"))
+    blob("external header", byteSize(n => 32 * (n / -1 / "general_header_2" / "external_header_blocks")))
 
   def trace =
     sequence("trace") {

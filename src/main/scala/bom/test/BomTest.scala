@@ -41,7 +41,7 @@ object BomTest {
 
     def strings =
       sequence("strings") {
-        string("greetings", "utf-8", byteSize("11"))
+        string("greetings", "utf-8", byteSize(11))
       }
 
     def array1 =
@@ -135,7 +135,7 @@ object BomTest {
               when("2") {
                 sequence("choice2") {
                   number("length", bom_ubyte)
-                  string("string", "utf-8", byteSize("../length"))
+                  string("string", "utf-8", byteSize(_ / -1 / "length"))
                 }
               }
             }

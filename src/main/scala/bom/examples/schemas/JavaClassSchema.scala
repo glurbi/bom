@@ -85,7 +85,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
             when("1") {
               sequence("content") {
                 number("length", bom_ushort)
-                string("bytes", "utf-8", byteSize("../length"))
+                string("bytes", "utf-8", byteSize(_ / -1 / "length"))
               }
             }
             when("3") {
