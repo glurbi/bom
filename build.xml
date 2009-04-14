@@ -19,12 +19,6 @@
         <pathelement location="${lib.dir}/swingx-0.9.5.jar"/>
     </path>
 
-    <path id="runtime.classpath">
-        <pathelement location="${lib.dir}/saxon9.jar"/>
-        <pathelement location="${lib.dir}/saxon9-dom.jar"/>
-        <pathelement location="${lib.dir}/saxon9-xpath.jar"/>
-    </path>
-
     <taskdef resource="scala/tools/ant/antlib.xml">
         <classpath refid="scala.classpath"/>
     </taskdef>
@@ -43,7 +37,6 @@
     <target name="test" depends="compile">        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
             <classpath>
                 <path refid="compile.classpath"/>
-                <path refid="runtime.classpath"/>
             </classpath>
             <arg line="bom.test.AllTests"/>
         </java>
