@@ -1,8 +1,7 @@
 package bom
 
 import java.util._
-import org.w3c.dom._
-import bom.dom._
+
 import bom.schema._
 
 /**
@@ -37,8 +36,6 @@ case class BOMArray(
   }
 
   def / (name: String): BOMNode = null
-
-  def asDomNode: Node = new BOMArrayAdapter(this)
 
   def iterator: Iterator[BOMNode] = new Iterator[BOMNode] {
     var index = -1

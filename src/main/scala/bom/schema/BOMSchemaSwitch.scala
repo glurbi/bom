@@ -2,11 +2,9 @@ package bom.schema
 
 import java.util.{HashMap => JHashMap}
 import java.util.{Iterator => JIterator}
-import javax.xml.xpath._
+
 import bom._
-import bom.dom._
 import bom.bin._
-import org.w3c.dom._
 
 case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
                            override val depth: Int)
@@ -28,7 +26,6 @@ case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
 
   def instance(parent: BOMContainer, index: Int): BOMNode = {
     val node = new BOMNode(this, parent, index) {
-      def asDomNode: Node = error("Not implemented!")
       override def depth: Int = parent.depth + 1;
       override lazy val size: Long = error("Not implemented!")
       def /(index: Int): BOMNode = index match {

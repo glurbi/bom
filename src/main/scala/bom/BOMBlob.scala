@@ -1,9 +1,7 @@
 package bom
 
-import bom.dom._
 import bom.schema._
 import bom.types._
-import org.w3c.dom._
 import bom.types._
 
 /**
@@ -24,8 +22,6 @@ case class BOMBlob(
   }
 
   override lazy val size: Long = schema.sizeFun(this)
-
-  def asDomNode: Node = new BOMLeafAdapter(this)
 
   def byteCount: Long = size / 8
 

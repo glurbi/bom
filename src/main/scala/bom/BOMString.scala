@@ -2,10 +2,8 @@ package bom
 
 import java.nio._
 import java.nio.charset._
-import javax.xml.xpath._
-import bom.dom._
+
 import bom.schema._
-import org.w3c.dom._
 
 /**
  * The <code>BOMString</code> class defines a node that is interpreted as a
@@ -30,7 +28,5 @@ case class BOMString(
   }
  
   override lazy val size: Long = schema.sizeFun(this)
-
-  def asDomNode: Node = new BOMLeafAdapter(this)
 
 }

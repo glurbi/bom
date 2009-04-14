@@ -2,10 +2,7 @@ package bom.stream
 
 import java.io._
 import java.util._
-import org.w3c.dom._
-import javax.xml.namespace._
-import javax.xml.xpath._
-import bom.dom._
+
 import bom.schema._
 import bom.bin._
 import bom._

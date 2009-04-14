@@ -1,7 +1,7 @@
 package bom
 
 import java.util._
-import org.w3c.dom._
+
 import bom.BOM._
 import bom.bin._
 import bom.schema._
@@ -103,12 +103,6 @@ abstract case class BOMNode(
     } else {
       error("unreachable statement?")
     }
-
-  /**
-   * @return the DOM node corresponding to this BOM node
-   */
-  // TODO: remove the dependency to bom.dom
-  def asDomNode: Node
 
   /**
    * @return the binary space associated with this node

@@ -1,9 +1,7 @@
 package bom
 
-import bom.dom._
 import bom.schema._
 import bom.types._
-import org.w3c.dom._
 import bom.types._
 
 /**
@@ -19,7 +17,5 @@ case class BOMVirtual(
   override def value: Any = schema.valueFun(this)
 
   override lazy val size: Long = 0
-
-  def asDomNode: Node = new BOMLeafAdapter(this)
 
 }

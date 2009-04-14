@@ -1,10 +1,8 @@
 package bom
 
 import java.util._
-import bom._
-import bom.dom._
+
 import bom.schema._
-import org.w3c.dom._
 
 /**
  * The <code>BOMSequence</code> class represents a container node of different
@@ -15,8 +13,6 @@ case class BOMSequence(
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMContainer(schema, parent, index) {
-
-  def asDomNode: Node = new BOMSequenceAdapter(this)
 
   def iterator: Iterator[BOMNode] = new SequenceIterator
 
