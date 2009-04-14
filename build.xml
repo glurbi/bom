@@ -3,10 +3,14 @@
 
     <property environment="env"/>
     <property name="scala.home" value="${env.SCALA_HOME}"/>
-	
-    <property name="src.dir" value="src/main/scala"/>
+
+
+    <property name="target" value="target"/>
+    <property name="main.src.dir" value="src/main/scala"/>
+    <property name="test.src.dir" value="src/test/scala"/>
 	<property name="lib.dir" value="lib"/>
-    <property name="build.dir" value="target/classes"/>
+    <property name="main.build.dir" value="${target}/main-classes"/>
+    <property name="test.build.dir" value="${target}/test-classes"/>
 
     <path id="scala.classpath">
         <pathelement location="${scala.home}/lib/scala-compiler.jar"/>
@@ -15,8 +19,14 @@
 
     <path id="compile.classpath">
         <path refid="scala.classpath"/>
-        <pathelement location="${build.dir}"/>
+        <pathelement location="${main.build.dir}"/>
         <pathelement location="${lib.dir}/swingx-0.9.5.jar"/>
+    </path>
+
+    <path id="test.classpath">
+        <path refid="compile.classpath"/>
+        <pathelement location="${test.build.dir}"/>
+        <pathelement location="${lib.dir}/scalatest-0.9.5.jar"/>
     </path>
 
     <taskdef resource="scala/tools/ant/antlib.xml">
@@ -24,25 +34,41 @@
     </taskdef>
 
     <target name="clean">
-        <delete dir="${build.dir}"/>
+        <delete dir="${target}"/>
     </target>
 	
-    <target name="compile">
-        <mkdir dir="${build.dir}"/>
-        <scalac srcdir="${src.dir}" destdir="${build.dir}" classpathref="compile.classpath" force="changed" deprecation="on">
+    <target name="compile-main">
+        <mkdir dir="${main.build.dir}"/>
+        <scalac srcdir="${main.src.dir}"
+                destdir="${main.build.dir}"
+                classpathref="compile.classpath"
+                force="changed"
+                deprecation="on">
             <include name="**/*.scala"/>
         </scalac>
     </target>
 
-    <target name="test" depends="compile">        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+    <target name="compile-test" depends="compile-main">
+        <mkdir dir="${test.build.dir}"/>
+        <scalac srcdir="${test.src.dir}"
+                destdir="${test.build.dir}"
+                classpathref="test.classpath"
+                force="changed"
+                deprecation="on">
+            <include name="**/*.scala"/>
+        </scalac>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
             <classpath>
-                <path refid="compile.classpath"/>
+                <path refid="test.classpath"/>
             </classpath>
             <arg line="bom.test.AllTests"/>
         </java>
     </target>
 	
-    <target name="all" depends="compile,test">
+    <target name="all" depends="clean,compile-main,compile-test,test">
     </target>
 
 </project>
