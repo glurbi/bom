@@ -47,7 +47,7 @@ object BomTest {
     def array1 =
       sequence("array1") {
         number("length_array1", bom_byte)
-        array("array1", length("../length_array1"), regular) {
+        array("array1", length(_ / -1 / "length_array1"), regular) {
           number("item", bom_byte)
         }
       }
@@ -67,7 +67,7 @@ object BomTest {
           number("length", bom_byte)
         }
         array("array3", length(3), irregular) {
-          array("nested", length("../../lengths/length[number(bom:context()/@index)]"), regular) {
+          array("nested", length(n => n / -1 / -1 / "lengths" / n.index), regular) {
             number("item", bom_byte)
           }
         }
@@ -77,8 +77,8 @@ object BomTest {
       sequence("virtuals") {
         number("a", bom_int)
         number("b", bom_int)
-        virtual("v1", "(../a + ../b) * 2")
-        virtual("v2", "bom:power(2, ../a)")
+        virtual("v1", n => (longValue(n / -1 / "a") + longValue(n / -1 / "b")) * 2)
+        virtual("v2", n => Math.pow(2, n / -1 / "a"))
       }
 
     def masking =
@@ -128,7 +128,7 @@ object BomTest {
         array("array", length(2)) {
           sequence("item") {
             number("nb", bom_ubyte)
-            switch("../nb") {
+            switch(n => stringValue(n / -1 / "nb")) {
               when("1") {
                 number("choice1", bom_ushort)
               }
@@ -139,7 +139,6 @@ object BomTest {
                 }
               }
             }
-
           }
         }
       }
@@ -148,7 +147,7 @@ object BomTest {
       sequence("previousSibling") {
         number("n1", bom_ubyte)
         number("n2", bom_ubyte)
-        virtual("v1", "bom:previous-sibling() + 3")
+        virtual("v1", n => longValue(n / -1 / (n.index -1)) + 3)
       }
 
     def bitFields =

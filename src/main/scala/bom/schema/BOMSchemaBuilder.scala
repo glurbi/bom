@@ -43,10 +43,10 @@ trait BOMSchemaBuilder {
     a
   }
 
-  def switch(xpath: String)(body: => Unit): BOMSchemaSwitch = {
+  def switch(switchFun: BOMNode => Any)(body: => Unit): BOMSchemaSwitch = {
     val bomSwitch = new BOMSchemaSwitch(stack.top, stack.top.depth)
     stack.top.add(bomSwitch)
-    bomSwitch.switchExpression = xpath
+    bomSwitch.switchFun = switchFun
     stack.push(bomSwitch)
     body
     stack.pop
@@ -111,10 +111,10 @@ trait BOMSchemaBuilder {
     b
   }
 
-  def virtual(name: String, xpath: String): BOMSchemaVirtual = {
+  def virtual(name: String, valueFun: BOMNode => Any): BOMSchemaVirtual = {
     val v = new BOMSchemaVirtual(name, stack.top, stack.top.depth + 1)
     stack.top.add(v)
-    v.xpath = xpath
+    v.valueFun = valueFun
     v
   }
 
@@ -136,10 +136,9 @@ trait BOMSchemaBuilder {
     stack.top.sizeFun = fun
   }
 
+  def length(lengthFun: BOMNode => Long): BOMNode => Long = lengthFun
+
   def length(len: Long): BOMNode => Long = (n: BOMNode) => len
 
-  def length(xpath: String): BOMNode => Long = (n: BOMNode) => {
-      n.document.queryNumber(n, xpath).intValue
-  }
-
+  def root(n: BOMNode): BOMNode = n.document.rootNode
 }

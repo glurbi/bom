@@ -13,14 +13,10 @@ import bom.types._
 case class BOMVirtual(
   override val schema: BOMSchemaVirtual,
   override val parent: BOMContainer,
-  override val index: Int,
-  val xpath: String)
+  override val index: Int)
   extends BOMLeaf(schema, parent, index) {
 
-  /**
-   * @return the value of this virtual node
-   */
-  override def value: Any = document.queryNumber(this, xpath)
+  override def value: Any = schema.valueFun(this)
 
   override lazy val size: Long = 0
 

@@ -2,6 +2,7 @@ package bom.examples.schemas
 
 import bom.schema._
 import bom.types._
+import bom.BOM._
 
 /**
  * Binary product can be downloaded freely from:
@@ -20,7 +21,7 @@ object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("hrpt") {
       ars
       header
-      array("records", length("/hrpt/header/recordCount"), regular) {
+      array("records", length(root(_) / "header" / "recordCount"), regular) {
         record
       }
     }

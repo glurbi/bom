@@ -2,6 +2,7 @@ package bom.examples.schemas
 
 import bom.schema._
 import bom.types._
+import bom.BOM._
 
 /**
  * http://java.sun.com/docs/books/jvms/second_edition/html/ClassFile.doc.html
@@ -20,7 +21,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         number("major", bom_ushort)
       }
       number("constant_pool_count", bom_ushort)
-      array("constant_pool", length("../constant_pool_count - 1"), irregular) {
+      array("constant_pool", length(n => longValue(n / -1 / "constant_pool_count") - 1), irregular) {
         constantType
       }
       number("access_flags", bom_ushort) {
@@ -35,19 +36,19 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("this_class", bom_ushort)
       number("super_class", bom_ushort)
       number("interfaces_count", bom_ushort)
-      array("interfaces", length("../interfaces_count"), irregular) {
+      array("interfaces", length(_ / -1 / "interfaces_count"), irregular) {
         interfaceType
       }
       number("fields_count", bom_ushort)
-      array("fields", length("../fields_count"), irregular) {
+      array("fields", length(_ / -1 / "fields_count"), irregular) {
         fieldType
       }
       number("methods_count", bom_ushort)
-      array("methods", length("../methods_count"), irregular) {
+      array("methods", length(_ / -1 / "methods_count"), irregular) {
         methodType
       }
       number("attributes_count", bom_ushort)
-      array("attributes", length("../attributes_count"), irregular) {
+      array("attributes", length(_ / -1 / "attributes_count"), irregular) {
         attributeType
       }
     }
@@ -55,7 +56,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
   def constantType =
     // The java class format defines that Long and Double constants will occupy
     // two units in the index, thus the strange looking structure below...
-    switch("number(bom:previous-sibling()/tag)") {
+    switch(n => if (n.index > 0) (n / -1 / (n.index - 1) / "tag") else "*") {
       when("5") {
         sequence("constant") {}
       }
@@ -80,7 +81,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
               value("*", "UNKNOWN")
             }
           }
-          switch("../tag") {
+          switch(n => stringValue(n / -1 / "tag")) {
             when("1") {
               sequence("content") {
                 number("length", bom_ushort)
@@ -169,7 +170,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("name_index", bom_ushort)
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
-      array("attributes", length("../attributes_count")) {
+      array("attributes", length(_ / -1 / "attributes_count")) {
         fieldAttributeType
       }
     }
@@ -192,7 +193,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       number("name_index", bom_ushort)
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
-      array("attributes", length("../attributes_count")) {
+      array("attributes", length(_ / -1 / "attributes_count")) {
         methodAttributeType
       }
     }
@@ -201,7 +202,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch("/class/constant_pool/constant[number(bom:context()/../attribute_name_index[1])]/content/bytes") {
+      switch(n => stringValue(root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes")) {
         when("SourceFile") {
           number("sourcefile_index", bom_ushort)
         }
@@ -214,7 +215,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         when("InnerClasses") {
           sequence("inner_classes") {
             number("number_of_classes", bom_ushort)
-            array("classes", length("../number_of_classes"), true) {
+            array("classes", length(_ / -1 / "number_of_classes"), regular) {
               sequence("inner_class") {
                 number("inner_class_info_index", bom_ushort)
                 number("outer_class_info_index", bom_ushort)
@@ -235,7 +236,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           }
         }
         when("*") {
-          array("info", length("../attribute_length")) {
+          array("info", length(_ / -1 / "attribute_length")) {
             number("content", bom_ubyte)
           }
         }
@@ -246,7 +247,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("field_attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch("/class/constant_pool/constant[number(bom:context()/../attribute_name_index[1])]/content/bytes") {
+      switch(n => root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
         when("ConstantValue") {
           number("constantvalue_index", bom_ushort)
         }
@@ -257,7 +258,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           sequence("dummy") {}
         }
         when("*") {
-          array("info", length("../attribute_length")) {
+          array("info", length(_ / -1 / "attribute_length")) {
             number("content", bom_ubyte)
           }
         }
@@ -268,11 +269,11 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("code_attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch("/class/constant_pool/constant[number(bom:context()/../attribute_name_index[1])]/content/bytes") {
+      switch(n => root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
         when("LineNumberTable") {
           sequence("line_numbers") {
             number("line_number_table_length", bom_ushort)
-            array("line_number_table", length("../line_number_table_length")) {
+            array("line_number_table", length(_ / -1 / "line_number_table_length")) {
               sequence("entry") {
                 number("start_pc", bom_ushort)
                 number("line_number", bom_ushort)
@@ -283,7 +284,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         when("LocalVariableTable") {
           sequence("local_variables") {
             number("local_variable_table_length", bom_ushort)
-            array("local_variable_table", length("../local_variable_table_length")) {
+            array("local_variable_table", length(_ / -1 / "local_variable_table_length")) {
               sequence("local_variable") {
                 number("start_pc", bom_ushort)
                 number("length", bom_ushort)
@@ -295,7 +296,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           }
         }
         when("*") {
-          array("info", length("../attribute_length")) {
+          array("info", length(_ / -1 / "attribute_length")) {
             number("content", bom_ubyte)
           }
         }
@@ -306,7 +307,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("method_attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch("/class/constant_pool/constant[number(bom:context()/../attribute_name_index[1])]/content/bytes") {
+      switch(n => root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
         when("Code") {
           sequence("bytecode") {
             number("max_stack", bom_ushort)
@@ -314,7 +315,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
             number("code_length", bom_uint)
             bytecodeBlock
             number("exception_table_length", bom_ushort)
-            array("exception_table", length("../exception_table_length")) {
+            array("exception_table", length(_ / -1 / "exception_table_length")) {
               sequence("exception") {
                 number("start_pc", bom_ushort)
                 number("end_pc", bom_ushort)
@@ -323,7 +324,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
               }
             }
             number("attributes_count", bom_ushort)
-            array("attributes", length("../attributes_count")) {
+            array("attributes", length(_ / -1 / "attributes_count")) {
               codeAttributeType
             }
           }
@@ -331,7 +332,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
         when ("Exceptions") {
           sequence("exceptions") {
             number("number_of_exceptions", bom_ushort)
-            array("exception_index_table", length("../number_of_exceptions")) {
+            array("exception_index_table", length(_ / -1 / "number_of_exceptions")) {
               number("exception_index", bom_ushort)
             }
           }
@@ -343,7 +344,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
           sequence("dummy") {}
         }
         when("*") {
-          array("info", length("../attribute_length")) {
+          array("info", length(_ / -1 / "attribute_length")) {
             number("content", bom_ubyte)
           }
         }
@@ -351,7 +352,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     }
 
   def bytecodeBlock =
-    array("code", length("../code_length")) {
+    array("code", length(_ / -1 / "code_length")) {
       number("content", bom_ubyte)
     }
   
