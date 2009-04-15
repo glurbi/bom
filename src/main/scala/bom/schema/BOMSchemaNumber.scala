@@ -7,9 +7,14 @@ import bom._
 import bom.types._
 import bom.bin._
 
-case class BOMSchemaNumber(override val name: String,
-                           override val parent: BOMSchemaElement,
-                           override val depth: Int)
+case class BOMSchemaNumber(
+
+  override val name: String,
+
+  override val parent: BOMSchemaElement,
+
+  override val depth: Int)
+
   extends BOMSchemaElement {
 
   var numberType: BOMType = null

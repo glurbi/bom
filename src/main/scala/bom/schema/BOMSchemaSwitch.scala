@@ -6,8 +6,12 @@ import java.util.{Iterator => JIterator}
 import bom._
 import bom.bin._
 
-case class BOMSchemaSwitch(override val parent: BOMSchemaElement,
-                           override val depth: Int)
+case class BOMSchemaSwitch(
+
+  override val parent: BOMSchemaElement,
+
+  override val depth: Int)
+
   extends BOMSchemaElement {
 
   override val name: String = null

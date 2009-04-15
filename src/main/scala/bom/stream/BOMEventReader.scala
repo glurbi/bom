@@ -10,8 +10,9 @@ import bom.bin._
 import bom.schema._
 import bom.stream.BOMEvent._
 
-class BOMEventReader(val bspace: BOMBinarySpace,
-                     val schema: BOMSchemaElement) {
+class BOMEventReader(
+  val bspace: BOMBinarySpace,
+  val schema: BOMSchemaElement) {
 
   val containers = new ArrayDeque[BOMContainer]
   val iterators = new ArrayDeque[Iterator[BOMNode]]

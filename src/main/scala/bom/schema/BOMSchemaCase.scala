@@ -3,8 +3,12 @@ package bom.schema
 import bom._
 import bom.bin._
 
-case class BOMSchemaCase(override val parent: BOMSchemaElement,
-                         override val depth: Int)
+case class BOMSchemaCase(
+
+  override val parent: BOMSchemaElement,
+
+  override val depth: Int)
+
   extends BOMSchemaElement {
 
   override val name: String = null

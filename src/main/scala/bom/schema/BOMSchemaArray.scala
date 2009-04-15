@@ -3,9 +3,14 @@ package bom.schema
 import bom._
 import bom.bin._
 
-case class BOMSchemaArray(override val name: String,
-                          override val parent: BOMSchemaElement,
-                          override val depth: Int)
+case class BOMSchemaArray(
+  
+  override val name: String,
+
+  override val parent: BOMSchemaElement,
+
+  override val depth: Int)
+
   extends BOMSchemaElement {
 
   private var element: BOMSchemaElement = null

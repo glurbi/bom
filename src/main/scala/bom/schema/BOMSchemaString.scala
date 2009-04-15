@@ -3,9 +3,14 @@ package bom.schema
 import bom._
 import bom.bin._
 
-case class BOMSchemaString(override val name: String,
-                           override val parent: BOMSchemaElement,
-                           override val depth: Int)
+case class BOMSchemaString(
+
+  override val name: String,
+
+  override val parent: BOMSchemaElement,
+
+  override val depth: Int)
+
   extends BOMSchemaElement {
 
   var encoding: String = _

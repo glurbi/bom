@@ -18,15 +18,14 @@ case class BOMDocument(
   /**
    * @return the binary space associated with this document.
    */
-  val bspace: BOMBinarySpace)
+  override val binarySpace: BOMBinarySpace)
 
   extends BOMSequence(schema, null, 0) {
 
   override def document: BOMDocument = this
+
   override lazy val position: Long = 0
   
-  override def binarySpace: BOMBinarySpace = bspace
-
   override lazy val identifier: BOMIdentifier = Nil
 
 }
