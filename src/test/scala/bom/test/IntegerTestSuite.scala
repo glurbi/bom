@@ -9,7 +9,7 @@ import bom.bin._
 
 class IntegerTestSuite extends FunSuite {
 
-  object TestSchema extends Schema with SchemaBuilder with BOMTypes {
+  object TestSchema extends Schema with SchemaBuilder {
     def schema = document("integers") {
       number("i1", bom_byte)
       number("i2", bom_int)

@@ -10,7 +10,7 @@ import bom.bin._
 // TODO: split the test in many...
 object BomTest {
 
-  object TestSchema extends Schema with SchemaBuilder with BOMTypes {
+  object TestSchema extends Schema with SchemaBuilder {
 
     def integers =
       sequence("integers") {

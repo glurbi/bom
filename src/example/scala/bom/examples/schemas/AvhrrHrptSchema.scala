@@ -11,7 +11,7 @@ import bom.BOM._
  * General description of the satellite instrument and data format:
  * http://www2.ncdc.noaa.gov/docs/klm/index.htm
  */
-object AvhrrHrptSchema extends Schema with SchemaBuilder with BOMTypes {
+object AvhrrHrptSchema extends Schema with SchemaBuilder {
 
   def schema = document("hrpt") {
       ars
