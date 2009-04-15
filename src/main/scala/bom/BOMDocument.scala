@@ -6,6 +6,7 @@ import java.util._
 import bom.schema._
 import bom.bin._
 import bom.BOM._
+import bom.cache._
 
 /**
  * The <code>BOMDocument</code> class defines the entry point for accessing
@@ -14,18 +15,15 @@ import bom.BOM._
 case class BOMDocument(
 
   override val schema: SchemaDocument,
-
-  /**
-   * @return the binary space associated with this document.
-   */
   override val binarySpace: BinarySpace)
 
-  extends BOMSequence(schema, null, 0) {
+extends BOMSequence(schema, null, 0) with NodeCache {
 
   override def document: BOMDocument = this
-
   override lazy val position: Long = 0
-  
   override lazy val identifier: BOMIdentifier = Nil
+
+  def add(node: BOMNode) {}
+  def get(id: BOMIdentifier): Option[BOMNode] = None
 
 }
