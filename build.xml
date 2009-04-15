@@ -4,7 +4,6 @@
     <property environment="env"/>
     <property name="scala.home" value="${env.SCALA_HOME}"/>
 
-
     <property name="target" value="target"/>
     <property name="main.src.dir" value="src/main/scala"/>
     <property name="test.src.dir" value="src/test/scala"/>
@@ -28,10 +27,6 @@
         <pathelement location="${test.build.dir}"/>
         <pathelement location="${lib.dir}/scalatest-0.9.5.jar"/>
     </path>
-
-    <taskdef resource="scala/tools/ant/antlib.xml">
-        <classpath refid="scala.classpath"/>
-    </taskdef>
 
     <target name="clean">
         <delete dir="${target}"/>
@@ -59,16 +54,36 @@
         </scalac>
     </target>
 
-    <target name="test" depends="compile-test">
+    <!-- target name="old-test" depends="compile-test">
         <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
             <classpath>
                 <path refid="test.classpath"/>
             </classpath>
             <arg line="bom.test.AllTests"/>
         </java>
+    </target -->
+
+    <target name="test" depends="compile-test">
+        <scalatest>
+            <suite classname="bom.test.BomTestSuite"/>
+            <suite classname="bom.test.IntegerTestSuite"/>
+            <runpath>
+                <path refid="test.classpath"/>
+            </runpath>
+        </scalatest>
     </target>
-	
-    <target name="all" depends="clean,compile-main,compile-test,test">
+
+    <target name="all" depends="compile-main,compile-test,test">
     </target>
+
+    <!-- task definitions -->
+
+    <taskdef resource="scala/tools/ant/antlib.xml">
+        <classpath refid="scala.classpath"/>
+    </taskdef>
+
+    <taskdef name="scalatest" classname="org.scalatest.tools.ScalaTestTask">
+        <classpath refid="test.classpath"/>
+    </taskdef>
 
 </project>
