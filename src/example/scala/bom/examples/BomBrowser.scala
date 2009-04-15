@@ -22,7 +22,7 @@ object BomBrowser {
 
   def main(args: Array[String]) {
     val schema = Class.forName(args(0)).getMethod("schema").
-      invoke(null, null).asInstanceOf[BOMSchemaElement]
+      invoke(null, null).asInstanceOf[BOMSchemaDocument]
     val bspace = new MemoryBinarySpace(new FileInputStream(args(1)))
     val doc = new BOMDocument(schema, bspace)
     val bomBrowser = new BomBrowserFoo(doc)

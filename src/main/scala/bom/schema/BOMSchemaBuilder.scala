@@ -10,8 +10,8 @@ trait BOMSchemaBuilder {
 
   protected val stack = new Stack[BOMSchemaElement]
 
-  def document(body: => Unit): BOMSchemaDocument = {
-    val d = new BOMSchemaDocument
+  def document(name: String)(body: => Unit): BOMSchemaDocument = {
+    val d = new BOMSchemaDocument(name)
     stack.push(d)
     body
     stack.pop.asInstanceOf[BOMSchemaDocument]
@@ -136,5 +136,4 @@ trait BOMSchemaBuilder {
 
   def length(len: Long): BOMNode => Long = (n: BOMNode) => len
 
-  def root(n: BOMNode): BOMNode = n.document.rootNode
 }

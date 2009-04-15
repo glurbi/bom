@@ -175,23 +175,21 @@ object BomTest {
         }
       }
 
-    def schema = document {
-      sequence("test") {
-        integers
-        bcds
-        blobs
-        strings
-        array1
-        array2
-        array3
-        virtuals
-        masking
-        mapping
-        switch1
-        previousSibling
-        bitFields
-        overrides
-      }
+    def schema = document("test") {
+      integers
+      bcds
+      blobs
+      strings
+      array1
+      array2
+      array3
+      virtuals
+      masking
+      mapping
+      switch1
+      previousSibling
+      bitFields
+      overrides
     }
   }
 
@@ -267,101 +265,100 @@ object BomTest {
 
   def main(args: Array[String]) = {
     val doc = new BOMDocument(TestSchema.schema, bspace)
-    val root = doc.rootNode
     
-    assert(root.name.equals("test"))
+    assert(doc.name.equals("test"))
 
     // integers
-    assert(value(root/"integers"/0) == 1.asInstanceOf[Byte])
-    assert(value(root/0/1) == 15)
-    assert(value(root/0/2) == 15L)
-    assert(value(root / 0 / -1 / 0 / 2) == 15L)
-    assert(value(root/0/3) == (0xFF).asInstanceOf[Short])
-    assert(value(root/0/4) == 0xFFFFL)
-    assert(value(root/0/5) == -1)
-    assert(value(root/0/6) == -1)
+    assert(value(doc/"integers"/0) == 1.asInstanceOf[Byte])
+    assert(value(doc/0/1) == 15)
+    assert(value(doc/0/2) == 15L)
+    assert(value(doc / 0 / -1 / 0 / 2) == 15L)
+    assert(value(doc/0/3) == (0xFF).asInstanceOf[Short])
+    assert(value(doc/0/4) == 0xFFFFL)
+    assert(value(doc/0/5) == -1)
+    assert(value(doc/0/6) == -1)
 
     // bcds
-    assert(value(root/"bcds"/0) == 9L)
-    assert(value(root/1/1) == 87L)
-    assert(value(root/"bcds"/"bcd3") == 654L)
-    assert(value(root/1/3) == 1234L)
-    assert(value(root/1/"bcd6") == 123456L)
-    assert(value(root/"bcds"/5) == 12345678L)
-    assert(value(root / "bcds" / -1 / "bcds" / 5) == 12345678L)
+    assert(value(doc/"bcds"/0) == 9L)
+    assert(value(doc/1/1) == 87L)
+    assert(value(doc/"bcds"/"bcd3") == 654L)
+    assert(value(doc/1/3) == 1234L)
+    assert(value(doc/1/"bcd6") == 123456L)
+    assert(value(doc/"bcds"/5) == 12345678L)
+    assert(value(doc / "bcds" / -1 / "bcds" / 5) == 12345678L)
 
     // blobs
-    assert(size(root/"blobs"/"blob1") == 3 * 8)
-    assert(size(root/"blobs"/"blob2") == 4 * 8)
-    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](0) == 1)
-    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](1) == 9)
-    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](2) == 7)
-    assert(value(root/"blobs"/"blob2").asInstanceOf[Array[Byte]](3) == 7)
+    assert(size(doc/"blobs"/"blob1") == 3 * 8)
+    assert(size(doc/"blobs"/"blob2") == 4 * 8)
+    assert(value(doc/"blobs"/"blob2").asInstanceOf[Array[Byte]](0) == 1)
+    assert(value(doc/"blobs"/"blob2").asInstanceOf[Array[Byte]](1) == 9)
+    assert(value(doc/"blobs"/"blob2").asInstanceOf[Array[Byte]](2) == 7)
+    assert(value(doc/"blobs"/"blob2").asInstanceOf[Array[Byte]](3) == 7)
 
     // strings
-    assert(value(root/"strings"/"greetings") == "Hello, BOM!")
+    assert(value(doc/"strings"/"greetings") == "Hello, BOM!")
     
     // array1
-    assert(length(root/"array1"/"array1") == 6)
-    assert(value(root/4/1/5) == 6.asInstanceOf[Byte])
+    assert(length(doc/"array1"/"array1") == 6)
+    assert(value(doc/4/1/5) == 6.asInstanceOf[Byte])
 
     //array2
-    assert(size(root/"array2"/"array2") == 12 * 8)
-    assert(value(root/5/0/3/1) == 11)
+    assert(size(doc/"array2"/"array2") == 12 * 8)
+    assert(value(doc/5/0/3/1) == 11)
 
     //array3
-    assert(length(root/"array3"/"array3"/0) == 4)
-    assert(length(root/"array3"/"array3"/1) == 5)
-    assert(length(root/"array3"/"array3"/2) == 6)
-    assert(value(root/"array3"/"array3"/2/5) == 0x66)
+    assert(length(doc/"array3"/"array3"/0) == 4)
+    assert(length(doc/"array3"/"array3"/1) == 5)
+    assert(length(doc/"array3"/"array3"/2) == 6)
+    assert(value(doc/"array3"/"array3"/2/5) == 0x66)
 
     // virtuals
-    assert(value(root/"virtuals"/"v1") == 36)
-    assert(value(root/"virtuals"/"v2") == 65536)
+    assert(value(doc/"virtuals"/"v1") == 36)
+    assert(value(doc/"virtuals"/"v2") == 65536)
 
     // masks
-    val nb1 = (root/"masks"/"nb1").asInstanceOf[BOMNumber]
+    val nb1 = (doc/"masks"/"nb1").asInstanceOf[BOMNumber]
     assert(nb1.schema.getMasks(nb1.value.longValue).contains("BIT_ONE"))
     assert(nb1.schema.getMasks(nb1.value.longValue).contains("BIT_TWO"))
     assert(!nb1.schema.getMasks(nb1.value.longValue).contains("BIT_NINE"))
     assert(!nb1.schema.getMasks(nb1.value.longValue).contains("BIT_SEVENTEEN"))
-    val nb2 = (root/"masks"/"nb2").asInstanceOf[BOMNumber]
+    val nb2 = (doc/"masks"/"nb2").asInstanceOf[BOMNumber]
     assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_ONE"))
     assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_TWO"))
     assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_NINE"))
     assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_SEVENTEEN"))
 
     // mapping
-    val mapped_nb1 = (root/"mapping"/"mapped_nb1").asInstanceOf[BOMNumber]
+    val mapped_nb1 = (doc/"mapping"/"mapped_nb1").asInstanceOf[BOMNumber]
     assert(mapped_nb1.schema.mappedValue(mapped_nb1.value) == "UNKNOWN")
-    val mapped_nb2 = (root/"mapping"/"mapped_nb2").asInstanceOf[BOMNumber]
+    val mapped_nb2 = (doc/"mapping"/"mapped_nb2").asInstanceOf[BOMNumber]
     assert(mapped_nb2.schema.mappedValue(mapped_nb2.value) == "THREE")
 
     // switch
-    assert(value(root/"switch1"/"array"/0/1/"string") == "Foo")
-    assert(value(root/"switch1"/"array"/1/1) == 65535)
+    assert(value(doc/"switch1"/"array"/0/1/"string") == "Foo")
+    assert(value(doc/"switch1"/"array"/1/1) == 65535)
 
     // previousSibling
-    assert(value(root/"previousSibling"/"v1") == 5)
+    assert(value(doc/"previousSibling"/"v1") == 5)
 
     // bitfield
-    assert(value(root/"bitFields"/"bitField"/"bit15") == 1)
-    assert(value(root/"bitFields"/"bitField"/"bit14") == 0)
-    assert(value(root/"bitFields"/"bitField"/"bit13") == 1)
-    assert(value(root/"bitFields"/"bitField"/"bit13") == 1)
-    assert(value(root/"bitFields"/"bitField"/"bit15") == 1)
-    assert(value(root/"bitFields"/"bitField"/"bit14") == 0)
-    assert(value(root/"bitFields"/"bitField"/"bit2") == 1)
-    assert(value(root/"bitFields"/"bitField"/"bit1and0") == 3)
+    assert(value(doc/"bitFields"/"bitField"/"bit15") == 1)
+    assert(value(doc/"bitFields"/"bitField"/"bit14") == 0)
+    assert(value(doc/"bitFields"/"bitField"/"bit13") == 1)
+    assert(value(doc/"bitFields"/"bitField"/"bit13") == 1)
+    assert(value(doc/"bitFields"/"bitField"/"bit15") == 1)
+    assert(value(doc/"bitFields"/"bitField"/"bit14") == 0)
+    assert(value(doc/"bitFields"/"bitField"/"bit2") == 1)
+    assert(value(doc/"bitFields"/"bitField"/"bit1and0") == 3)
 
     // overrides
-    assert(position(root/"overrides"/"n1") == position(root/"overrides") + 8)
-    assert(value(root/"overrides"/"n1") == 0x34)
-    assert(size(root/"overrides") == 6 * 8)
-    assert(value(root/"overrides"/"a"/0) == 0x01)
-    assert(value(root/"overrides"/"a"/1) == 0x02)
-    assert(value(root/"overrides"/"a"/2) == 0x03)
-    assert(size(root/"overrides"/"a") == 4 * 8)
+    assert(position(doc/"overrides"/"n1") == position(doc/"overrides") + 8)
+    assert(value(doc/"overrides"/"n1") == 0x34)
+    assert(size(doc/"overrides") == 6 * 8)
+    assert(value(doc/"overrides"/"a"/0) == 0x01)
+    assert(value(doc/"overrides"/"a"/1) == 0x02)
+    assert(value(doc/"overrides"/"a"/2) == 0x03)
+    assert(size(doc/"overrides"/"a") == 4 * 8)
 
     println(this.getClass.toString + " SUCCESS")
   }

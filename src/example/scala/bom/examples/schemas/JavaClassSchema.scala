@@ -9,12 +9,7 @@ import bom.BOM._
  */
 object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
-  def schema = document {
-    classDefinition
-  }
-
-  def classDefinition =
-    sequence("class") {
+  def schema = document("class") {
       number("magic", bom_uint)
       sequence("version") {
         number("minor", bom_ushort)
@@ -202,7 +197,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch(n => stringValue(root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes")) {
+      switch(n => stringValue(n.document / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes")) {
         when("SourceFile") {
           number("sourcefile_index", bom_ushort)
         }
@@ -247,7 +242,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("field_attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch(n => root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
+      switch(n => n.document / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
         when("ConstantValue") {
           number("constantvalue_index", bom_ushort)
         }
@@ -269,7 +264,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("code_attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch(n => root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
+      switch(n => n.document / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
         when("LineNumberTable") {
           sequence("line_numbers") {
             number("line_number_table_length", bom_ushort)
@@ -307,7 +302,7 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     sequence("method_attribute") {
       number("attribute_name_index", bom_ushort)
       number("attribute_length", bom_uint)
-      switch(n => root(n) / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
+      switch(n => n.document / "constant_pool" / (intValue(n / -1 / "attribute_name_index") - 1).asInstanceOf[Int] / 1 / "bytes") {
         when("Code") {
           sequence("bytecode") {
             number("max_stack", bom_ushort)
@@ -355,10 +350,6 @@ object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
     array("code", length(_ / -1 / "code_length")) {
       number("content", bom_ubyte)
     }
-  
-  def main(args: Array[String]) = {
-    println(classDefinition.getClass)
-  }
   
 }
 

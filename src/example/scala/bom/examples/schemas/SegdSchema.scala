@@ -9,12 +9,7 @@ import bom.BOM._
  */
 object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
-  def schema = document {
-    segd
-  }
-
-  def segd =
-    sequence("segd") {
+  def schema = document("segd") {
       generalHeader1
       generalHeader2
       array("scan_type_headers", length(_ / -1 / "general_header_1" / "scan_type_per_record")) {
@@ -24,9 +19,9 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       }
       extendedHeader
       externalHeader
-      array("data", length(root(_) / "general_header_1" / "scan_type_per_record")) {
-        array("scan type", length(root(_) / "general_header_1" / "channel_sets_per_scan_type")) {
-          array("channel set", length(n => root(n) / "scan_type_headers" / (n / -1).index / n.index / "number_of_channels"), regular) {
+      array("data", length(_.document / "general_header_1" / "scan_type_per_record")) {
+        array("scan type", length(_.document / "general_header_1" / "channel_sets_per_scan_type")) {
+          array("channel set", length(n => n.document / "scan_type_headers" / (n / -1).index / n.index / "number_of_channels"), regular) {
             trace
           }
         }
@@ -103,9 +98,9 @@ object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
       array("trace header extensions", length(_ / -1 / "trace_header" / "trace_header_extensions"), regular) {
         traceHeaderExtension
       }
-      virtual("start_time", n => longValue(root(n) / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "start_time"))
-      virtual("end_time", n => longValue(root(n) / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "end_time"))
-      virtual("subscan", n => Math.pow(2, root(n) / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "sc"))
+      virtual("start_time", n => longValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "start_time"))
+      virtual("end_time", n => longValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "end_time"))
+      virtual("subscan", n => Math.pow(2, n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "sc"))
       virtual("trace_size", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan") * 3)
       virtual("sample_count", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan"))
       traceData

@@ -13,15 +13,10 @@ import bom.BOM._
  */
 object AvhrrHrptSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
 
-  def schema = document {
-    hrpt
-  }
-
-  def hrpt =
-    sequence("hrpt") {
+  def schema = document("hrpt") {
       ars
       header
-      array("records", length(root(_) / "header" / "recordCount"), regular) {
+      array("records", length(_.document / "header" / "recordCount"), regular) {
         record
       }
     }

@@ -36,7 +36,7 @@ class BOMEventReader(val bspace: BOMBinarySpace,
       }
       case BOMEvent(_, Leaf) => updateEvent
       case null => {
-          event = BOMEvent(new BOMDocument(schema, bspace), StartContainer)
+          event = BOMEvent(new BOMDocument(schema.asInstanceOf[BOMSchemaDocument], bspace), StartContainer)
       }
     }
     event

@@ -4,9 +4,12 @@ import java.util.{HashMap => JHashMap}
 import bom._
 import bom.bin._
 
-case class BOMSchemaSequence(override val name:String,
-                             override val parent: BOMSchemaElement,
-                             override val depth: Int)
+case class BOMSchemaSequence(
+
+  override val name:String,
+  override val parent: BOMSchemaElement,
+  override val depth: Int)
+
   extends BOMSchemaElement {
 
   private var elements: List[BOMSchemaElement] = Nil
