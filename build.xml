@@ -7,25 +7,32 @@
     <property name="target" value="target"/>
     <property name="main.src.dir" value="src/main/scala"/>
     <property name="test.src.dir" value="src/test/scala"/>
+    <property name="example.src.dir" value="src/example/scala"/>
 	<property name="lib.dir" value="lib"/>
     <property name="main.build.dir" value="${target}/main-classes"/>
     <property name="test.build.dir" value="${target}/test-classes"/>
+    <property name="example.build.dir" value="${target}/example-classes"/>
 
     <path id="scala.classpath">
         <pathelement location="${scala.home}/lib/scala-compiler.jar"/>
         <pathelement location="${scala.home}/lib/scala-library.jar"/>
     </path>
 
-    <path id="compile.classpath">
+    <path id="main.classpath">
         <path refid="scala.classpath"/>
         <pathelement location="${main.build.dir}"/>
-        <pathelement location="${lib.dir}/swingx-0.9.5.jar"/>
     </path>
 
     <path id="test.classpath">
-        <path refid="compile.classpath"/>
+        <path refid="main.classpath"/>
         <pathelement location="${test.build.dir}"/>
         <pathelement location="${lib.dir}/scalatest-0.9.5.jar"/>
+    </path>
+
+    <path id="example.classpath">
+        <path refid="main.classpath"/>
+        <pathelement location="${example.build.dir}"/>
+        <pathelement location="${lib.dir}/swingx-0.9.5.jar"/>
     </path>
 
     <target name="clean">
@@ -36,7 +43,7 @@
         <mkdir dir="${main.build.dir}"/>
         <scalac srcdir="${main.src.dir}"
                 destdir="${main.build.dir}"
-                classpathref="compile.classpath"
+                classpathref="main.classpath"
                 force="changed"
                 deprecation="on">
             <include name="**/*.scala"/>
@@ -48,6 +55,17 @@
         <scalac srcdir="${test.src.dir}"
                 destdir="${test.build.dir}"
                 classpathref="test.classpath"
+                force="changed"
+                deprecation="on">
+            <include name="**/*.scala"/>
+        </scalac>
+    </target>
+
+    <target name="compile-example" depends="compile-main">
+        <mkdir dir="${example.build.dir}"/>
+        <scalac srcdir="${example.src.dir}"
+                destdir="${example.build.dir}"
+                classpathref="example.classpath"
                 force="changed"
                 deprecation="on">
             <include name="**/*.scala"/>
@@ -73,7 +91,7 @@
         </scalatest>
     </target>
 
-    <target name="all" depends="compile-main,compile-test,test">
+    <target name="all" depends="compile-main,compile-test,test, compile-example">
     </target>
 
     <!-- task definitions -->
