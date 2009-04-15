@@ -9,7 +9,7 @@ import bom.types._
  * physical space in the binary space.
  */
 case class BOMVirtual(
-  override val schema: BOMSchemaVirtual,
+  override val schema: SchemaVirtual,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMLeaf(schema, parent, index) {

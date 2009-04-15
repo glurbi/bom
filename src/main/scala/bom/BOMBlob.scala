@@ -9,7 +9,7 @@ import bom.types._
  * "opaque" byte array.
  */
 case class BOMBlob(
-  override val schema: BOMSchemaBlob,
+  override val schema: SchemaBlob,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMLeaf(schema, parent, index) {

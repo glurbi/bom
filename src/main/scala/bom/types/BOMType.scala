@@ -1,6 +1,6 @@
 package bom.types
 
-import bom.bin.BOMBinarySpace
+import bom.bin._
 
 trait BOMType {
 
@@ -17,6 +17,6 @@ trait BOMType {
      * @param bspace a binary space
      * @return the element read
      */
-    def read(bspace: BOMBinarySpace): Any
+    def read(bspace: BinarySpace): Any
 
 }

@@ -6,7 +6,7 @@ class BOMInteger3 extends BOMType {
 
   def size: Int = 8 * 3
 
-  def read(bspace: BOMBinarySpace): Int = {
+  def read(bspace: BinarySpace): Int = {
     def b: Byte = bspace.getByte
     val raw = ((((b & 0xFF) << 16) |
                 ((b & 0xFF) <<  8) |

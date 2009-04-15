@@ -9,7 +9,7 @@ import bom.types._
  * as a number.
  */
 case class BOMNumber(
-  override val schema: BOMSchemaNumber,
+  override val schema: SchemaNumber,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMLeaf(schema, parent, index) {

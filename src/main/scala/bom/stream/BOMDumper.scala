@@ -11,7 +11,7 @@ import bom.types._
 
 object BOMDumper {
 
-  def dump(schema: BOMSchemaElement, bspace: BOMBinarySpace) = {
+  def dump(schema: SchemaElement, bspace: BinarySpace) = {
     val reader = new BOMEventReader(bspace, schema)
     while (reader.hasNext) {
       reader.nextEvent match {
@@ -45,7 +45,7 @@ object BOMDumper {
   private def dumpStartArray(array: BOMArray, reader: BOMEventReader) {
     dumpCommon(array)
     array.schema.children(0) match {
-      case (n: BOMSchemaNumber) => {
+      case (n: SchemaNumber) => {
         format(" (%d elements)", array.length)
         for (i <- 0 until array.length.intValue) {
           val next = reader.nextEvent

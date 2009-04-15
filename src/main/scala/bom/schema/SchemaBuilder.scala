@@ -6,19 +6,19 @@ import scala.collection.mutable._
 
 import java.lang.{Long => JLong}
 
-trait BOMSchemaBuilder {
+trait SchemaBuilder {
 
-  protected val stack = new Stack[BOMSchemaElement]
+  protected val stack = new Stack[SchemaElement]
 
-  def document(name: String)(body: => Unit): BOMSchemaDocument = {
-    val d = new BOMSchemaDocument(name)
+  def document(name: String)(body: => Unit): SchemaDocument = {
+    val d = new SchemaDocument(name)
     stack.push(d)
     body
-    stack.pop.asInstanceOf[BOMSchemaDocument]
+    stack.pop.asInstanceOf[SchemaDocument]
   }
 
-  def sequence(name: String)(body: => Unit): BOMSchemaSequence = {
-    val seq = new BOMSchemaSequence(name, stack.top, stack.top.depth + 1)
+  def sequence(name: String)(body: => Unit): SchemaSequence = {
+    val seq = new SchemaSequence(name, stack.top, stack.top.depth + 1)
     stack.top.add(seq)
     stack.push(seq)
     body
@@ -29,11 +29,11 @@ trait BOMSchemaBuilder {
   val regular = true
   val irregular = false
 
-  def array(name: String, lengthFun: BOMNode => Long)(body: => Unit): BOMSchemaArray =
+  def array(name: String, lengthFun: BOMNode => Long)(body: => Unit): SchemaArray =
     array(name, lengthFun, false) { body }
   
-  def array(name: String, lengthFun: BOMNode => Long, regular: Boolean)(body: => Unit): BOMSchemaArray = {
-    val a = new BOMSchemaArray(name, stack.top, stack.top.depth + 1)
+  def array(name: String, lengthFun: BOMNode => Long, regular: Boolean)(body: => Unit): SchemaArray = {
+    val a = new SchemaArray(name, stack.top, stack.top.depth + 1)
     stack.top.add(a)
     a.lengthFun = lengthFun
     a.regular = regular
@@ -43,8 +43,8 @@ trait BOMSchemaBuilder {
     a
   }
 
-  def switch(switchFun: BOMNode => Any)(body: => Unit): BOMSchemaSwitch = {
-    val bomSwitch = new BOMSchemaSwitch(stack.top, stack.top.depth)
+  def switch(switchFun: BOMNode => Any)(body: => Unit): SchemaSwitch = {
+    val bomSwitch = new SchemaSwitch(stack.top, stack.top.depth)
     stack.top.add(bomSwitch)
     bomSwitch.switchFun = switchFun
     stack.push(bomSwitch)
@@ -54,10 +54,10 @@ trait BOMSchemaBuilder {
   }
 
   // 'case' is a scala keyword, we use 'when' instead
-  def when(value: String)(body: => Unit): BOMSchemaCase = {
-    val bomCase = new BOMSchemaCase(stack.top, stack.top.depth)
+  def when(value: String)(body: => Unit): SchemaCase = {
+    val bomCase = new SchemaCase(stack.top, stack.top.depth)
     if ("*".equals(value)) {
-      stack.top.asInstanceOf[BOMSchemaSwitch].defaultCase = bomCase
+      stack.top.asInstanceOf[SchemaSwitch].defaultCase = bomCase
     } else {
       bomCase.caseValue = value
     }
@@ -69,8 +69,8 @@ trait BOMSchemaBuilder {
   }
 
   implicit val body = () => {}
-  def number(name: String, numberType: BOMType)(implicit body: () => Unit): BOMSchemaNumber =  {
-    val n = new BOMSchemaNumber(name, stack.top, stack.top.depth + 1)
+  def number(name: String, numberType: BOMType)(implicit body: () => Unit): SchemaNumber =  {
+    val n = new SchemaNumber(name, stack.top, stack.top.depth + 1)
     stack.top.add(n)
     n.numberType = numberType
     stack.push(n)
@@ -83,36 +83,36 @@ trait BOMSchemaBuilder {
 
   def mask(name: String, value: String) = {
     val longValue = JLong.decode(value).asInstanceOf[Long]
-    stack.top.asInstanceOf[BOMSchemaNumber].addMask(name, longValue)
+    stack.top.asInstanceOf[SchemaNumber].addMask(name, longValue)
   }
   
   def map(body: => Unit) = () => { body }
 
   def value(from: String, to: String) {
-    val n = stack.top.asInstanceOf[BOMSchemaNumber]
+    val n = stack.top.asInstanceOf[SchemaNumber]
     if ("*".equals(from)) {
       n.defaultMapping = to
     }
     n.addMapping(from, to)
   }
 
-  def string(name: String, encoding: String, sizeFun: BOMNode => Long): BOMSchemaString = {
-    val s = new BOMSchemaString(name, stack.top, stack.top.depth + 1)
+  def string(name: String, encoding: String, sizeFun: BOMNode => Long): SchemaString = {
+    val s = new SchemaString(name, stack.top, stack.top.depth + 1)
     s.sizeFun = sizeFun
     stack.top.add(s)
     s.encoding = encoding
     s
   }
 
-  def blob(name: String, sizeFun: BOMNode => Long): BOMSchemaBlob = {
-    val b = new BOMSchemaBlob(name, stack.top, stack.top.depth + 1)
+  def blob(name: String, sizeFun: BOMNode => Long): SchemaBlob = {
+    val b = new SchemaBlob(name, stack.top, stack.top.depth + 1)
     b.sizeFun = sizeFun
     stack.top.add(b)
     b
   }
 
-  def virtual(name: String, valueFun: BOMNode => Any): BOMSchemaVirtual = {
-    val v = new BOMSchemaVirtual(name, stack.top, stack.top.depth + 1)
+  def virtual(name: String, valueFun: BOMNode => Any): SchemaVirtual = {
+    val v = new SchemaVirtual(name, stack.top, stack.top.depth + 1)
     stack.top.add(v)
     v.valueFun = valueFun
     v

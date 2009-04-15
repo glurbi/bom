@@ -10,7 +10,7 @@ import bom.bin._
 // TODO: split the test in many...
 object BomTest {
 
-  object TestSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
+  object TestSchema extends Schema with SchemaBuilder with BOMTypes {
 
     def integers =
       sequence("integers") {
@@ -193,7 +193,7 @@ object BomTest {
     }
   }
 
-  def bspace: BOMBinarySpace = {
+  def bspace: BinarySpace = {
     implicit def int2Byte(i: Int): Byte = i.asInstanceOf[Byte]
     val bytes: Array[Byte] = List[Byte](
 

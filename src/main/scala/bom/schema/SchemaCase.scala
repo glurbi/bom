@@ -3,25 +3,25 @@ package bom.schema
 import bom._
 import bom.bin._
 
-case class BOMSchemaCase(
+case class SchemaCase(
 
-  override val parent: BOMSchemaElement,
+  override val parent: SchemaElement,
 
   override val depth: Int)
 
-  extends BOMSchemaElement {
+  extends SchemaElement {
 
   override val name: String = null
 
-  private var element: BOMSchemaElement = null
+  private var element: SchemaElement = null
   
   var caseValue: Object = null
 
-  def add(child: BOMSchemaElement) = element = child
+  def add(child: SchemaElement) = element = child
 
   def instance(parent: BOMContainer, index: Int): BOMNode =
     element.instance(parent, index)
 
-  def children: List[BOMSchemaElement] = element :: Nil
+  def children: List[SchemaElement] = element :: Nil
 
 }

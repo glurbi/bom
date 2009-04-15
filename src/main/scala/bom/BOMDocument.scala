@@ -13,12 +13,12 @@ import bom.BOM._
  */
 case class BOMDocument(
 
-  override val schema: BOMSchemaDocument,
+  override val schema: SchemaDocument,
 
   /**
    * @return the binary space associated with this document.
    */
-  override val binarySpace: BOMBinarySpace)
+  override val binarySpace: BinarySpace)
 
   extends BOMSequence(schema, null, 0) {
 

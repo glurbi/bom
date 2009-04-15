@@ -9,7 +9,7 @@ import bom.schema._
  * This node contains a value instead.
  */
 abstract case class BOMLeaf(
-  override val schema: BOMSchemaElement,
+  override val schema: SchemaElement,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMNode(schema, parent, index) {

@@ -10,7 +10,7 @@ import bom.schema._
  * character string.
  */
 case class BOMString(
-  override val schema: BOMSchemaString,
+  override val schema: SchemaString,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMLeaf(schema, parent, index) {
@@ -22,7 +22,7 @@ case class BOMString(
     binarySpace.position(position.intValue)
     val ba = new Array[byte](size.intValue / 8)
     binarySpace.getBytes(ba)
-    val encoding = schema.asInstanceOf[BOMSchemaString].encoding
+    val encoding = schema.asInstanceOf[SchemaString].encoding
     val charset = Charset.availableCharsets.get(encoding)
     charset.decode(ByteBuffer.wrap(ba)).toString
   }

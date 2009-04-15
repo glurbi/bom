@@ -4,7 +4,7 @@ import java.io._
 import java.nio._
 import bom._
 
-class MemoryBinarySpace(val buffer: ByteBuffer) extends BOMBinarySpace {
+class MemoryBinarySpace(val buffer: ByteBuffer) extends BinarySpace {
 
   var offset: Long = 0
   

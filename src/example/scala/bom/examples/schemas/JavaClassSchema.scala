@@ -7,7 +7,7 @@ import bom.BOM._
 /**
  * http://java.sun.com/docs/books/jvms/second_edition/html/ClassFile.doc.html
  */
-object JavaClassSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
+object JavaClassSchema extends Schema with SchemaBuilder with BOMTypes {
 
   def schema = document("class") {
       number("magic", bom_uint)

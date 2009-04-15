@@ -6,25 +6,25 @@ import java.util.{Iterator => JIterator}
 import bom._
 import bom.bin._
 
-case class BOMSchemaSwitch(
+case class SchemaSwitch(
 
-  override val parent: BOMSchemaElement,
+  override val parent: SchemaElement,
 
   override val depth: Int)
 
-  extends BOMSchemaElement {
+  extends SchemaElement {
 
   override val name: String = null
 
-  val cases = new JHashMap[Any, BOMSchemaCase]
+  val cases = new JHashMap[Any, SchemaCase]
   var switchFun: BOMNode => Any = _
-  var defaultCase: BOMSchemaCase = _
+  var defaultCase: SchemaCase = _
 
-  override def add(child: BOMSchemaElement) {
-    if (!(child.isInstanceOf[BOMSchemaCase])) {
+  override def add(child: SchemaElement) {
+    if (!(child.isInstanceOf[SchemaCase])) {
       error("Invalid child type: " + child.getClass)
     }
-    val scase = child.asInstanceOf[BOMSchemaCase]
+    val scase = child.asInstanceOf[SchemaCase]
     cases.put(scase.caseValue, scase)
   }
 
@@ -43,16 +43,16 @@ case class BOMSchemaSwitch(
     findMatchingCase(switchFun(node)).instance(parent, index)
   }
 
-  override def children: List[BOMSchemaElement] = {
-    var res: List[BOMSchemaElement] = Nil
-    val it: JIterator[BOMSchemaCase] = cases.values.iterator
+  override def children: List[SchemaElement] = {
+    var res: List[SchemaElement] = Nil
+    val it: JIterator[SchemaCase] = cases.values.iterator
     while (it.hasNext) {
       res = it.next :: res
     }
     res
   }
 
-  def findMatchingCase(o: Any): BOMSchemaCase = {
+  def findMatchingCase(o: Any): SchemaCase = {
     var scase = cases.get(o)
     if (scase == null) {
       scase = defaultCase

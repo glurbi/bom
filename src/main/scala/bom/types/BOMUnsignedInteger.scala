@@ -6,7 +6,7 @@ class BOMUnsignedInteger extends BOMType {
 
   def size: Int = 32
 
-  def read(bspace: BOMBinarySpace): Long = {
+  def read(bspace: BinarySpace): Long = {
     ((bspace.getByte.asInstanceOf[Long] & 255) << 24) +
     ((bspace.getByte.asInstanceOf[Long] & 255) << 16) +
     ((bspace.getByte.asInstanceOf[Long] & 255) << 8) +

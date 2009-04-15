@@ -9,7 +9,7 @@ import bom.bin._
 
 class IntegerTestSuite extends FunSuite {
 
-  object TestSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
+  object TestSchema extends Schema with SchemaBuilder with BOMTypes {
     def schema = document("integers") {
       number("i1", bom_byte)
       number("i2", bom_int)
@@ -21,7 +21,7 @@ class IntegerTestSuite extends FunSuite {
     }
   }
 
-  def bspace: BOMBinarySpace = {
+  def bspace: BinarySpace = {
     implicit def int2Byte(i: Int): Byte = i.asInstanceOf[Byte]
     val bytes: Array[Byte] = List[Byte](
       0x01,

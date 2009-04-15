@@ -9,7 +9,7 @@ class BOMBinaryCodedDecimal(val digits: Int) extends BOMType {
   
   def size: Int = 4 * digits
   
-  def read(bspace: BOMBinarySpace): Long = {
+  def read(bspace: BinarySpace): Long = {
     var result = 0
     for (i <- 0 until digits) {
       val digit: Int = bspace.getBits(4)

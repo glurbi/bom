@@ -11,8 +11,8 @@ import bom.schema._
 import bom.stream.BOMEvent._
 
 class BOMEventReader(
-  val bspace: BOMBinarySpace,
-  val schema: BOMSchemaElement) {
+  val bspace: BinarySpace,
+  val schema: SchemaElement) {
 
   val containers = new ArrayDeque[BOMContainer]
   val iterators = new ArrayDeque[Iterator[BOMNode]]
@@ -37,7 +37,7 @@ class BOMEventReader(
       }
       case BOMEvent(_, Leaf) => updateEvent
       case null => {
-          event = BOMEvent(new BOMDocument(schema.asInstanceOf[BOMSchemaDocument], bspace), StartContainer)
+          event = BOMEvent(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace), StartContainer)
       }
     }
     event

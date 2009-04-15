@@ -7,7 +7,7 @@ class BOMDouble extends BOMType {
 
   def size: Int = 64
 
-  def read(bspace: BOMBinarySpace): Double = {
+  def read(bspace: BinarySpace): Double = {
     JDouble.longBitsToDouble((new BOMLong).read(bspace).asInstanceOf[Long])
   }
 

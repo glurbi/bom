@@ -4,9 +4,9 @@ import bom._
 import bom.bin._
 
 /**
- * The common contract for all BOM schema elements.
+ * The common contract for all schema elements.
  */
-abstract case class BOMSchemaElement() {
+abstract case class SchemaElement() {
 
   var positionFun: BOMNode => Long = _
 
@@ -20,7 +20,7 @@ abstract case class BOMSchemaElement() {
   /**
    * @return the schema element parent of this schema element
    */
-  def parent: BOMSchemaElement
+  def parent: SchemaElement
 
   /**
    * @return the depth of the schema element in the schema hierarchy
@@ -30,7 +30,7 @@ abstract case class BOMSchemaElement() {
   /**
    * @return the sequence of schema elements children of this schema element
    */
-  def children: List[BOMSchemaElement]
+  def children: List[SchemaElement]
 
   /**
    * Create an BOMNode instance corresponding to this schema element.
@@ -40,6 +40,6 @@ abstract case class BOMSchemaElement() {
   /**
    * Add a schema element child of this schema element.
    */
-  def add(child: BOMSchemaElement)
+  def add(child: SchemaElement)
 
 }

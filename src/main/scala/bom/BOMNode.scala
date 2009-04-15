@@ -15,7 +15,7 @@ abstract case class BOMNode(
   /**
    * @return the schema of this node
    */
-  val schema: BOMSchemaElement,
+  val schema: SchemaElement,
 
   /**
    * @return the parent node of this node
@@ -95,7 +95,7 @@ abstract case class BOMNode(
     } else if (parent.isInstanceOf[BOMSequence]) {
       val previousSibling = parent.schema.children(index - 1).instance(parent, index - 1)
       previousSibling.position + previousSibling.size
-    } else if (parent.isInstanceOf[BOMArray] && parent.schema.asInstanceOf[BOMSchemaArray].regular) {
+    } else if (parent.isInstanceOf[BOMArray] && parent.schema.asInstanceOf[SchemaArray].regular) {
       parent.position + index * parent.schema.children(0).instance(parent, 0).size
     } else if (parent.isInstanceOf[BOMArray]) {
       (parent.asInstanceOf[BOMArray]/(index - 1)).position +
@@ -107,6 +107,6 @@ abstract case class BOMNode(
   /**
    * @return the binary space associated with this node
    */
-  def binarySpace: BOMBinarySpace = document.binarySpace
+  def binarySpace: BinarySpace = document.binarySpace
 
 }

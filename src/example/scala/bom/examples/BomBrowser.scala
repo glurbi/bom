@@ -22,7 +22,7 @@ object BomBrowser {
 
   def main(args: Array[String]) {
     val schema = Class.forName(args(0)).getMethod("schema").
-      invoke(null, null).asInstanceOf[BOMSchemaDocument]
+      invoke(null, null).asInstanceOf[SchemaDocument]
     val bspace = new MemoryBinarySpace(new FileInputStream(args(1)))
     val doc = new BOMDocument(schema, bspace)
     val bomBrowser = new BomBrowserFoo(doc)
@@ -62,13 +62,13 @@ class BomBrowserFoo(val doc: BOMDocument) {
         case BOMContainer(_, _, _) => ""
         case _ => node.value.toString
       }
-    private def translateSchema(schema: BOMSchemaElement): String = schema match {
-      case BOMSchemaSequence(_, _, _) => "sequence"
-      case BOMSchemaArray(_, _, _) => "array"
-      case BOMSchemaBlob(_, _, _) => "blob"
-      case BOMSchemaNumber(_, _, _) => "number"
-      case BOMSchemaString(_, _, _) => "string"
-      case BOMSchemaVirtual(_, _, _) => "virtual"
+    private def translateSchema(schema: SchemaElement): String = schema match {
+      case SchemaSequence(_, _, _) => "sequence"
+      case SchemaArray(_, _, _) => "array"
+      case SchemaBlob(_, _, _) => "blob"
+      case SchemaNumber(_, _, _) => "number"
+      case SchemaString(_, _, _) => "string"
+      case SchemaVirtual(_, _, _) => "virtual"
       case _ => "unknown"
     }
   }
@@ -139,8 +139,8 @@ class BomBrowserFoo(val doc: BOMDocument) {
   }
 
   def isPlotable(node: BOMNode): Boolean = 
-    node.schema.isInstanceOf[BOMSchemaArray] &&
-    node.schema.asInstanceOf[BOMSchemaArray].children.head.isInstanceOf[BOMSchemaNumber]
+    node.schema.isInstanceOf[SchemaArray] &&
+    node.schema.asInstanceOf[SchemaArray].children.head.isInstanceOf[SchemaNumber]
   
   val plotMenuItem = new JMenuItem("Plot")
   plotMenuItem.addActionListener(actionListener)

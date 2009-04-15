@@ -8,7 +8,7 @@ import bom.schema._
  * the containers elements, or lookep up by index.
  */
 abstract case class BOMContainer(
-  override val schema: BOMSchemaElement,
+  override val schema: SchemaElement,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMNode(schema, parent, index) {}

@@ -7,7 +7,7 @@ import bom.BOM._
 /**
  * http://www.seg.org/SEGportalWEBproject/prod/SEG-Publications/Pub-Technical-Standards/Documents/seg_d_rev2.1.pdf
  */
-object SegdSchema extends BOMSchema with BOMSchemaBuilder with BOMTypes {
+object SegdSchema extends Schema with SchemaBuilder with BOMTypes {
 
   def schema = document("segd") {
       generalHeader1

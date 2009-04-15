@@ -7,24 +7,24 @@ import bom._
 import bom.types._
 import bom.bin._
 
-case class BOMSchemaNumber(
+case class SchemaNumber(
 
   override val name: String,
 
-  override val parent: BOMSchemaElement,
+  override val parent: SchemaElement,
 
   override val depth: Int)
 
-  extends BOMSchemaElement {
+  extends SchemaElement {
 
   var numberType: BOMType = null
   val mappings = new JHashMap[Object, Object]
   val masks = new JHashMap[String, Long]
   var defaultMapping: Object = null
 
-  def add(child: BOMSchemaElement) = error("A number cannot have a child element.")
+  def add(child: SchemaElement) = error("A number cannot have a child element.")
 
-  override def children: List[BOMSchemaElement] = Nil
+  override def children: List[SchemaElement] = Nil
 
   def hasMapping: Boolean = mappings.size() > 0
 

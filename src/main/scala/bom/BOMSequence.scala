@@ -9,7 +9,7 @@ import bom.schema._
  * element type. The children can be looked up by name or index.
  */
 case class BOMSequence(
-  override val schema: BOMSchemaSequence,
+  override val schema: SchemaSequence,
   override val parent: BOMContainer,
   override val index: Int)
   extends BOMContainer(schema, parent, index) {

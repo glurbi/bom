@@ -4,7 +4,7 @@ package bom.bin
  * A binary space defines a region (memory, disk, network, ...) where data can
  * be read or written with a set of primitives.
  */
-trait BOMBinarySpace {
+trait BinarySpace {
 
   /**
    * @return the size of this binary space (in bits)

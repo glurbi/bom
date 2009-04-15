@@ -3,21 +3,21 @@ package bom.schema
 import bom._
 import bom.bin._
 
-case class BOMSchemaString(
+case class SchemaString(
 
   override val name: String,
 
-  override val parent: BOMSchemaElement,
+  override val parent: SchemaElement,
 
   override val depth: Int)
 
-  extends BOMSchemaElement {
+  extends SchemaElement {
 
   var encoding: String = _
     
-  def add(child: BOMSchemaElement) = error("A string cannot have a child element.")
+  def add(child: SchemaElement) = error("A string cannot have a child element.")
 
-  override def children: List[BOMSchemaElement] = null
+  override def children: List[SchemaElement] = null
 
   override def instance(parent: BOMContainer, index: Int): BOMNode =
     new BOMString(this, parent, index)

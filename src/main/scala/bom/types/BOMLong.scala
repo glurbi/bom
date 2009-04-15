@@ -6,7 +6,7 @@ class BOMLong extends BOMType {
 
   def size: Int = 64
 
-  def read(bspace: BOMBinarySpace): Long = {
+  def read(bspace: BinarySpace): Long = {
     (bspace.getByte.asInstanceOf[Long] << 56) +
     (bspace.getByte.asInstanceOf[Long] << 48) +
     (bspace.getByte.asInstanceOf[Long] << 40) +
