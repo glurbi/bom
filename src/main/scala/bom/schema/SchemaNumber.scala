@@ -52,7 +52,7 @@ case class SchemaNumber(
         if (o != null) o else defaultMapping
     }
     
-  def instance(parent: BOMContainer, index: Int): BOMNode =
+  override def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMNumber(this, parent, index)
 
 }

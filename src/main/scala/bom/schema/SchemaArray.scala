@@ -28,6 +28,6 @@ case class SchemaArray(
 
   override def children: List[SchemaElement] = element :: Nil
 
-  def instance(parent: BOMContainer, index: Int): BOMNode = new BOMArray(this, parent, index)
+  override def createNode(parent: BOMContainer, index: Int): BOMNode = new BOMArray(this, parent, index)
 
 }

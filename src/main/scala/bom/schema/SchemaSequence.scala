@@ -24,7 +24,7 @@ case class SchemaSequence(
     name2index.put(child.name, children.size - 1);
   }
 
-  override def instance(parent: BOMContainer, index: Int): BOMNode =
+  override def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMSequence(this, parent, index)
 
   def child(name: String): SchemaElement = name2element.get(name)

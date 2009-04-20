@@ -9,6 +9,7 @@ import bom._
 import bom.bin._
 import bom.schema._
 import bom.stream.Event._
+import bom.cache._
 
 class EventReader(
   val bspace: BinarySpace,
@@ -37,7 +38,7 @@ class EventReader(
       }
       case Event(_, Leaf) => updateEvent
       case null => {
-          event = Event(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace), StartContainer)
+          event = Event(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace) with UnboundedHashMapCache, StartContainer)
       }
     }
     event

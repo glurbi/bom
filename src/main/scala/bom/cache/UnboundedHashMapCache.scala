@@ -8,10 +8,10 @@ trait UnboundedHashMapCache extends NodeCache {
 
   private val cache = HashMap.empty[BOMIdentifier, BOMNode]
 
-  def add(node: BOMNode) {
+  override def add(node: BOMNode) {
     cache += node.identifier -> node
   }
 
-  def get(id: BOMIdentifier): Option[BOMNode] = cache.get(id)
+  override def get(id: BOMIdentifier): Option[BOMNode] = cache.get(id)
 
 }

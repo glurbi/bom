@@ -33,13 +33,28 @@ abstract case class SchemaElement() {
   def children: List[SchemaElement]
 
   /**
-   * Create an BOMNode instance corresponding to this schema element.
+   * Retrieve a BOMNode instance corresponding to this schema element.
    */
-  def instance(parent: BOMContainer, index: Int): BOMNode
+  sealed def instance(parent: BOMContainer, index: Int): BOMNode = {
+    parent.document.get(index :: parent.identifier) match {
+      case Some(n: BOMNode) => n
+      case None => {
+        val n = createNode(parent, index)
+        n.document.add(n)
+        n
+      }
+    }
+  }
 
   /**
    * Add a schema element child of this schema element.
    */
   def add(child: SchemaElement)
+
+  /**
+   * Create a BOMNode instance corresponding to this schema element.
+   */
+  protected def createNode(parent: BOMContainer, index: Int): BOMNode =
+    error("not implemented!")
 
 }

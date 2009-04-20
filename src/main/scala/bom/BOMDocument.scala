@@ -23,7 +23,4 @@ extends BOMSequence(schema, null, 0) with NodeCache {
   override lazy val position: Long = 0
   override lazy val identifier: BOMIdentifier = Nil
 
-  def add(node: BOMNode) {}
-  def get(id: BOMIdentifier): Option[BOMNode] = None
-
 }

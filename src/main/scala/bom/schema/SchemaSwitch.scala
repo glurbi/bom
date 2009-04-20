@@ -28,7 +28,7 @@ case class SchemaSwitch(
     cases.put(scase.caseValue, scase)
   }
 
-  def instance(parent: BOMContainer, index: Int): BOMNode = {
+  override def createNode(parent: BOMContainer, index: Int): BOMNode = {
     val node = new BOMNode(this, parent, index) {
       override def depth: Int = parent.depth + 1;
       override lazy val size: Long = error("Not implemented!")

@@ -19,7 +19,7 @@ case class SchemaString(
 
   override def children: List[SchemaElement] = null
 
-  override def instance(parent: BOMContainer, index: Int): BOMNode =
+  override def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMString(this, parent, index)
 
 }
