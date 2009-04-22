@@ -72,14 +72,14 @@
         </scalac>
     </target>
 
-    <!-- target name="old-test" depends="compile-test">
+    <target name="browser" depends="compile-example">
         <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
             <classpath>
-                <path refid="test.classpath"/>
+                <path refid="example.classpath"/>
             </classpath>
-            <arg line="bom.test.AllTests"/>
+            <arg line="bom.examples.BomBrowser"/>
         </java>
-    </target -->
+    </target>
 
     <target name="test" depends="compile-test">
         <scalatest>

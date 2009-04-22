@@ -18,24 +18,68 @@ import bom.schema._
 import bom.types._
 import bom.stream._
 
+import BomBrowser._
+
 object BomBrowser {
 
+  def buildActionListener(fun: (ActionEvent) => Unit): ActionListener =
+    new ActionListener {
+      def actionPerformed(event: ActionEvent) = fun(event)
+    }
+
   def main(args: Array[String]) {
-    val schema = Class.forName(args(0)).getMethod("schema").
-      invoke(null, null).asInstanceOf[SchemaDocument]
-    val bspace = new MemoryBinarySpace(new FileInputStream(args(1)))
-    val doc = new BOMDocument(schema, bspace)
-    val bomBrowser = new BomBrowserFoo(doc)
-    bomBrowser.show
+
+    val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
+    val doc = new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
+    var docHolder = new DocumentHolder(doc)
+
+    val frame = new JFrame
+
+    val fileMenu = new JMenu("File")
+    val openMenuItem = new JMenuItem("Open...")
+    openMenuItem.addActionListener(buildActionListener { _ =>
+      val fileChooser = new JFileChooser
+      if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        BomBrowserSetup.currentFile = fileChooser.getSelectedFile.getAbsoluteFile
+        val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
+        val doc = new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
+        val newDocHolder = new DocumentHolder(doc)
+        frame.remove(docHolder.scrollPane)
+        frame.add(newDocHolder.scrollPane)
+        frame.setVisible(true)
+        docHolder = newDocHolder
+      }
+    })
+    fileMenu.add(openMenuItem)
+    val exitMenuItem = new JMenuItem("Exit")
+    exitMenuItem.addActionListener(buildActionListener { _ => System.exit(0) })
+    fileMenu.add(exitMenuItem)
+    val schemaMenu = new JMenu("Schema")
+    val setSchemaMenuItem = new JMenuItem("Set...")
+    setSchemaMenuItem.addActionListener(buildActionListener { _ =>
+      val className = JOptionPane.showInputDialog("Please give the schema class name")
+      val schema = Class.forName(className).newInstance.asInstanceOf[Schema]
+      BomBrowserSetup.currentSchema = schema
+    })
+    schemaMenu.add(setSchemaMenuItem)
+
+    val menuBar = new JMenuBar
+    menuBar.add(fileMenu)
+    menuBar.add(schemaMenu)
+
+    frame.setJMenuBar(menuBar)
+    frame.add(docHolder.scrollPane)
+    frame.setTitle("BOM Browser")
+    frame.setSize(1280, 600)
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+    frame.setVisible(true)
   }
 
 }
 
-// NB: for some obscure reason, if the class has the same name as the
-// companion object, netbeans complains with "java.lang.NoSuchMethodError: main"
-class BomBrowserFoo(val doc: BOMDocument) {
+class DocumentHolder(val doc: BOMDocument) {
 
-  /**
+    /**
    * Adapts the BOM tree to a JXTreeTableModel
    */
   val dataTreeModel = new AbstractTreeTableModel(doc) {
@@ -92,12 +136,10 @@ class BomBrowserFoo(val doc: BOMDocument) {
     }
   })
 
-  val actionListener = new ActionListener {
-    def actionPerformed(event: ActionEvent) = {
+  val actionListener = buildActionListener { event =>
       event.getActionCommand match {
         case "Plot" => plotCurrentSelection
       }
-    }
   }
 
   def plotCurrentSelection {
@@ -133,15 +175,15 @@ class BomBrowserFoo(val doc: BOMDocument) {
       frame.setSize(800, 600)
       frame.setVisible(true)
     } else {
-      JOptionPane.showMessageDialog(frame, "Choose an array with numbers...",
+      JOptionPane.showMessageDialog(null, "Choose an array with numbers...",
                                     null, JOptionPane.WARNING_MESSAGE)
     }
   }
 
-  def isPlotable(node: BOMNode): Boolean = 
+  def isPlotable(node: BOMNode): Boolean =
     node.schema.isInstanceOf[SchemaArray] &&
     node.schema.asInstanceOf[SchemaArray].children.head.isInstanceOf[SchemaNumber]
-  
+
   val plotMenuItem = new JMenuItem("Plot")
   plotMenuItem.addActionListener(actionListener)
 
@@ -150,12 +192,60 @@ class BomBrowserFoo(val doc: BOMDocument) {
 
   val scrollPane = new JScrollPane(dataTreePanel)
 
-  val frame = new JFrame
-  frame.add(scrollPane)
-  frame.setTitle("BOM Browser")
-  frame.setSize(1280, 600)
-  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
+}
 
-  def show { frame.setVisible(true) }
+object BomBrowserSetup {
+
+  import scala.xml._
+
+  private val bomDirectory = new File(System.getProperty("user.home") +
+                                      System.getProperty("file.separator") +
+                                      ".bom")
+  if (!bomDirectory.exists) bomDirectory.mkdirs
+
+  private val setupFile = new File(bomDirectory.getAbsolutePath +
+                                   System.getProperty("file.separator") +
+                                   "BomBrowserSetup.xml")
+
+  private var currentBinFile = readCurrentFile
+  def currentFile: File = currentBinFile
+  def currentFile_=(file: File) = {
+    currentBinFile = file
+    writeSetup(setup)
+  }
+
+  object VoidSchema extends Schema { def schema = null }
+  private var currentSchemaClass: Schema = readCurrentSchema
+  def currentSchema: Schema = currentSchemaClass
+  def currentSchema_=(schema: Schema) {
+    currentSchemaClass = schema
+    writeSetup(setup)
+  }
+
+  private def readCurrentFile: File = setupFile.exists match {
+    case true => new File((readSetup \\ "file").text)
+    case false => null
+  }
+
+  private def readCurrentSchema: Schema = setupFile.exists match {
+    case true => {
+        val className = (readSetup \\ "schema").text
+        Class.forName(className).newInstance.asInstanceOf[Schema]
+    }
+    case false => VoidSchema
+  }
+
+  private def setup: Node =
+    <BomBrowser>
+      <file>{currentFile.getAbsolutePath}</file>
+      <schema>{currentSchema.getClass.getName}</schema>
+    </BomBrowser>
+
+  private def readSetup: Node = XML.loadFile(setupFile)
+  private def writeSetup(setup: Node) {
+    val writer = new FileWriter(setupFile)
+    XML.write(writer, setup, "UTF-8", false, null)
+    writer.close
+  }
 
 }
