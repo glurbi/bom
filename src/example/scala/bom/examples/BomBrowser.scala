@@ -5,6 +5,7 @@ import scala.collection.jcl._
 import java.io._
 import javax.swing._
 import javax.swing.event._
+import javax.swing.border._
 import java.awt._
 import java.awt.event._
 import java.awt.geom._
@@ -20,23 +21,40 @@ import bom.stream._
 
 import BomBrowser._
 
+/**
+ * A simple GUI application for opening binary documents and browse them.
+ */
 object BomBrowser {
 
+  /**
+   * Convenient way to create an action listener with a closure
+   */
   def buildActionListener(fun: (ActionEvent) => Unit): ActionListener =
     new ActionListener {
       def actionPerformed(event: ActionEvent) = fun(event)
     }
 
+  /**
+   * Creates the initial BOMDocument object.
+   */
+  def createInitialDocument = {
+    val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
+    new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
+  }
+
   def main(args: Array[String]) {
 
-    val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
-    val doc = new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
-    var docHolder = new DocumentHolder(doc)
+    var docHolder = new DocumentHolder(createInitialDocument)
 
     val frame = new JFrame
-
+    val statusBar = new JPanel
     val fileMenu = new JMenu("File")
     val openMenuItem = new JMenuItem("Open...")
+    val exitMenuItem = new JMenuItem("Exit")
+    val schemaMenu = new JMenu("Schema")
+    val setSchemaMenuItem = new JMenuItem("Set...")
+    val menuBar = new JMenuBar
+
     openMenuItem.addActionListener(buildActionListener { _ =>
       val fileChooser = new JFileChooser
       if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
@@ -51,22 +69,22 @@ object BomBrowser {
       }
     })
     fileMenu.add(openMenuItem)
-    val exitMenuItem = new JMenuItem("Exit")
     exitMenuItem.addActionListener(buildActionListener { _ => System.exit(0) })
     fileMenu.add(exitMenuItem)
-    val schemaMenu = new JMenu("Schema")
-    val setSchemaMenuItem = new JMenuItem("Set...")
     setSchemaMenuItem.addActionListener(buildActionListener { _ =>
       val className = JOptionPane.showInputDialog("Please give the schema class name")
       val schema = Class.forName(className).newInstance.asInstanceOf[Schema]
       BomBrowserSetup.currentSchema = schema
     })
     schemaMenu.add(setSchemaMenuItem)
+    frame.setLayout(new BorderLayout)
+    statusBar.setLayout(new BorderLayout)
+    statusBar.add(new JLabel(BomBrowserSetup.currentFile.toString), BorderLayout.CENTER)
+    statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED))
+    frame.add(statusBar, BorderLayout.SOUTH);
 
-    val menuBar = new JMenuBar
     menuBar.add(fileMenu)
     menuBar.add(schemaMenu)
-
     frame.setJMenuBar(menuBar)
     frame.add(docHolder.scrollPane)
     frame.setTitle("BOM Browser")
@@ -77,9 +95,12 @@ object BomBrowser {
 
 }
 
+/**
+ * Provides a Swing GUI for browsing binary document with help of a tree table.
+ */
 class DocumentHolder(val doc: BOMDocument) {
 
-    /**
+  /**
    * Adapts the BOM tree to a JXTreeTableModel
    */
   val dataTreeModel = new AbstractTreeTableModel(doc) {
@@ -194,6 +215,9 @@ class DocumentHolder(val doc: BOMDocument) {
 
 }
 
+/**
+ * Holds the setup of the BomBrowser and ensure persistent of it.
+ */
 object BomBrowserSetup {
 
   import scala.xml._
