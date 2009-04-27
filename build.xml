@@ -76,6 +76,7 @@
         <scalatest>
             <suite classname="bom.test.BomTestSuite"/>
             <suite classname="bom.test.IntegerTestSuite"/>
+            <suite classname="bom.test.BinaryCodedDecimalTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
