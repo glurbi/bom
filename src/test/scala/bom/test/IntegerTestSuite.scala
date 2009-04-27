@@ -35,7 +35,7 @@ class IntegerTestSuite extends FunSuite {
     new MemoryBinarySpace(bytes)
   }
 
-  test("can read from a simple sequence of various integers") {
+  test("various integers") {
     val doc = new BOMDocument(TestSchema.schema, bspace)
     assert(value(doc/0) == 1.asInstanceOf[Byte])
     assert(value(doc/1) == 15)

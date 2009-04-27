@@ -11,12 +11,12 @@ class BinaryCodedDecimalTestSuite extends FunSuite {
 
   object TestSchema extends Schema with SchemaBuilder {
     def schema = document("bcds") {
-        number("bcd1", bom_bcd1)
-        number("bcd2", bom_bcd2)
-        number("bcd3", bom_bcd3)
-        number("bcd4", bom_bcd4)
-        number("bcd6", bom_bcd6)
-        number("bcd8", bom_bcd8)
+      number("bcd1", bom_bcd1)
+      number("bcd2", bom_bcd2)
+      number("bcd3", bom_bcd3)
+      number("bcd4", bom_bcd4)
+      number("bcd6", bom_bcd6)
+      number("bcd8", bom_bcd8)
     }
   }
 
@@ -31,7 +31,7 @@ class BinaryCodedDecimalTestSuite extends FunSuite {
     new MemoryBinarySpace(bytes)
   }
 
-  test("can read from a simple sequence of various binary coded decimal numbers") {
+  test("binary coded decimal numbers") {
     val doc = new BOMDocument(TestSchema.schema, bspace)
     assert(value(doc/0) == 9L)
     assert(value(doc/1) == 87L)

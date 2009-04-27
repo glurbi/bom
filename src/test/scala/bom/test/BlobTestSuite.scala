@@ -25,7 +25,7 @@ class BlobTestSuite extends FunSuite {
     new MemoryBinarySpace(bytes)
   }
 
-  test("can read from a simple sequence blobs") {
+  test("blobs with static size") {
     val doc = new BOMDocument(TestSchema.schema, bspace)
     assert(size(doc/"blob1") == 3 * 8)
     assert(size(doc/"blob2") == 4 * 8)

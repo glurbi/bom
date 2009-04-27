@@ -78,6 +78,8 @@
             <suite classname="bom.test.IntegerTestSuite"/>
             <suite classname="bom.test.BinaryCodedDecimalTestSuite"/>
             <suite classname="bom.test.BlobTestSuite"/>
+            <suite classname="bom.test.StringTestSuite"/>
+            <suite classname="bom.test.ArrayTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
