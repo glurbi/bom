@@ -72,34 +72,7 @@
         </scalac>
     </target>
 
-    <target name="runnable-class-dump" depends="compile-example">
-        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
-            <classpath>
-                <path refid="example.classpath"/>
-            </classpath>
-            <arg line="bom.examples.ResourceDump bom.examples.schemas.JavaClassSchema /java/lang/Runnable.class"/>
-        </java>
-    </target>
-
-    <target name="string-class-dump" depends="compile-example">
-        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
-            <classpath>
-                <path refid="example.classpath"/>
-            </classpath>
-            <arg line="bom.examples.ResourceDump bom.examples.schemas.JavaClassSchema /java/lang/String.class"/>
-        </java>
-    </target>
-
-    <target name="browser" depends="compile-example">
-        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
-            <classpath>
-                <path refid="example.classpath"/>
-            </classpath>
-            <arg line="bom.examples.BomBrowser"/>
-        </java>
-    </target>
-
-    <target name="test" depends="compile-test">
+    <target name="run-test" depends="compile-test">
         <scalatest>
             <suite classname="bom.test.BomTestSuite"/>
             <suite classname="bom.test.IntegerTestSuite"/>
@@ -109,7 +82,34 @@
         </scalatest>
     </target>
 
-    <target name="all" depends="compile-main,compile-test,test, compile-example">
+    <target name="all" depends="compile-main,compile-test,run-test,compile-example">
+    </target>
+
+    <target name="run-runnable-class-dump" depends="compile-example">
+        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+            <classpath>
+                <path refid="example.classpath"/>
+            </classpath>
+            <arg line="bom.examples.ResourceDump bom.examples.schemas.JavaClassSchema /java/lang/Runnable.class"/>
+        </java>
+    </target>
+
+    <target name="run-string-class-dump" depends="compile-example">
+        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+            <classpath>
+                <path refid="example.classpath"/>
+            </classpath>
+            <arg line="bom.examples.ResourceDump bom.examples.schemas.JavaClassSchema /java/lang/String.class"/>
+        </java>
+    </target>
+
+    <target name="run-browser" depends="compile-example">
+        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+            <classpath>
+                <path refid="example.classpath"/>
+            </classpath>
+            <arg line="bom.examples.BomBrowser"/>
+        </java>
     </target>
 
     <!-- task definitions -->
