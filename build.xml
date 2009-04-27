@@ -77,6 +77,7 @@
             <suite classname="bom.test.BomTestSuite"/>
             <suite classname="bom.test.IntegerTestSuite"/>
             <suite classname="bom.test.BinaryCodedDecimalTestSuite"/>
+            <suite classname="bom.test.BlobTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
