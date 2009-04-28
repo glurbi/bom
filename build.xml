@@ -82,6 +82,7 @@
             <suite classname="bom.test.ArrayTestSuite"/>
             <suite classname="bom.test.VirtualTestSuite"/>
             <suite classname="bom.test.MaskTestSuite"/>
+            <suite classname="bom.test.MappingTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
