@@ -74,7 +74,6 @@
 
     <target name="run-test" depends="compile-test">
         <scalatest>
-            <suite classname="bom.test.BomTestSuite"/>
             <suite classname="bom.test.IntegerTestSuite"/>
             <suite classname="bom.test.BinaryCodedDecimalTestSuite"/>
             <suite classname="bom.test.BlobTestSuite"/>
@@ -85,6 +84,7 @@
             <suite classname="bom.test.MappingTestSuite"/>
             <suite classname="bom.test.SwitchTestSuite"/>
             <suite classname="bom.test.BitFieldTestSuite"/>
+            <suite classname="bom.test.OverrideTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
