@@ -84,6 +84,7 @@
             <suite classname="bom.test.MaskTestSuite"/>
             <suite classname="bom.test.MappingTestSuite"/>
             <suite classname="bom.test.SwitchTestSuite"/>
+            <suite classname="bom.test.BitFieldTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
