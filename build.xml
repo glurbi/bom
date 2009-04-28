@@ -80,6 +80,7 @@
             <suite classname="bom.test.BlobTestSuite"/>
             <suite classname="bom.test.StringTestSuite"/>
             <suite classname="bom.test.ArrayTestSuite"/>
+            <suite classname="bom.test.VirtualTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
