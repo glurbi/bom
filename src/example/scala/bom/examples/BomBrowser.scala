@@ -34,12 +34,22 @@ object BomBrowser {
       def actionPerformed(event: ActionEvent) = fun(event)
     }
 
+  object EmptyDocument extends BOMDocument(null, null) {
+    override def length = 0
+  }
+  
   /**
    * Creates the initial BOMDocument object.
    */
   def createInitialDocument = {
-    val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
-    new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
+    (BomBrowserSetup.currentFile, BomBrowserSetup.currentSchema) match {
+      case (null, _) => EmptyDocument
+      case (_, null) => EmptyDocument
+      case (file, schema) => {
+        val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
+        new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
+      }
+    }
   }
 
   def main(args: Array[String]) {
@@ -79,7 +89,9 @@ object BomBrowser {
     schemaMenu.add(setSchemaMenuItem)
     frame.setLayout(new BorderLayout)
     statusBar.setLayout(new BorderLayout)
-    statusBar.add(new JLabel(BomBrowserSetup.currentFile.toString), BorderLayout.CENTER)
+    val fileName = if (BomBrowserSetup.currentFile == null) "NO FILE"
+                   else BomBrowserSetup.currentFile.toString
+    statusBar.add(new JLabel(fileName), BorderLayout.CENTER)
     statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED))
     frame.add(statusBar, BorderLayout.SOUTH);
 
@@ -261,7 +273,7 @@ object BomBrowserSetup {
 
   private def setup: Node =
     <BomBrowser>
-      <file>{currentFile.getAbsolutePath}</file>
+      <file>{if (currentFile == null) "" else currentFile.getAbsolutePath}</file>
       <schema>{currentSchema.getClass.getName}</schema>
     </BomBrowser>
 

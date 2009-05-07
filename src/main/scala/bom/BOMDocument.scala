@@ -24,3 +24,4 @@ extends BOMSequence(schema, null, 0) with NodeCache {
   override lazy val identifier: BOMIdentifier = Nil
 
 }
+
