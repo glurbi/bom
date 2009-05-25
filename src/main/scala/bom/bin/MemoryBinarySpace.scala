@@ -38,14 +38,12 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BinarySpace {
     offset = position % 8
   }
   
-  def getByte: Byte = {
-    buffer.get
-  }
+  def getByte: Byte = buffer.get
 
-  def getBytes(bytes: Array[byte]) = {
-    buffer.get(bytes)
-  }
+  def getBytes(bytes: Array[byte]) = buffer.get(bytes)
 
+  // TODO: extract getBit and getBits into superclass 
+  
   def getBit: Int = {
     val old = buffer.position * 8
     val bit = (getByte >> (7 - offset)) & 1

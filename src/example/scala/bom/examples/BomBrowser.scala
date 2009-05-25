@@ -46,7 +46,7 @@ object BomBrowser {
       case (null, _) => EmptyDocument
       case (_, null) => EmptyDocument
       case (file, schema) => {
-        val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
+        val bspace = new FileBinarySpace(BomBrowserSetup.currentFile)
         new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
       }
     }
@@ -69,7 +69,7 @@ object BomBrowser {
       val fileChooser = new JFileChooser
       if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         BomBrowserSetup.currentFile = fileChooser.getSelectedFile.getAbsoluteFile
-        val bspace = new MemoryBinarySpace(new FileInputStream(BomBrowserSetup.currentFile))
+        val bspace = new FileBinarySpace(BomBrowserSetup.currentFile)
         val doc = new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
         val newDocHolder = new DocumentHolder(doc)
         frame.remove(docHolder.scrollPane)
