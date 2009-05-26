@@ -15,6 +15,7 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BinarySpace {
   def this(bytes: Array[Byte]) {
     this(ByteBuffer.allocateDirect(bytes.size))
     buffer.put(bytes)
+    buffer.flip
   }
   
   def this(is: InputStream) {
@@ -33,9 +34,9 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BinarySpace {
 
   def position: Long = buffer.position * 8 + offset
 
-  def position(position: Long) = {
-    buffer.position((position / 8).intValue)
-    offset = position % 8
+  def position(pos: Long) = {
+    buffer.position((pos / 8).intValue)
+    offset = pos % 8
   }
   
   def getByte: Byte = buffer.get

@@ -85,6 +85,8 @@
             <suite classname="bom.test.SwitchTestSuite"/>
             <suite classname="bom.test.BitFieldTestSuite"/>
             <suite classname="bom.test.OverrideTestSuite"/>
+            <suite classname="bom.test.FileBinarySpaceTestSuite"/>
+            <suite classname="bom.test.MemoryBinarySpaceTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>
