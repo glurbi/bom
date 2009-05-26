@@ -4,10 +4,8 @@ import java.io._
 import java.nio._
 import bom._
 
-class MemoryBinarySpace(val buffer: ByteBuffer) extends BinarySpace {
+class MemoryBinarySpace(val buffer: ByteBuffer) extends AbstractBinarySpace {
 
-  var offset: Long = 0
-  
   def this(size: Int) {
     this(ByteBuffer.allocateDirect(size))
   }
@@ -43,23 +41,6 @@ class MemoryBinarySpace(val buffer: ByteBuffer) extends BinarySpace {
 
   def getBytes(bytes: Array[byte]) = buffer.get(bytes)
 
-  // TODO: extract getBit and getBits into superclass 
+  protected[this] def bytePosition: Long = buffer.position
   
-  def getBit: Int = {
-    val old = buffer.position * 8
-    val bit = (getByte >> (7 - offset)) & 1
-    offset = (offset + 1) % 8
-    if (offset < 8) position(old + offset)
-    if (offset == 0) position(old + 8)
-    bit
-  }
-  
-  def getBits(count: Int): Int = {
-    var result = 0;
-    for (i <- 0 until count) {
-      result = (result << 1) | getBit
-    }
-    result
-  }
-
 }
