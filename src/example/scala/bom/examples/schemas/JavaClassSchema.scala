@@ -51,7 +51,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
   def constantType =
     // The java class format defines that Long and Double constants will occupy
     // two units in the index, thus the strange looking structure below...
-    switch(n => if (n.index > 0) (n / -1 / (n.index - 1) / "tag") else "*") {
+    switch(n => if (n.index > 0) stringValue(n / -1 / (n.index - 1) / "tag") else "*") {
       when("5") {
         sequence("constant") {}
       }

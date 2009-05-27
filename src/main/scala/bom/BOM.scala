@@ -51,6 +51,7 @@ object BOM {
     case b: Byte => b.toString
     case f: Float => f.toString
     case d: Double => d.toString
+    case null => ""
     case _ => error ("unexpected type")
   }
 

@@ -34,6 +34,20 @@ class ArrayTestSuite extends FunSuite {
           }
         }
       }
+      sequence("array4") {
+        array("array4", length(4), irregular) {
+          switch(n => if (n.index > 0) stringValue(n / -1 / (n.index - 1) / "tag") else "*") {
+            when("99") {
+              sequence("dummy") {}
+        	}
+            when("*") {
+              sequence("foo") {
+                number("tag", bom_ubyte)
+              }
+        	}
+          }
+        }
+      }
     }
   }
 
@@ -52,7 +66,9 @@ class ArrayTestSuite extends FunSuite {
       0x04, 0x05, 0x06,
       0x04, 0x04, 0x04, 0x44,
       0x05, 0x05, 0x05, 0x05, 0x55,
-      0x06, 0x06, 0x06, 0x06, 0x06, 0x66
+      0x06, 0x06, 0x06, 0x06, 0x06, 0x66,
+      // array4
+      0x0c, 0x63, 0x0d
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -75,6 +91,15 @@ class ArrayTestSuite extends FunSuite {
     assert(length(doc/"array3"/"array3"/1) == 5)
     assert(length(doc/"array3"/"array3"/2) == 6)
     assert(value(doc/"array3"/"array3"/2/5) == 0x66)
+  }
+  
+  test("bizarre array") {
+    val doc = new BOMDocument(TestSchema.schema, bspace)
+    assert(value(doc/"array4"/"array4"/0/"tag") == 0x0c)
+    assert(value(doc/"array4"/"array4"/1/"tag") == 99)
+    assert(doc/"array4"/"array4"/2/"tag" == BOMNil)
+    assert(value(doc/"array4"/"array4"/2/"tag") == null)
+    assert(value(doc/"array4"/"array4"/3/"tag") == 0x0d)
   }
 
 }
