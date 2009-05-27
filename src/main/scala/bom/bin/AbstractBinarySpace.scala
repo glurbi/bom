@@ -2,6 +2,7 @@ package bom.bin
 
 abstract class AbstractBinarySpace extends BinarySpace {
 
+  // contains the bit offset after bytePosition
   protected var offset: Long = 0
 
   def getBits(count: Int): Int = {

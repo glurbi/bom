@@ -1,23 +1,42 @@
 package bom.bin
 
 import java.io._
+import java.nio._
 
-class FileBinarySpace(val file: File) extends AbstractBinarySpace {
+class FileBinarySpace(private val file: File) extends AbstractBinarySpace {
 
-  private val raf: RandomAccessFile = new RandomAccessFile(file, "r")
+  private val raf = new RandomAccessFile(file, "r")
+  private val fc = raf.getChannel
+  private val bb = ByteBuffer.allocateDirect(4096)
+  
+  private var bbPos = 0L
   
   def size: Long = raf.length * 8
 
   def capacity: Long = size
 
-  def position: Long = raf.getFilePointer * 8 + offset
+  def position: Long = bbPos * 8 + bb.position * 8 + offset
 
-  def position(position: Long) {
-    raf.seek((position / 8).intValue)
-    offset = position % 8
+  def position(pos: Long) {
+    if (pos != position) {
+      bb.clear
+      fc.position((pos / 8).intValue)
+      bbPos = fc.position
+      offset = pos % 8
+      bb.clear
+      fc.read(bb)
+      bb.flip
+    }
   }
 
-  def getByte: Byte = raf.readByte
+  def getByte: Byte = {
+    if (bb.position == bb.limit) {
+      bb.clear
+      fc.read(bb)
+      bb.flip
+    }
+    bb.get
+  }
 
   def getBytes(bytes: Array[Byte]) = {
     for (i <- 0 until bytes.length) {
@@ -25,6 +44,6 @@ class FileBinarySpace(val file: File) extends AbstractBinarySpace {
     }
   }
 
-  protected[this] def bytePosition: Long = raf.getFilePointer
+  protected[this] def bytePosition: Long = position / 8
 
 }
