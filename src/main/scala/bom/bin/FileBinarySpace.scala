@@ -3,11 +3,13 @@ package bom.bin
 import java.io._
 import java.nio._
 
-class FileBinarySpace(private val file: File) extends AbstractBinarySpace {
+class FileBinarySpace(private val file: File, bufSize: Int) extends AbstractBinarySpace {
 
+  def this(file: File) = this(file, 4096)
+  
   private val raf = new RandomAccessFile(file, "r")
   private val fc = raf.getChannel
-  private val bb = ByteBuffer.allocateDirect(4096)
+  private val bb = ByteBuffer.allocateDirect(bufSize)
   
   private var bbPos = 0L
   
@@ -31,6 +33,7 @@ class FileBinarySpace(private val file: File) extends AbstractBinarySpace {
 
   def getByte: Byte = {
     if (bb.position == bb.limit) {
+      bbPos = fc.position
       bb.clear
       fc.read(bb)
       bb.flip

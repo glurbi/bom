@@ -19,7 +19,7 @@ class FileBinarySpaceTestSuite extends FunSuite {
     val fos = new FileOutputStream(file)
     fos.write(bytes)
     fos.close
-    new FileBinarySpace(file)
+    new FileBinarySpace(file, 5)
   }
 
   test("BinarySpace methods used within conditions") {
