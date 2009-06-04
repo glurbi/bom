@@ -83,8 +83,16 @@ object BomBrowser {
     fileMenu.add(exitMenuItem)
     setSchemaMenuItem.addActionListener(buildActionListener { _ =>
       val className = JOptionPane.showInputDialog("Please give the schema class name")
-      val schema = Class.forName(className).newInstance.asInstanceOf[Schema]
-      BomBrowserSetup.currentSchema = schema
+      var schema: Schema = null
+      try {
+        schema = Class.forName(className).newInstance.asInstanceOf[Schema]
+      } catch {
+        case e: ClassNotFoundException =>
+          JOptionPane.showMessageDialog(null, "The class '" + className + "' could not be instanciated.")
+      }
+      if (schema != null) {
+        BomBrowserSetup.currentSchema = schema
+      }
     })
     schemaMenu.add(setSchemaMenuItem)
     frame.setLayout(new BorderLayout)
