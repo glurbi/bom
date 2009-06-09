@@ -8,7 +8,7 @@
     <property name="main.src.dir" value="src/main/scala"/>
     <property name="test.src.dir" value="src/test/scala"/>
     <property name="example.src.dir" value="src/example/scala"/>
-	<property name="lib.dir" value="lib"/>
+    <property name="lib.dir" value="lib"/>
     <property name="main.build.dir" value="${target}/main-classes"/>
     <property name="test.build.dir" value="${target}/test-classes"/>
     <property name="example.build.dir" value="${target}/example-classes"/>

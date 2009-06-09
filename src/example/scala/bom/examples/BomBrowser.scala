@@ -62,7 +62,8 @@ object BomBrowser {
     val openMenuItem = new JMenuItem("Open...")
     val exitMenuItem = new JMenuItem("Exit")
     val schemaMenu = new JMenu("Schema")
-    val setSchemaMenuItem = new JMenuItem("Set...")
+    val setSchemaClassMenuItem = new JMenuItem("Set class...")
+    val setSchemaFileMenuItem = new JMenuItem("Set file...")
     val menuBar = new JMenuBar
 
     openMenuItem.addActionListener(buildActionListener { _ =>
@@ -81,20 +82,30 @@ object BomBrowser {
     fileMenu.add(openMenuItem)
     exitMenuItem.addActionListener(buildActionListener { _ => System.exit(0) })
     fileMenu.add(exitMenuItem)
-    setSchemaMenuItem.addActionListener(buildActionListener { _ =>
+    setSchemaClassMenuItem.addActionListener(buildActionListener { _ =>
       val className = JOptionPane.showInputDialog("Please give the schema class name")
       var schema: Schema = null
       try {
-        schema = Class.forName(className).newInstance.asInstanceOf[Schema]
+        if (schema != null) {
+          schema = Class.forName(className).newInstance.asInstanceOf[Schema]
+          BomBrowserSetup.currentSchema = schema
+        }
       } catch {
         case e: ClassNotFoundException =>
           JOptionPane.showMessageDialog(null, "The class '" + className + "' could not be instanciated.")
       }
-      if (schema != null) {
-        BomBrowserSetup.currentSchema = schema
+    })
+    schemaMenu.add(setSchemaClassMenuItem)
+    setSchemaFileMenuItem.addActionListener(buildActionListener { _ =>
+      val fileChooser = new JFileChooser
+      if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        val schema = BomSchemaCompiler.compile(fileChooser.getSelectedFile.getAbsoluteFile)
+        if (schema != null) {
+          BomBrowserSetup.currentSchema = schema
+        }
       }
     })
-    schemaMenu.add(setSchemaMenuItem)
+    schemaMenu.add(setSchemaFileMenuItem)
     frame.setLayout(new BorderLayout)
     statusBar.setLayout(new BorderLayout)
     val fileName = if (BomBrowserSetup.currentFile == null) "NO FILE"
@@ -293,3 +304,56 @@ object BomBrowserSetup {
   }
 
 }
+
+/**
+ * A classloader implementation that loads classes from an abstract directory structure.
+ */
+import scala.tools.nsc._
+import scala.tools.nsc.io._
+import scala.tools.nsc.util._
+class AbstractFileClassLoader(abstractDir: AbstractFile) extends ClassLoader(getClass.getClassLoader) {
+
+  override def findClass(name: String): Class[_] = {
+    var file: AbstractFile = null
+    var dir = abstractDir
+    val names = name.split('.').foreach(x => {
+      if (dir.lookupName(x, true) == null) {
+        file = dir.lookupName(x+".class", false)
+      } else {
+        dir = dir.lookupName(x, true)
+      }
+    })
+    val bytes = file.toByteArray
+    defineClass(name, bytes, 0, bytes.length)
+  }
+  
+}
+
+/**
+ * Utility object for compiling BOM schemas.
+ */
+object BomSchemaCompiler {
+
+  def compile(file: File): Schema = {
+    val fileToCompile = AbstractFile.getFile(file)
+    val virtualDirectory = new BugFixVirtualDirectory("(memory)", None)
+    val settings = {
+      val sets = new Settings
+      sets.classpath.value = System.getProperty("java.class.path")
+      sets
+    }
+    val compiler: Global = {
+      val comp = new Global(settings)
+      comp.genJVM.outputDir = virtualDirectory
+      comp
+    }
+    val cr = new compiler.Run
+    cr.compileSources(new BatchSourceFile(fileToCompile) :: Nil)
+    val cl = new AbstractFileClassLoader(virtualDirectory)
+    val schemaClass = cl.findClass("bar.gooz.Foo$")
+    val x: Object = schemaClass.newInstance.asInstanceOf[Object]
+    schemaClass.newInstance.asInstanceOf[bom.schema.Schema]
+  }
+
+}
+
