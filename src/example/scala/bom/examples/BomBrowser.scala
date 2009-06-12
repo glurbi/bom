@@ -334,6 +334,10 @@ class AbstractFileClassLoader(abstractDir: AbstractFile) extends ClassLoader(get
  */
 object BomSchemaCompiler {
 
+  /**
+   * Compiles a scala file and returns an instance of the Schema class that has
+   * been compiled if it exist.
+   */
   def compile(file: File): Schema = {
     val fileToCompile = AbstractFile.getFile(file)
     val virtualDirectory = new BugFixVirtualDirectory("(memory)", None)
@@ -350,10 +354,30 @@ object BomSchemaCompiler {
     val cr = new compiler.Run
     cr.compileSources(new BatchSourceFile(fileToCompile) :: Nil)
     val cl = new AbstractFileClassLoader(virtualDirectory)
-    val schemaClass = cl.findClass("bar.gooz.Foo$")
-    val x: Object = schemaClass.newInstance.asInstanceOf[Object]
-    schemaClass.newInstance.asInstanceOf[bom.schema.Schema]
+    findSchema(virtualDirectory, cl, "")
   }
 
+  private def findSchema(f: AbstractFile, cl: ClassLoader, className: String): Schema = {
+    f.elements.foreach( x => { 
+      val newClassName = if (className == "") x.name else className + "." + x.name
+      if (x.isDirectory) {
+        val schema = findSchema(x, cl, newClassName)
+        if (schema != null) {
+          return schema
+        }
+      } else {
+        val bytes = x.toByteArray
+        val name = newClassName.take(newClassName.length - 6)
+        val schemaClass = cl.loadClass(name)
+        schemaClass.getInterfaces.foreach(interface => {
+          if (interface.getName == "bom.schema.Schema") {
+            return schemaClass.newInstance.asInstanceOf[bom.schema.Schema]
+          }
+        })
+      }
+    })
+    null
+  }
+  
 }
 
