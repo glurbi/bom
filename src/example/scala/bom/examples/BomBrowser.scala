@@ -54,9 +54,6 @@ object BomBrowser {
     openMenuItem.addActionListener(buildActionListener { _ =>
       val fileChooser = new JFileChooser
       fileChooser.setCurrentDirectory(BomBrowserConfig.currentBinFile)
-      
-      println(BomBrowserConfig.currentBinFile)
-      
       if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         BomBrowserConfig.currentBinFile = fileChooser.getSelectedFile.getAbsoluteFile
         val bspace = new FileBinarySpace(BomBrowserConfig.currentBinFile)
@@ -222,60 +219,34 @@ class DocumentHolder(val doc: BOMDocument) {
 }
 
 /**
- * Holds the BOMBrowser config make any changes persistent.
+ * Holds the BOMBrowser config make any changes persistent when the process exits.
  */
 import scala.xml._
 object BomBrowserConfig {
 
-  private val bomDirectory = {
-    val dir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + ".bom")
-    if (!dir.exists) dir.mkdirs
-    dir    
-  } 
-
   private val configFile = {
-    val file = new File(bomDirectory.getAbsolutePath + System.getProperty("file.separator") + "BomBrowserSetup.xml")
-    if (!file.exists) {
-      val writer = new FileWriter(file)
-      val initialConfig = <BomBrowser>
-                            <lastBinaryFile></lastBinaryFile>
-                            <lastSchemaFile></lastSchemaFile>
-                          </BomBrowser>
-      XML.write(writer, initialConfig, "UTF-8", false, null)
-      writer.close      
-    }
+    val bomDirectory = new File(System.getProperty("user.home") + System.getProperty("file.separator") + ".bom")
+    if (!bomDirectory.exists) bomDirectory.mkdirs
+    val file = new File(bomDirectory.getAbsolutePath + System.getProperty("file.separator") + "BomBrowserConfig.xml")
+    if (!file.exists) { XML.save(file.getAbsolutePath, <dummy/>, "UTF-8") }
     file
   }
 
   var currentSchema: Schema = null
+  var currentBinFile: File = new File((XML.loadFile(configFile) \\ "lastBinaryFile").text)
+  var currentSchemaFile: File = new File((XML.loadFile(configFile) \\ "lastSchemaFile").text)
+
+  Runtime.getRuntime.addShutdownHook(new Thread(new Runnable {
+    def run {
+      val config =
+        <BomBrowser>
+          <lastBinaryFile>{if (currentBinFile == null) "" else currentBinFile.getAbsolutePath}</lastBinaryFile>
+          <lastSchemaFile>{if (currentSchemaFile == null) "" else currentSchemaFile.getAbsolutePath}</lastSchemaFile>
+        </BomBrowser>      
+      XML.save(configFile.getAbsolutePath, config, "UTF-8")
+    } 
+  }))
   
-  def currentBinFile: File = _currentBinFile
-  def currentBinFile_=(file: File) = {
-    _currentBinFile = file
-    writeConfig(config)
-  }
-  private var _currentBinFile: File = new File((readConfig \\ "lastBinaryFile").text)
-
-  def currentSchemaFile: File = _currentSchemaFile
-  def currentSchemaFile_=(file: File) {
-    _currentSchemaFile = file
-    writeConfig(config)
-  }
-  private var _currentSchemaFile: File = new File((readConfig \\ "lastSchemaFile").text)
-
-  private def config: Node =
-    <BomBrowser>
-      <lastBinaryFile>{if (_currentBinFile == null) "" else _currentBinFile.getAbsolutePath}</lastBinaryFile>
-      <lastSchemaFile>{if (_currentSchemaFile == null) "" else _currentSchemaFile.getAbsolutePath}</lastSchemaFile>
-    </BomBrowser>
-
-  private def readConfig: Node = XML.loadFile(configFile)
-  private def writeConfig(config: Node) {
-    val writer = new FileWriter(configFile)
-    XML.write(writer, config, "UTF-8", false, null)
-    writer.close
-  }
-
 }
 
 /**
