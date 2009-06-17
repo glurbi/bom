@@ -38,23 +38,9 @@ object BomBrowser {
     override def length = 0
   }
   
-  /**
-   * Creates the initial BOMDocument object.
-   */
-  def createInitialDocument = {
-    (BomBrowserSetup.currentFile, BomBrowserSetup.currentSchema) match {
-      case (null, _) => EmptyDocument
-      case (_, null) => EmptyDocument
-      case (file, schema) => {
-        val bspace = new FileBinarySpace(BomBrowserSetup.currentFile)
-        new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
-      }
-    }
-  }
-
   def main(args: Array[String]) {
 
-    var docHolder = new DocumentHolder(createInitialDocument)
+    var docHolder = new DocumentHolder(null)
 
     val frame = new JFrame
     val statusBar = new JPanel
@@ -62,16 +48,19 @@ object BomBrowser {
     val openMenuItem = new JMenuItem("Open...")
     val exitMenuItem = new JMenuItem("Exit")
     val schemaMenu = new JMenu("Schema")
-    val setSchemaClassMenuItem = new JMenuItem("Set class...")
     val setSchemaFileMenuItem = new JMenuItem("Set file...")
     val menuBar = new JMenuBar
 
     openMenuItem.addActionListener(buildActionListener { _ =>
       val fileChooser = new JFileChooser
+      fileChooser.setCurrentDirectory(BomBrowserConfig.currentBinFile)
+      
+      println(BomBrowserConfig.currentBinFile)
+      
       if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-        BomBrowserSetup.currentFile = fileChooser.getSelectedFile.getAbsoluteFile
-        val bspace = new FileBinarySpace(BomBrowserSetup.currentFile)
-        val doc = new BOMDocument(BomBrowserSetup.currentSchema.schema, bspace)
+        BomBrowserConfig.currentBinFile = fileChooser.getSelectedFile.getAbsoluteFile
+        val bspace = new FileBinarySpace(BomBrowserConfig.currentBinFile)
+        val doc = new BOMDocument(BomBrowserConfig.currentSchema.schema, bspace)
         val newDocHolder = new DocumentHolder(doc)
         frame.remove(docHolder.scrollPane)
         frame.add(newDocHolder.scrollPane)
@@ -82,35 +71,21 @@ object BomBrowser {
     fileMenu.add(openMenuItem)
     exitMenuItem.addActionListener(buildActionListener { _ => System.exit(0) })
     fileMenu.add(exitMenuItem)
-    setSchemaClassMenuItem.addActionListener(buildActionListener { _ =>
-      val className = JOptionPane.showInputDialog("Please give the schema class name")
-      var schema: Schema = null
-      try {
-        if (schema != null) {
-          schema = Class.forName(className).newInstance.asInstanceOf[Schema]
-          BomBrowserSetup.currentSchema = schema
-        }
-      } catch {
-        case e: ClassNotFoundException =>
-          JOptionPane.showMessageDialog(null, "The class '" + className + "' could not be instanciated.")
-      }
-    })
-    schemaMenu.add(setSchemaClassMenuItem)
     setSchemaFileMenuItem.addActionListener(buildActionListener { _ =>
       val fileChooser = new JFileChooser
+      fileChooser.setCurrentDirectory(BomBrowserConfig.currentSchemaFile)
       if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         val schema = BomSchemaCompiler.compile(fileChooser.getSelectedFile.getAbsoluteFile)
         if (schema != null) {
-          BomBrowserSetup.currentSchema = schema
+          BomBrowserConfig.currentSchema = schema
+          BomBrowserConfig.currentSchemaFile = fileChooser.getSelectedFile.getAbsoluteFile
         }
       }
     })
     schemaMenu.add(setSchemaFileMenuItem)
     frame.setLayout(new BorderLayout)
     statusBar.setLayout(new BorderLayout)
-    val fileName = if (BomBrowserSetup.currentFile == null) "NO FILE"
-                   else BomBrowserSetup.currentFile.toString
-    statusBar.add(new JLabel(fileName), BorderLayout.CENTER)
+    statusBar.add(new JLabel("NO FILE"), BorderLayout.CENTER)
     statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED))
     frame.add(statusBar, BorderLayout.SOUTH);
 
@@ -247,59 +222,57 @@ class DocumentHolder(val doc: BOMDocument) {
 }
 
 /**
- * Holds the setup of the BomBrowser and ensure persistent of it.
+ * Holds the BOMBrowser config make any changes persistent.
  */
-object BomBrowserSetup {
+import scala.xml._
+object BomBrowserConfig {
 
-  import scala.xml._
+  private val bomDirectory = {
+    val dir = new File(System.getProperty("user.home") + System.getProperty("file.separator") + ".bom")
+    if (!dir.exists) dir.mkdirs
+    dir    
+  } 
 
-  private val bomDirectory = new File(System.getProperty("user.home") +
-                                      System.getProperty("file.separator") +
-                                      ".bom")
-  if (!bomDirectory.exists) bomDirectory.mkdirs
-
-  private val setupFile = new File(bomDirectory.getAbsolutePath +
-                                   System.getProperty("file.separator") +
-                                   "BomBrowserSetup.xml")
-
-  private var currentBinFile = readCurrentFile
-  def currentFile: File = currentBinFile
-  def currentFile_=(file: File) = {
-    currentBinFile = file
-    writeSetup(setup)
-  }
-
-  object VoidSchema extends Schema { def schema = null }
-  private var currentSchemaClass: Schema = readCurrentSchema
-  def currentSchema: Schema = currentSchemaClass
-  def currentSchema_=(schema: Schema) {
-    currentSchemaClass = schema
-    writeSetup(setup)
-  }
-
-  private def readCurrentFile: File = setupFile.exists match {
-    case true => new File((readSetup \\ "file").text)
-    case false => null
-  }
-
-  private def readCurrentSchema: Schema = setupFile.exists match {
-    case true => {
-        val className = (readSetup \\ "schema").text
-        Class.forName(className).newInstance.asInstanceOf[Schema]
+  private val configFile = {
+    val file = new File(bomDirectory.getAbsolutePath + System.getProperty("file.separator") + "BomBrowserSetup.xml")
+    if (!file.exists) {
+      val writer = new FileWriter(file)
+      val initialConfig = <BomBrowser>
+                            <lastBinaryFile></lastBinaryFile>
+                            <lastSchemaFile></lastSchemaFile>
+                          </BomBrowser>
+      XML.write(writer, initialConfig, "UTF-8", false, null)
+      writer.close      
     }
-    case false => VoidSchema
+    file
   }
 
-  private def setup: Node =
+  var currentSchema: Schema = null
+  
+  def currentBinFile: File = _currentBinFile
+  def currentBinFile_=(file: File) = {
+    _currentBinFile = file
+    writeConfig(config)
+  }
+  private var _currentBinFile: File = new File((readConfig \\ "lastBinaryFile").text)
+
+  def currentSchemaFile: File = _currentSchemaFile
+  def currentSchemaFile_=(file: File) {
+    _currentSchemaFile = file
+    writeConfig(config)
+  }
+  private var _currentSchemaFile: File = new File((readConfig \\ "lastSchemaFile").text)
+
+  private def config: Node =
     <BomBrowser>
-      <file>{if (currentFile == null) "" else currentFile.getAbsolutePath}</file>
-      <schema>{currentSchema.getClass.getName}</schema>
+      <lastBinaryFile>{if (_currentBinFile == null) "" else _currentBinFile.getAbsolutePath}</lastBinaryFile>
+      <lastSchemaFile>{if (_currentSchemaFile == null) "" else _currentSchemaFile.getAbsolutePath}</lastSchemaFile>
     </BomBrowser>
 
-  private def readSetup: Node = XML.loadFile(setupFile)
-  private def writeSetup(setup: Node) {
-    val writer = new FileWriter(setupFile)
-    XML.write(writer, setup, "UTF-8", false, null)
+  private def readConfig: Node = XML.loadFile(configFile)
+  private def writeConfig(config: Node) {
+    val writer = new FileWriter(configFile)
+    XML.write(writer, config, "UTF-8", false, null)
     writer.close
   }
 
