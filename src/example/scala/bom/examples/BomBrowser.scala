@@ -44,6 +44,8 @@ object BomBrowser {
 
     val frame = new JFrame
     val statusBar = new JPanel
+    val binFileLabel = new JLabel("NO FILE")
+    val schemaFileLabel = new JLabel("NO SCHEMA")
     val fileMenu = new JMenu("File")
     val openMenuItem = new JMenuItem("Open...")
     val exitMenuItem = new JMenuItem("Exit")
@@ -56,6 +58,7 @@ object BomBrowser {
       fileChooser.setCurrentDirectory(BomBrowserConfig.currentBinFile)
       if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         BomBrowserConfig.currentBinFile = fileChooser.getSelectedFile.getAbsoluteFile
+        binFileLabel.setText(fileChooser.getSelectedFile.getAbsoluteFile.toString)
         val bspace = new FileBinarySpace(BomBrowserConfig.currentBinFile)
         val doc = new BOMDocument(BomBrowserConfig.currentSchema.schema, bspace)
         val newDocHolder = new DocumentHolder(doc)
@@ -76,13 +79,16 @@ object BomBrowser {
         if (schema != null) {
           BomBrowserConfig.currentSchema = schema
           BomBrowserConfig.currentSchemaFile = fileChooser.getSelectedFile.getAbsoluteFile
+          schemaFileLabel.setText(fileChooser.getSelectedFile.getAbsoluteFile.toString)
         }
       }
     })
     schemaMenu.add(setSchemaFileMenuItem)
     frame.setLayout(new BorderLayout)
-    statusBar.setLayout(new BorderLayout)
-    statusBar.add(new JLabel("NO FILE"), BorderLayout.CENTER)
+    statusBar.setLayout(new BoxLayout(statusBar, BoxLayout.LINE_AXIS))
+    statusBar.add(binFileLabel)
+    statusBar.add(Box.createHorizontalGlue)
+    statusBar.add(schemaFileLabel)
     statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED))
     frame.add(statusBar, BorderLayout.SOUTH);
 
