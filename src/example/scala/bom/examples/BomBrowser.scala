@@ -54,18 +54,21 @@ object BomBrowser {
     val menuBar = new JMenuBar
 
     openMenuItem.addActionListener(buildActionListener { _ =>
-      val fileChooser = new JFileChooser
-      fileChooser.setCurrentDirectory(BomBrowserConfig.currentBinFile)
-      if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-        BomBrowserConfig.currentBinFile = fileChooser.getSelectedFile.getAbsoluteFile
-        binFileLabel.setText(fileChooser.getSelectedFile.getAbsoluteFile.toString)
-        val bspace = new FileBinarySpace(BomBrowserConfig.currentBinFile)
-        val doc = new BOMDocument(BomBrowserConfig.currentSchema.schema, bspace)
-        val newDocHolder = new DocumentHolder(doc)
-        frame.remove(docHolder.scrollPane)
-        frame.add(newDocHolder.scrollPane)
-        frame.setVisible(true)
-        docHolder = newDocHolder
+      if (schemaFileLabel.getText == "NO SCHEMA") {
+        JOptionPane.showMessageDialog(null, "No schema has been specified...", null, JOptionPane.WARNING_MESSAGE)
+      } else {
+        val fileChooser = new JFileChooser
+        fileChooser.setCurrentDirectory(BomBrowserConfig.currentBinFile)
+        if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+    	  BomBrowserConfig.currentBinFile = fileChooser.getSelectedFile.getAbsoluteFile
+    	  binFileLabel.setText(fileChooser.getSelectedFile.getAbsoluteFile.toString)
+    	  val bspace = new FileBinarySpace(BomBrowserConfig.currentBinFile)
+    	  val doc = new BOMDocument(BomBrowserConfig.currentSchema.schema, bspace)
+    	  frame.remove(docHolder.scrollPane)
+    	  docHolder = new DocumentHolder(doc)
+    	  frame.add(docHolder.scrollPane)
+    	  frame.setVisible(true)
+        }
       }
     })
     fileMenu.add(openMenuItem)
@@ -80,6 +83,11 @@ object BomBrowser {
           BomBrowserConfig.currentSchema = schema
           BomBrowserConfig.currentSchemaFile = fileChooser.getSelectedFile.getAbsoluteFile
           schemaFileLabel.setText(fileChooser.getSelectedFile.getAbsoluteFile.toString)
+          binFileLabel.setText("NO FILE")
+          frame.remove(docHolder.scrollPane)
+          docHolder = new DocumentHolder(null)
+          frame.add(docHolder.scrollPane)
+          frame.setVisible(true)
         }
       }
     })
@@ -167,9 +175,9 @@ class DocumentHolder(val doc: BOMDocument) {
   })
 
   val actionListener = buildActionListener { event =>
-      event.getActionCommand match {
-        case "Plot" => plotCurrentSelection
-      }
+    event.getActionCommand match {
+	  case "Plot" => plotCurrentSelection
+	}
   }
 
   def plotCurrentSelection {
@@ -205,8 +213,7 @@ class DocumentHolder(val doc: BOMDocument) {
       frame.setSize(800, 600)
       frame.setVisible(true)
     } else {
-      JOptionPane.showMessageDialog(null, "Choose an array with numbers...",
-                                    null, JOptionPane.WARNING_MESSAGE)
+      JOptionPane.showMessageDialog(null, "Choose an array with numbers...", null, JOptionPane.WARNING_MESSAGE)
     }
   }
 
