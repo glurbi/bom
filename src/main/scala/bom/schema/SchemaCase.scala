@@ -19,8 +19,7 @@ case class SchemaCase(
 
   def add(child: SchemaElement) = element = child
 
-  override def createNode(parent: BOMContainer, index: Int): BOMNode =
-    element.instance(parent, index)
+  override def createNode(parent: BOMContainer, index: Int): BOMNode = element.instance(parent, index)
 
   def children: List[SchemaElement] = element :: Nil
 

@@ -136,4 +136,18 @@ trait SchemaBuilder {
 
   def length(len: Long): BOMNode => Long = (n: BOMNode) => len
 
+  def unbounded: BOMNode => Long = (n: BOMNode) => {
+    var index = 0
+    var done = false
+    while (!done) {
+      try {
+        (n / index).size
+        index += 1
+      } catch {
+        case e: java.nio.BufferUnderflowException => done = true
+      }
+    }
+    index
+  }
+  
 }
