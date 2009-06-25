@@ -48,9 +48,22 @@ class ArrayTestSuite extends FunSuite {
           }
         }
       }
+      array("unbounded array", unbounded, irregular) {
+        sequence("chunk") {
+          number("type", bom_ubyte)
+          switch(n => stringValue(n / -1 / "type")) {
+            when("1") {
+              blob("blob1", n => 1 * 8)
+            }
+            when("2") {
+              blob("blob2",n => 2 * 8)
+            }
+          }
+        }      
+      }
     }
   }
-
+    
   def bspace: BinarySpace = {
     implicit def int2Byte(i: Int): Byte = i.asInstanceOf[Byte]
     val bytes: Array[Byte] = List[Byte](
@@ -68,7 +81,12 @@ class ArrayTestSuite extends FunSuite {
       0x05, 0x05, 0x05, 0x05, 0x55,
       0x06, 0x06, 0x06, 0x06, 0x06, 0x66,
       // array4
-      0x0c, 0x63, 0x0d
+      0x0c, 0x63, 0x0d,
+      // unbounded array
+      0x02, 0xCC, 0xCC,
+      0x02, 0xCC, 0xCC,
+      0x01, 0xDD,
+      0x02, 0xCC, 0xCC
     ).toArray
     new MemoryBinarySpace(bytes)
   }
@@ -102,4 +120,10 @@ class ArrayTestSuite extends FunSuite {
     assert(value(doc/"array4"/"array4"/3/"tag") == 0x0d)
   }
 
+  test("unbounded array") {
+    val doc = new BOMDocument(TestSchema.schema, bspace)
+    assert((doc/"unbounded array").length == 4)
+    assert((doc/"unbounded array").size == 11 * 8)
+  }
+  
 }
