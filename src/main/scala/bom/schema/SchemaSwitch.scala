@@ -7,12 +7,9 @@ import bom._
 import bom.bin._
 
 case class SchemaSwitch(
-
   override val parent: SchemaElement,
-
   override val depth: Int)
-
-  extends SchemaElement {
+extends SchemaElement {
 
   override val name: String = null
 

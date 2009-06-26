@@ -8,14 +8,10 @@ import bom.types._
 import bom.bin._
 
 case class SchemaNumber(
-
   override val name: String,
-
   override val parent: SchemaElement,
-
   override val depth: Int)
-
-  extends SchemaLeaf {
+extends SchemaLeaf {
 
   var numberType: BOMType = null
   val masks = new JHashMap[String, Long]

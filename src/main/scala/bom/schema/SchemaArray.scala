@@ -4,14 +4,10 @@ import bom._
 import bom.bin._
 
 case class SchemaArray(
-  
   override val name: String,
-
   override val parent: SchemaElement,
-
   override val depth: Int)
-
-  extends SchemaElement {
+extends SchemaElement {
 
   private var element: SchemaElement = null
   

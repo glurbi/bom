@@ -4,12 +4,9 @@ import bom._
 import bom.bin._
 
 case class SchemaCase(
-
   override val parent: SchemaElement,
-
   override val depth: Int)
-
-  extends SchemaElement {
+extends SchemaElement {
 
   override val name: String = null
 
