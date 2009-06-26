@@ -15,23 +15,16 @@ case class SchemaNumber(
 
   override val depth: Int)
 
-  extends SchemaElement {
+  extends SchemaLeaf {
 
   var numberType: BOMType = null
-  val mappings = new JHashMap[Object, Object]
   val masks = new JHashMap[String, Long]
-  var defaultMapping: Object = null
 
   def add(child: SchemaElement) = error("A number cannot have a child element.")
 
   override def children: List[SchemaElement] = Nil
 
-  def hasMapping: Boolean = mappings.size() > 0
-
   def hasMasks: Boolean = masks.size > 0
-
-  def addMapping(value: Object, mappedValue: Object) =
-    mappings.put(value, mappedValue)
 
   def addMask(name: String, value: Long) = masks.put(name, value)
   
@@ -46,11 +39,6 @@ case class SchemaNumber(
     }
     result
   }
-    
-  def mappedValue(value: Object): Object = {
-        val o = mappings.get(value.toString)
-        if (o != null) o else defaultMapping
-    }
     
   override def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMNumber(this, parent, index)
