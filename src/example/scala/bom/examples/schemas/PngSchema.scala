@@ -48,12 +48,12 @@ object PngSchema extends Schema with SchemaBuilder {
       number("bit depth", bom_ubyte)
       number("color type", bom_ubyte) {
         map {
-          value("0", "Greyscale")
-          value("2", "True Color")
-          value("3", "Indexed Color")
-          value("4", "Greyscale with alpha")
-          value("6", "True Color with alpha")
-          value("*", "UNKNOWN")
+          value(0, "Greyscale")
+          value(2, "True Color")
+          value(3, "Indexed Color")
+          value(4, "Greyscale with alpha")
+          value(6, "True Color with alpha")
+          default("UNKNOWN")
         }            
       }
       number("compression method", bom_ubyte)

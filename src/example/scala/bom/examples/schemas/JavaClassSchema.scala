@@ -62,18 +62,18 @@ object JavaClassSchema extends Schema with SchemaBuilder {
         sequence("constant") {
           number("tag", bom_ubyte) {
             map {
-              value("1", "Utf8")
-              value("3", "Integer")
-              value("4", "Float")
-              value("5", "Long")
-              value("6", "Double")
-              value("7", "Class")
-              value("8", "String")
-              value("9", "FieldRef")
-              value("10", "MethodRef")
-              value("11", "InterfaceMethodRef")
-              value("12", "NameAndType")
-              value("*", "UNKNOWN")
+              value(1, "Utf8")
+              value(3, "Integer")
+              value(4, "Float")
+              value(5, "Long")
+              value(6, "Double")
+              value(7, "Class")
+              value(8, "String")
+              value(9, "FieldRef")
+              value(10, "MethodRef")
+              value(11, "InterfaceMethodRef")
+              value(12, "NameAndType")
+              default("UNKNOWN")
             }
           }
           switch(n => stringValue(n / -1 / "tag")) {

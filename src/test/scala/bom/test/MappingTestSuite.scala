@@ -16,7 +16,7 @@ class MappingTestSuite extends FunSuite {
           value("1", "ONE")
           value("2", "TWO")
           value("3", "THREE")
-          value("*", "UNKNOWN")
+          default("UNKNOWN")
         }
       }
       number("mapped_nb2", bom_ubyte) {
@@ -24,7 +24,7 @@ class MappingTestSuite extends FunSuite {
           value("1", "ONE")
           value("2", "TWO")
           value("3", "THREE")
-          value("*", "UNKNOWN")
+          default("UNKNOWN")
         }
       }
     }

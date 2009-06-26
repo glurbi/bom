@@ -86,15 +86,13 @@ trait SchemaBuilder {
     stack.top.asInstanceOf[SchemaNumber].addMask(name, longValue)
   }
   
+  //
+  // for mapping leaf raw values to another value
+  //
+  
   def map(body: => Unit) = () => { body }
-
-  def value(from: String, to: String) {
-    val n = stack.top.asInstanceOf[SchemaNumber]
-    if ("*".equals(from)) {
-      n.defaultMapping = to
-    }
-    n.addMapping(from, to)
-  }
+  def value(from: Any, to: AnyRef) { stack.top.asInstanceOf[SchemaLeaf].addMapping(from, to) }
+  def default(value: AnyRef) { stack.top.asInstanceOf[SchemaLeaf].defaultMapping = value }
 
   def string(name: String, encoding: String, sizeFun: BOMNode => Long): SchemaString = {
     val s = new SchemaString(name, stack.top, stack.top.depth + 1)
