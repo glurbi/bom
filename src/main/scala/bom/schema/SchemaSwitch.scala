@@ -1,6 +1,6 @@
 package bom.schema
 
-import java.util.{HashMap => JHashMap}
+import scala.collection.mutable.HashMap
 import java.util.{Iterator => JIterator}
 
 import bom._
@@ -13,7 +13,7 @@ extends SchemaElement {
 
   override val name: String = null
 
-  val cases = new JHashMap[Any, SchemaCase]
+  val cases = new HashMap[Any, SchemaCase]
   var switchFun: BOMNode => Any = _
   var defaultCase: SchemaCase = _
 
@@ -22,7 +22,9 @@ extends SchemaElement {
       error("Invalid child type: " + child.getClass)
     }
     val scase = child.asInstanceOf[SchemaCase]
-    cases.put(scase.caseValue, scase)
+    if (scase.caseValue != null) {
+      cases.put(scase.caseValue, scase)
+    }
   }
 
   override def createNode(parent: BOMContainer, index: Int): BOMNode = {
@@ -40,17 +42,10 @@ extends SchemaElement {
     findMatchingCase(switchFun(node)).instance(parent, index)
   }
 
-  override def children: List[SchemaElement] = {
-    var res: List[SchemaElement] = Nil
-    val it: JIterator[SchemaCase] = cases.values.iterator
-    while (it.hasNext) {
-      res = it.next :: res
-    }
-    res
-  }
+  override def children: List[SchemaElement] = cases.values.toList
 
   def findMatchingCase(o: Any): SchemaCase = {
-    var scase = cases.get(o)
+    var scase = cases.getOrElse(o, null)
     if (scase == null) {
       scase = defaultCase
     }
