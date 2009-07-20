@@ -1,7 +1,7 @@
 package bom.stream
 
 import java.io._
-import java.util._
+import scala.collection.mutable.Stack
 
 import bom.schema._
 import bom.bin._
@@ -15,8 +15,8 @@ class EventReader(
   val bspace: BinarySpace,
   val schema: SchemaElement) {
 
-  val containers = new ArrayDeque[BOMContainer]
-  val iterators = new ArrayDeque[Iterator[BOMNode]]
+  val containers = new Stack[BOMContainer]
+  val iterators = new Stack[java.util.Iterator[BOMNode]]
   var event: Event = null
 
   def hasNext: Boolean = event match {
@@ -38,14 +38,15 @@ class EventReader(
       }
       case Event(_, Leaf) => updateEvent
       case null => {
-          event = Event(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace) with UnboundedHashMapCache, StartContainer)
+          event = Event(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace)
+                          with UnboundedHashMapCache, StartContainer)
       }
     }
     event
   }
 
   def updateEvent = {
-    val it = iterators.peek
+    val it = iterators.top
     val next = if (it.hasNext) it.next else null
     next match {
       case BOMContainer(_, _, _) => event = Event(next, StartContainer)
