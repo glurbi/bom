@@ -12,8 +12,8 @@ case class SchemaSequence(
 extends SchemaElement {
 
   private var elements: List[SchemaElement] = Nil
-  var name2element = HashMap[String, SchemaElement]()
-  var name2index = HashMap[String, Int]()
+  var name2element = HashMap.empty[String, SchemaElement]
+  var name2index = HashMap.empty[String, Int]
 
   override def add(child: SchemaElement) {
     elements = elements ::: List(child)

@@ -1,8 +1,9 @@
 package bom.schema
 
-import java.util.{HashMap => JHashMap}
+import scala.collection.mutable.HashMap
 import java.util.{HashSet => JHashSet}
 import java.util.{Set => JSet}
+
 import bom._
 import bom.types._
 import bom.bin._
@@ -14,7 +15,7 @@ case class SchemaNumber(
 extends SchemaLeaf {
 
   var numberType: BOMType = null
-  val masks = new JHashMap[String, Long]
+  val masks = HashMap.empty[String, Long]
 
   def add(child: SchemaElement) = error("A number cannot have a child element.")
 
@@ -26,11 +27,9 @@ extends SchemaLeaf {
   
   def getMasks(n: Long): JSet[String] = {
     val result = new JHashSet[String]
-    val it = masks.entrySet.iterator
-    while (it.hasNext) {
-      val mask = it.next
-      if ((n.longValue & mask.getValue.longValue) > 0) {
-        result.add(mask.getKey)
+    masks.foreach { mask =>
+      if ((n.longValue & mask._2) > 0) {
+        result.add(mask._1)
       }
     }
     result

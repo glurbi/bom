@@ -4,8 +4,6 @@ import bom.types._
 import bom.bin._
 import scala.collection.mutable._
 
-import java.lang.{Long => JLong}
-
 trait SchemaBuilder {
 
   protected val stack = new Stack[SchemaElement]
@@ -82,7 +80,7 @@ trait SchemaBuilder {
   def masks(body: => Unit) = () => { body }
 
   def mask(name: String, value: String) = {
-    val longValue = JLong.decode(value).asInstanceOf[Long]
+    val longValue = java.lang.Long.decode(value).asInstanceOf[Long]
     stack.top.asInstanceOf[SchemaNumber].addMask(name, longValue)
   }
   
