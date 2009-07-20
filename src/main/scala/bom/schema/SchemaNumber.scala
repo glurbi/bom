@@ -1,6 +1,5 @@
 package bom.schema
 
-import scala.collection.mutable.Set
 import scala.collection.mutable.HashSet
 import scala.collection.mutable.HashMap
 
@@ -25,15 +24,8 @@ extends SchemaLeaf {
 
   def addMask(name: String, value: Long) = masks.put(name, value)
   
-  def getMasks(n: Long): Set[String] = {
-    val result = new HashSet[String]
-    masks.foreach { mask =>
-      if ((n.longValue & mask._2) > 0) {
-        result += mask._1
-      }
-    }
-    result
-  }
+  def getMasks(n: Long): Iterable[String] =
+    masks.filter(mask => (mask._2  & n.longValue) > 0).map(mask => mask._1)
     
   override def createNode(parent: BOMContainer, index: Int): BOMNode =
     new BOMNumber(this, parent, index)

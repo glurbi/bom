@@ -44,15 +44,15 @@ class MaskTestSuite extends FunSuite {
   test("numbers with a mask definition") {
     val doc = new BOMDocument(TestSchema.schema, bspace)
     val nb1 = (doc/"nb1").asInstanceOf[BOMNumber]
-    assert(nb1.schema.getMasks(nb1.value.longValue).contains("BIT_ONE"))
-    assert(nb1.schema.getMasks(nb1.value.longValue).contains("BIT_TWO"))
-    assert(!nb1.schema.getMasks(nb1.value.longValue).contains("BIT_NINE"))
-    assert(!nb1.schema.getMasks(nb1.value.longValue).contains("BIT_SEVENTEEN"))
+    assert(nb1.schema.getMasks(nb1.value.longValue).exists(_ == "BIT_ONE"))
+    assert(nb1.schema.getMasks(nb1.value.longValue).exists(_ == "BIT_TWO"))
+    assert(!nb1.schema.getMasks(nb1.value.longValue).exists(_ == "BIT_NINE"))
+    assert(!nb1.schema.getMasks(nb1.value.longValue).exists(_ == "BIT_SEVENTEEN"))
     val nb2 = (doc/"nb2").asInstanceOf[BOMNumber]
-    assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_ONE"))
-    assert(!nb2.schema.getMasks(nb2.value.longValue).contains("BIT_TWO"))
-    assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_NINE"))
-    assert(nb2.schema.getMasks(nb2.value.longValue).contains("BIT_SEVENTEEN"))
+    assert(!nb2.schema.getMasks(nb2.value.longValue).exists(_ == "BIT_ONE"))
+    assert(!nb2.schema.getMasks(nb2.value.longValue).exists(_ == "BIT_TWO"))
+    assert(nb2.schema.getMasks(nb2.value.longValue).exists(_ == "BIT_NINE"))
+    assert(nb2.schema.getMasks(nb2.value.longValue).exists(_ == "BIT_SEVENTEEN"))
   }
 
 }
