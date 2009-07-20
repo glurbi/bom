@@ -12,7 +12,7 @@ case class BOMSequence(
   override val schema: SchemaSequence,
   override val parent: BOMContainer,
   override val index: Int)
-  extends BOMContainer(schema, parent, index) {
+extends BOMContainer(schema, parent, index) {
 
   def iterator: Iterator[BOMNode] = new SequenceIterator
 

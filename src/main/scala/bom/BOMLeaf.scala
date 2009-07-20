@@ -12,7 +12,7 @@ abstract case class BOMLeaf(
   override val schema: SchemaElement,
   override val parent: BOMContainer,
   override val index: Int)
-  extends BOMNode(schema, parent, index) {
+extends BOMNode(schema, parent, index) {
 
   def length: Long = 0
 

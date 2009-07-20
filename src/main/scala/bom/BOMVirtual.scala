@@ -12,7 +12,7 @@ case class BOMVirtual(
   override val schema: SchemaVirtual,
   override val parent: BOMContainer,
   override val index: Int)
-  extends BOMLeaf(schema, parent, index) {
+extends BOMLeaf(schema, parent, index) {
 
   override def value: Any = schema.valueFun(this)
 

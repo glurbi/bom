@@ -12,7 +12,7 @@ case class BOMNumber(
   override val schema: SchemaNumber,
   override val parent: BOMContainer,
   override val index: Int)
-  extends BOMLeaf(schema, parent, index) {
+extends BOMLeaf(schema, parent, index) {
 
   /**
    * @return the data type of the instance

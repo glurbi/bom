@@ -12,7 +12,7 @@ case class BOMBlob(
   override val schema: SchemaBlob,
   override val parent: BOMContainer,
   override val index: Int)
-  extends BOMLeaf(schema, parent, index) {
+extends BOMLeaf(schema, parent, index) {
 
   override lazy val value: Array[Byte] = {
     binarySpace.position(position)

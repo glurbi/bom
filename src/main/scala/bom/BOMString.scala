@@ -13,7 +13,7 @@ case class BOMString(
   override val schema: SchemaString,
   override val parent: BOMContainer,
   override val index: Int)
-  extends BOMLeaf(schema, parent, index) {
+extends BOMLeaf(schema, parent, index) {
 
   /**
    * @return the value of this character string in the binary space
