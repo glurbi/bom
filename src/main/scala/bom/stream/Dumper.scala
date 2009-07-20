@@ -73,11 +73,7 @@ object Dumper {
     }
     if (number.schema.hasMasks) {
       format(" [ ")
-      val masks = number.schema.getMasks(number.value.longValue)
-      val it = masks.iterator
-      while (it.hasNext) {
-        format("%s ", it.next)
-      }
+      number.schema.getMasks(number.value.longValue).foreach { format("%s ", _) }
       format("]")
     }
   }

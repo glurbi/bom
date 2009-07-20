@@ -1,8 +1,8 @@
 package bom.schema
 
+import scala.collection.mutable.Set
+import scala.collection.mutable.HashSet
 import scala.collection.mutable.HashMap
-import java.util.{HashSet => JHashSet}
-import java.util.{Set => JSet}
 
 import bom._
 import bom.types._
@@ -25,11 +25,11 @@ extends SchemaLeaf {
 
   def addMask(name: String, value: Long) = masks.put(name, value)
   
-  def getMasks(n: Long): JSet[String] = {
-    val result = new JHashSet[String]
+  def getMasks(n: Long): Set[String] = {
+    val result = new HashSet[String]
     masks.foreach { mask =>
       if ((n.longValue & mask._2) > 0) {
-        result.add(mask._1)
+        result += mask._1
       }
     }
     result
