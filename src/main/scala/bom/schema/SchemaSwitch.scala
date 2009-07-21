@@ -1,7 +1,6 @@
 package bom.schema
 
 import scala.collection.mutable.HashMap
-import java.util.{Iterator => JIterator}
 
 import bom._
 import bom.bin._
@@ -37,7 +36,7 @@ extends SchemaElement {
       }
       def /(name: String): BOMNode = error("Not implemented!")
       def length: Long = error("Not implemented!")
-      def iterator: JIterator[BOMNode] = error("Not implemented!")
+      def elements: Iterator[BOMNode] = error("Not implemented!")
     }
     findMatchingCase(switchFun(node)).instance(parent, index)
   }

@@ -1,7 +1,5 @@
 package bom
 
-import java.util._
-
 import bom.schema._
 
 /**
@@ -14,14 +12,14 @@ case class BOMSequence(
   override val index: Int)
 extends BOMContainer(schema, parent, index) {
 
-  def iterator: Iterator[BOMNode] = new SequenceIterator
+  def elements: Iterator[BOMNode] = new SequenceIterator
 
   override lazy val size: Long = {
     var sz = 0L
     if (schema.sizeFun != null)  {
       sz = schema.sizeFun(this)
     } else {
-      val it = iterator
+      val it = elements
       while (it.hasNext) {
         sz += it.next.size
       }

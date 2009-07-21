@@ -1,7 +1,5 @@
 package bom
 
-import java.util._
-
 import bom.schema._
 
 /**
@@ -23,7 +21,7 @@ extends BOMNode(schema, parent, index) {
 
   def / (name: String): BOMNode = null
   
-  def iterator: Iterator[BOMNode] = new Iterator[BOMNode]() {
+  def elements: Iterator[BOMNode] = new Iterator[BOMNode]() {
     def hasNext: Boolean = false
     def next: BOMNode = throw new NoSuchElementException
     def remove = throw new UnsupportedOperationException

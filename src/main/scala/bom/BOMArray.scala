@@ -1,7 +1,5 @@
 package bom
 
-import java.util._
-
 import bom.schema._
 
 /**
@@ -37,7 +35,7 @@ extends BOMContainer(schema, parent, index) {
 
   def / (name: String): BOMNode = null
 
-  def iterator: Iterator[BOMNode] = new Iterator[BOMNode] {
+  def elements: Iterator[BOMNode] = new Iterator[BOMNode] {
     var index = -1
     def hasNext: Boolean = index < length - 1;
     def next: BOMNode = {

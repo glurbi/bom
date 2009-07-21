@@ -16,7 +16,7 @@ class EventReader(
   val schema: SchemaElement) {
 
   val containers = new Stack[BOMContainer]
-  val iterators = new Stack[java.util.Iterator[BOMNode]]
+  val iterators = new Stack[Iterator[BOMNode]]
   var event: Event = null
 
   def hasNext: Boolean = event match {
@@ -29,7 +29,7 @@ class EventReader(
     event match {
       case Event(x: BOMContainer, StartContainer) => {
         containers.push(x)
-        iterators.push(x.iterator)
+        iterators.push(x.elements)
         updateEvent
       }
       case Event(_, EndContainer) => {

@@ -1,7 +1,5 @@
 package bom
 
-import java.util._
-
 import bom.BOM._
 import bom.bin._
 import bom.schema._
@@ -25,7 +23,9 @@ abstract case class BOMNode(
   /**
    * @return the index of this node
    */
-  val index: Int) {
+  val index: Int)
+
+extends AnyRef with Iterable[BOMNode] {
 
   /**
    * @return the name of this node
@@ -51,11 +51,6 @@ abstract case class BOMNode(
   // Ideally, I would like to define an abstract method:
   // def size: Long
   // instead of the lazy val, but the tests fail (at least with version 2.7.3)
-
-  /**
-   * @return an iterator over the children elements of this container
-   */
-  def iterator: Iterator[BOMNode]
 
   /**
    * @return the number of children of this node
