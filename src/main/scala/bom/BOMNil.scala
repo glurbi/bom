@@ -6,5 +6,5 @@ object BOMNil extends BOMBaseNode(null, null, 0) {
   def length: Long = 0
   def / (index: Int): BOMNode = this
   def / (name: String): BOMNode = this
-
+  def size: Long = 0
 }

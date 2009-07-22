@@ -21,7 +21,7 @@ extends BOMLeaf(schema, parent, index) {
     bytes
   }
 
-  override lazy val size: Long = schema.sizeFun(this)
+  override def size: Long = schema.sizeFun(this)
 
   def byteCount: Long = size / 8
 
