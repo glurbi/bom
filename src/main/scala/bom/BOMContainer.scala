@@ -11,4 +11,4 @@ abstract case class BOMContainer(
   override val schema: SchemaElement,
   override val parent: BOMContainer,
   override val index: Int)
-extends BOMNode(schema, parent, index) {}
+extends BOMBaseNode(schema, parent, index) {}

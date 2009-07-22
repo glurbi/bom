@@ -1,7 +1,7 @@
 package bom
 
-object BOMNil extends BOMNode(null, null, 0) {
-
+object BOMNil extends BOMBaseNode(null, null, 0) {
+  
   def elements: Iterator[BOMNode] = null
   def length: Long = 0
   def / (index: Int): BOMNode = this

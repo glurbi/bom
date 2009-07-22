@@ -27,7 +27,7 @@ extends SchemaElement {
   }
 
   override def createNode(parent: BOMContainer, index: Int): BOMNode = {
-    val node = new BOMNode(this, parent, index) {
+    val node = new BOMBaseNode(this, parent, index) {
       override def depth: Int = parent.depth + 1;
       override lazy val size: Long = error("Not implemented!")
       def /(index: Int): BOMNode = index match {
