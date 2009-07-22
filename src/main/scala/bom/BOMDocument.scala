@@ -1,7 +1,6 @@
 package bom
 
 import java.io._
-import java.util._
 
 import bom.schema._
 import bom.bin._
