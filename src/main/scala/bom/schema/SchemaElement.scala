@@ -8,7 +8,22 @@ import bom.bin._
  */
 abstract case class SchemaElement() {
 
-  var positionFun: BOMNode => Long = _
+  var positionFun: BOMNode => Long =
+    node => {
+      if (node.index == 0) {
+        node.parent.position;
+      } else if (node.parent.isInstanceOf[BOMSequence]) {
+        val previousSibling = node.parent.schema.children(node.index - 1).instance(node.parent, node.index - 1)
+        previousSibling.position + previousSibling.size
+      } else if (node.parent.isInstanceOf[BOMArray] && node.parent.schema.asInstanceOf[SchemaArray].regular) {
+        node.parent.position + node.index * node.parent.schema.children(0).instance(node.parent, 0).size
+      } else if (node.parent.isInstanceOf[BOMArray]) {
+        (node.parent.asInstanceOf[BOMArray]/(node.index - 1)).position +
+        (node.parent.asInstanceOf[BOMArray]/(node.index - 1)).size
+      } else {
+        error("unreachable statement?")
+      }
+    }
 
   var sizeFun: BOMNode => Long = _
 

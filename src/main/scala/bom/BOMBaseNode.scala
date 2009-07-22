@@ -21,24 +21,7 @@ extends BOMNode {
 
   def value: Any = null
   lazy val identifier: BOMIdentifier = index :: parent.identifier
-
-  lazy val position: Long =
-    if (schema.positionFun != null)  {
-      schema.positionFun(this)
-    } else if (index == 0) {
-      parent.position;
-    } else if (parent.isInstanceOf[BOMSequence]) {
-      val previousSibling = parent.schema.children(index - 1).instance(parent, index - 1)
-      previousSibling.position + previousSibling.size
-    } else if (parent.isInstanceOf[BOMArray] && parent.schema.asInstanceOf[SchemaArray].regular) {
-      parent.position + index * parent.schema.children(0).instance(parent, 0).size
-    } else if (parent.isInstanceOf[BOMArray]) {
-      (parent.asInstanceOf[BOMArray]/(index - 1)).position +
-      (parent.asInstanceOf[BOMArray]/(index - 1)).size
-    } else {
-      error("unreachable statement?")
-    }
-
+  lazy val position: Long = schema.positionFun(this)
   def binarySpace: BinarySpace = document.binarySpace
 
 }
