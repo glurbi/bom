@@ -4,7 +4,7 @@ import bom.BOM._
 import bom.bin._
 import bom.schema._
 
-abstract case class BOMBaseNode(
+abstract class BOMBaseNode(
   val schema: SchemaElement,
   val parent: BOMContainer,
   val index: Int)

@@ -6,7 +6,7 @@ import bom.bin._
 /**
  * The common contract for all schema elements.
  */
-abstract case class SchemaElement() {
+abstract class SchemaElement {
 
   var positionFun: BOMNode => Long =
     node => {
