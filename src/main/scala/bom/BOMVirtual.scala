@@ -13,9 +13,9 @@ case class BOMVirtual(
   override val parent: BOMContainer,
   override val index: Int)
 extends BOMLeaf(schema, parent, index) {
-
+  
   override def value: Any = schema.valueFun(this)
 
-  override lazy val size: Long = 0
+  override def size: Long = 0
 
 }

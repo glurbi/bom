@@ -27,6 +27,6 @@ extends BOMLeaf(schema, parent, index) {
     charset.decode(ByteBuffer.wrap(ba)).toString
   }
  
-  override lazy val size: Long = schema.sizeFun(this)
+  override def size: Long = schema.sizeFun(this)
 
 }

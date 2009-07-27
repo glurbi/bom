@@ -27,6 +27,6 @@ extends BOMLeaf(schema, parent, index) {
     numberType.read(binarySpace).asInstanceOf[Number]
   }
 
-  override lazy val size: Long = numberType.size
+  override def size: Long = numberType.size
 
 }

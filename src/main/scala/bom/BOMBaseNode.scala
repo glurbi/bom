@@ -10,15 +10,12 @@ abstract class BOMBaseNode(
   val index: Int)
 extends BOMNode {
 
-  private lazy val lazyIdentifier = index :: parent.identifier
-  private lazy val lazyPosition = schema.positionFun(this)
-  
   def name: String = schema.name
   def document: BOMDocument = parent.document
   def depth: Int = schema.depth
   def value: Any = null
-  def identifier: BOMIdentifier = lazyIdentifier
-  def position: Long = lazyPosition
+  def identifier: BOMIdentifier = index :: parent.identifier
+  def position: Long = schema.positionFun(this)
   def binarySpace: BinarySpace = document.binarySpace
 
 }

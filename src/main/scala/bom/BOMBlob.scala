@@ -14,7 +14,7 @@ case class BOMBlob(
   override val index: Int)
 extends BOMLeaf(schema, parent, index) {
 
-  override lazy val value: Array[Byte] = {
+  override def value: Array[Byte] = {
     binarySpace.position(position)
     val bytes = new Array[Byte](byteCount.intValue)
     binarySpace.getBytes(bytes)

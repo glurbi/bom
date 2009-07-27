@@ -14,7 +14,7 @@ extends BOMContainer(schema, parent, index) {
 
   def elements: Iterator[BOMNode] = new SequenceIterator
 
-  override lazy val size: Long = {
+  override def size: Long = {
     var sz = 0L
     if (schema.sizeFun != null)  {
       sz = schema.sizeFun(this)
@@ -26,7 +26,7 @@ extends BOMContainer(schema, parent, index) {
     }
     sz
   }
-
+  
   override def / (name: String): BOMNode = {
     val childSchema = schema.child(name)
     if (childSchema == null) {
