@@ -17,8 +17,8 @@ case class BOMDocument(
 extends BOMSequence(schema, null, 0) with NodeCache {
 
   override def document: BOMDocument = this
-  override lazy val position: Long = 0
-  override lazy val identifier: BOMIdentifier = Nil
+  override def position: Long = 0
+  override def identifier: BOMIdentifier = Nil
 
 }
 

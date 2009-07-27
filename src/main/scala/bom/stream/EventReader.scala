@@ -38,8 +38,8 @@ class EventReader(
       }
       case Event(_, Leaf) => updateEvent
       case null => {
-          event = Event(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace)
-                          with UnboundedHashMapCache, StartContainer)
+          event = Event(new BOMDocument(schema.asInstanceOf[SchemaDocument], bspace), StartContainer)
+                          // FIXME: with UnboundedHashMapCache, StartContainer)
       }
     }
     event
