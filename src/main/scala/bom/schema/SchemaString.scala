@@ -1,5 +1,7 @@
 package bom.schema
 
+import java.nio.charset._
+
 import bom._
 import bom.bin._
 
@@ -10,6 +12,7 @@ case class SchemaString(
 extends SchemaElement {
 
   var encoding: String = _
+  lazy val charset = Charset.availableCharsets.get(encoding)
     
   def add(child: SchemaElement) = error("A string cannot have a child element.")
 

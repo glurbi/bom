@@ -1,7 +1,6 @@
 package bom
 
 import java.nio._
-import java.nio.charset._
 
 import bom.schema._
 
@@ -22,9 +21,7 @@ extends BOMLeaf(schema, parent, index) {
     binarySpace.position(position.intValue)
     val ba = new Array[byte](size.intValue / 8)
     binarySpace.getBytes(ba)
-    val encoding = schema.asInstanceOf[SchemaString].encoding
-    val charset = Charset.availableCharsets.get(encoding)
-    charset.decode(ByteBuffer.wrap(ba)).toString
+    schema.charset.decode(ByteBuffer.wrap(ba)).toString
   }
  
   override def size: Long = schema.sizeFun(this)

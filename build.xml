@@ -3,6 +3,7 @@
 
     <property environment="env"/>
     <property name="scala.home" value="${env.SCALA_HOME}"/>
+    <property name="jvm.options" value="${env.JVM_OPTIONS}"/>
 
     <property name="target" value="target"/>
     <property name="main.src.dir" value="src/main/scala"/>
@@ -122,6 +123,16 @@
                 <path refid="example.classpath"/>
             </classpath>
             <arg line="bom.examples.BomBrowser"/>
+        </java>
+    </target>
+
+    <target name="run-string-class-dump-forever" depends="compile-example">
+        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+            <classpath>
+                <path refid="example.classpath"/>
+            </classpath>
+            <arg line="bom.examples.StringClassDumpForever"/>
+            <jvmarg value="${jvm.options}"/>
         </java>
     </target>
 
