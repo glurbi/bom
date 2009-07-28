@@ -25,6 +25,7 @@
 
     <path id="test.classpath">
         <path refid="main.classpath"/>
+        <path refid="example.classpath"/>
         <pathelement location="${test.build.dir}"/>
         <pathelement location="${lib.dir}/scalatest-0.9.5.jar"/>
     </path>
@@ -50,22 +51,22 @@
         </scalac>
     </target>
 
-    <target name="compile-test" depends="compile-main">
-        <mkdir dir="${test.build.dir}"/>
-        <scalac srcdir="${test.src.dir}"
-                destdir="${test.build.dir}"
-                classpathref="test.classpath"
+    <target name="compile-example" depends="compile-main">
+        <mkdir dir="${example.build.dir}"/>
+        <scalac srcdir="${example.src.dir}"
+                destdir="${example.build.dir}"
+                classpathref="example.classpath"
                 force="changed"
                 deprecation="on">
             <include name="**/*.scala"/>
         </scalac>
     </target>
 
-    <target name="compile-example" depends="compile-main">
-        <mkdir dir="${example.build.dir}"/>
-        <scalac srcdir="${example.src.dir}"
-                destdir="${example.build.dir}"
-                classpathref="example.classpath"
+    <target name="compile-test" depends="compile-main,compile-example">
+        <mkdir dir="${test.build.dir}"/>
+        <scalac srcdir="${test.src.dir}"
+                destdir="${test.build.dir}"
+                classpathref="test.classpath"
                 force="changed"
                 deprecation="on">
             <include name="**/*.scala"/>
@@ -87,6 +88,7 @@
             <suite classname="bom.test.OverrideTestSuite"/>
             <suite classname="bom.test.FileBinarySpaceTestSuite"/>
             <suite classname="bom.test.MemoryBinarySpaceTestSuite"/>
+            <suite classname="bom.test.DumperTestSuite"/>
             <runpath>
                 <path refid="test.classpath"/>
             </runpath>

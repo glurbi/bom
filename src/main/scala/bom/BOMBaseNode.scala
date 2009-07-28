@@ -14,8 +14,11 @@ extends BOMNode {
   def document: BOMDocument = parent.document
   def depth: Int = schema.depth
   def value: Any = null
-  def identifier: BOMIdentifier = index :: parent.identifier
-  def position: Long = schema.positionFun(this)
+  def identifier: BOMIdentifier = id
+  def position: Long = pos
   def binarySpace: BinarySpace = document.binarySpace
 
+  private lazy val id = index :: parent.identifier
+  private lazy val pos = schema.positionFun(this)
+  
 }
