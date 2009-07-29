@@ -18,6 +18,7 @@ import bom.bin._
 import bom.schema._
 import bom.types._
 import bom.stream._
+import bom.cache._
 
 import BomBrowser._
 
@@ -63,7 +64,7 @@ object BomBrowser {
     	  BomBrowserConfig.currentBinFile = fileChooser.getSelectedFile.getAbsoluteFile
     	  binFileLabel.setText(fileChooser.getSelectedFile.getAbsoluteFile.toString)
     	  val bspace = new FileBinarySpace(BomBrowserConfig.currentBinFile)
-    	  val doc = new BOMDocument(BomBrowserConfig.currentSchema.schema, bspace)
+    	  val doc = new BOMDocument(BomBrowserConfig.currentSchema.schema, bspace) with UnboundedHashMapCache
     	  frame.remove(docHolder.scrollPane)
     	  docHolder = new DocumentHolder(doc)
     	  frame.add(docHolder.scrollPane)
