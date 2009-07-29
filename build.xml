@@ -136,6 +136,16 @@
         </java>
     </target>
 
+    <target name="run-string-class-event-read-forever" depends="compile-example">
+        <java classname="scala.tools.nsc.MainGenericRunner" fork="true">
+            <classpath>
+                <path refid="example.classpath"/>
+            </classpath>
+            <arg line="bom.examples.StringClassEventReadForever"/>
+            <jvmarg value="${jvm.options}"/>
+        </java>
+    </target>
+
     <!-- task definitions -->
 
     <taskdef resource="scala/tools/ant/antlib.xml">

@@ -26,4 +26,5 @@ class DumperTestSuite extends FunSuite {
       Dumper.dump(JavaClassSchema.schema, bspace)
     }
   }
+  
 }
