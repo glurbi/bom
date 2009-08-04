@@ -59,6 +59,7 @@ trait BOMNode extends AnyRef with Iterable[BOMNode] {
   def / (index: Int): BOMNode
 
   /**
+   * @param the name of the child node
    * @return the child of this node with the specified name or <code>null<code>
    *         if it doesn't exist
    */
