@@ -21,7 +21,7 @@ class SwitchTestSuite extends FunSuite {
             when("2") {
               sequence("choice2") {
                 number("length", bom_ubyte)
-                string("string", "utf-8", byteSize(_ / -1 / "length"))
+                string("string", "utf-8", byteSize((n: BOMNode) => longValue(n / -1 / "length")))
               }
             }
           }

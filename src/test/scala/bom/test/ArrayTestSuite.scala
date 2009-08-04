@@ -13,7 +13,7 @@ class ArrayTestSuite extends FunSuite {
     def schema = document("arrays") {
       sequence("array1") {
         number("length_array1", bom_byte)
-        array("array1", length(_ / -1 / "length_array1"), regular) {
+        array("array1", length((n: BOMNode) => longValue(n / -1 / "length_array1")), regular) {
           number("item", bom_byte)
         }
       }
@@ -29,7 +29,7 @@ class ArrayTestSuite extends FunSuite {
           number("length", bom_byte)
         }
         array("array3", length(3), irregular) {
-          array("nested", length(n => n / -1 / -1 / "lengths" / n.index), regular) {
+          array("nested", length(n => longValue(n / -1 / -1 / "lengths" / n.index)), regular) {
             number("item", bom_byte)
           }
         }

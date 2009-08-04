@@ -31,19 +31,19 @@ object JavaClassSchema extends Schema with SchemaBuilder {
       number("this_class", bom_ushort)
       number("super_class", bom_ushort)
       number("interfaces_count", bom_ushort)
-      array("interfaces", length(_ / -1 / "interfaces_count"), irregular) {
+      array("interfaces", length((n: BOMNode) => longValue(n / -1 / "interfaces_count")), irregular) {
         interfaceType
       }
       number("fields_count", bom_ushort)
-      array("fields", length(_ / -1 / "fields_count"), irregular) {
+      array("fields", length((n: BOMNode) => longValue(n / -1 / "fields_count")), irregular) {
         fieldType
       }
       number("methods_count", bom_ushort)
-      array("methods", length(_ / -1 / "methods_count"), irregular) {
+      array("methods", length((n: BOMNode) => longValue(n / -1 / "methods_count")), irregular) {
         methodType
       }
       number("attributes_count", bom_ushort)
-      array("attributes", length(_ / -1 / "attributes_count"), irregular) {
+      array("attributes", length((n: BOMNode) => longValue(n / -1 / "attributes_count")), irregular) {
         attributeType
       }
     }
@@ -80,7 +80,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
             when("1") {
               sequence("content") {
                 number("length", bom_ushort)
-                string("bytes", "utf-8", byteSize(_ / -1 / "length"))
+                string("bytes", "utf-8", byteSize((n: BOMNode) => longValue(n / -1 / "length")))
               }
             }
             when("3") {
@@ -165,7 +165,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
       number("name_index", bom_ushort)
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
-      array("attributes", length(_ / -1 / "attributes_count")) {
+      array("attributes", length((n: BOMNode) => longValue(n / -1 / "attributes_count"))) {
         fieldAttributeType
       }
     }
@@ -188,7 +188,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
       number("name_index", bom_ushort)
       number("descriptor_index", bom_ushort)
       number("attributes_count", bom_ushort)
-      array("attributes", length(_ / -1 / "attributes_count")) {
+      array("attributes", length((n: BOMNode) => longValue(n / -1 / "attributes_count"))) {
         methodAttributeType
       }
     }
@@ -210,7 +210,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
         when("InnerClasses") {
           sequence("inner_classes") {
             number("number_of_classes", bom_ushort)
-            array("classes", length(_ / -1 / "number_of_classes"), regular) {
+            array("classes", length((n: BOMNode) => longValue(n / -1 / "number_of_classes")), regular) {
               sequence("inner_class") {
                 number("inner_class_info_index", bom_ushort)
                 number("outer_class_info_index", bom_ushort)
@@ -231,7 +231,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
           }
         }
         when("*") {
-          array("info", length(_ / -1 / "attribute_length")) {
+          array("info", length((n: BOMNode) => longValue(n / -1 / "attribute_length"))) {
             number("content", bom_ubyte)
           }
         }
@@ -253,7 +253,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
           sequence("dummy") {}
         }
         when("*") {
-          array("info", length(_ / -1 / "attribute_length")) {
+          array("info", length((n: BOMNode) => longValue(n / -1 / "attribute_length"))) {
             number("content", bom_ubyte)
           }
         }
@@ -268,7 +268,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
         when("LineNumberTable") {
           sequence("line_numbers") {
             number("line_number_table_length", bom_ushort)
-            array("line_number_table", length(_ / -1 / "line_number_table_length")) {
+            array("line_number_table", length((n: BOMNode) => longValue(n / -1 / "line_number_table_length"))) {
               sequence("entry") {
                 number("start_pc", bom_ushort)
                 number("line_number", bom_ushort)
@@ -279,7 +279,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
         when("LocalVariableTable") {
           sequence("local_variables") {
             number("local_variable_table_length", bom_ushort)
-            array("local_variable_table", length(_ / -1 / "local_variable_table_length")) {
+            array("local_variable_table", length((n: BOMNode) => longValue(n / -1 / "local_variable_table_length"))) {
               sequence("local_variable") {
                 number("start_pc", bom_ushort)
                 number("length", bom_ushort)
@@ -291,7 +291,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
           }
         }
         when("*") {
-          array("info", length(_ / -1 / "attribute_length")) {
+          array("info", length((n: BOMNode) => longValue(n / -1 / "attribute_length"))) {
             number("content", bom_ubyte)
           }
         }
@@ -310,7 +310,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
             number("code_length", bom_uint)
             bytecodeBlock
             number("exception_table_length", bom_ushort)
-            array("exception_table", length(_ / -1 / "exception_table_length")) {
+            array("exception_table", length((n: BOMNode) => longValue(n / -1 / "exception_table_length"))) {
               sequence("exception") {
                 number("start_pc", bom_ushort)
                 number("end_pc", bom_ushort)
@@ -319,7 +319,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
               }
             }
             number("attributes_count", bom_ushort)
-            array("attributes", length(_ / -1 / "attributes_count")) {
+            array("attributes", length((n: BOMNode) => longValue(n / -1 / "attributes_count"))) {
               codeAttributeType
             }
           }
@@ -327,7 +327,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
         when ("Exceptions") {
           sequence("exceptions") {
             number("number_of_exceptions", bom_ushort)
-            array("exception_index_table", length(_ / -1 / "number_of_exceptions")) {
+            array("exception_index_table", length((n: BOMNode) => longValue(n / -1 / "number_of_exceptions"))) {
               number("exception_index", bom_ushort)
             }
           }
@@ -339,7 +339,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
           sequence("dummy") {}
         }
         when("*") {
-          array("info", length(_ / -1 / "attribute_length")) {
+          array("info", length((n: BOMNode) => longValue(n / -1 / "attribute_length"))) {
             number("content", bom_ubyte)
           }
         }
@@ -347,7 +347,7 @@ object JavaClassSchema extends Schema with SchemaBuilder {
     }
 
   def bytecodeBlock =
-    array("code", length(_ / -1 / "code_length")) {
+    array("code", length((n: BOMNode) => longValue(n / -1 / "code_length"))) {
       number("content", bom_ubyte)
     }
   

@@ -16,7 +16,7 @@ object AvhrrHrptSchema extends Schema with SchemaBuilder {
   def schema = document("hrpt") {
       ars
       header
-      array("records", length(_.document / "header" / "recordCount"), regular) {
+      array("records", length((n: BOMNode) => longValue(n.document / "header" / "recordCount")), regular) {
         record
       }
     }

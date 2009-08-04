@@ -12,16 +12,16 @@ object SegdSchema extends Schema with SchemaBuilder {
   def schema = document("segd") {
       generalHeader1
       generalHeader2
-      array("scan_type_headers", length(_ / -1 / "general_header_1" / "scan_type_per_record")) {
-        array("channel_set_headers", length(_ / -1 / -1 / "general_header_1" / "channel_sets_per_scan_type")) {
+      array("scan_type_headers", length((n: BOMNode) => longValue(n / -1 / "general_header_1" / "scan_type_per_record"))) {
+        array("channel_set_headers", length((n: BOMNode) => longValue(n / -1 / -1 / "general_header_1" / "channel_sets_per_scan_type"))) {
           channelSetHeader
         }
       }
       extendedHeader
       externalHeader
-      array("data", length(_.document / "general_header_1" / "scan_type_per_record")) {
-        array("scan type", length(_.document / "general_header_1" / "channel_sets_per_scan_type")) {
-          array("channel set", length(n => n.document / "scan_type_headers" / (n / -1).index / n.index / "number_of_channels"), regular) {
+      array("data", length((n: BOMNode) => longValue(n.document / "general_header_1" / "scan_type_per_record"))) {
+        array("scan type", length((n: BOMNode) => longValue(n.document / "general_header_1" / "channel_sets_per_scan_type"))) {
+          array("channel set", length(n => longValue(n.document / "scan_type_headers" / (n / -1).index / n.index / "number_of_channels")), regular) {
             trace
           }
         }
@@ -87,22 +87,22 @@ object SegdSchema extends Schema with SchemaBuilder {
     }
 
   def extendedHeader =
-    blob("extended header", byteSize(n => 32 * (n / -1 / "general_header_2" / "extended_header_blocks")))
+    blob("extended header", byteSize(n => 32 * longValue(n / -1 / "general_header_2" / "extended_header_blocks")))
 
   def externalHeader =
-    blob("external header", byteSize(n => 32 * (n / -1 / "general_header_2" / "external_header_blocks")))
+    blob("external header", byteSize(n => 32 * longValue(n / -1 / "general_header_2" / "external_header_blocks")))
 
   def trace =
     sequence("trace") {
       traceHeader
-      array("trace header extensions", length(_ / -1 / "trace_header" / "trace_header_extensions"), regular) {
+      array("trace header extensions", length((n: BOMNode) => longValue(n / -1 / "trace_header" / "trace_header_extensions")), regular) {
         traceHeaderExtension
       }
       virtual("start_time", n => longValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "start_time"))
       virtual("end_time", n => longValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "end_time"))
       virtual("subscan", n => Math.pow(2, doubleValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "sc")))
-      virtual("trace_size", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan") * 3)
-      virtual("sample_count", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan"))
+      virtual("trace_size", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * doubleValue(n / -1 / "subscan") * 3)
+      virtual("sample_count", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * doubleValue(n / -1 / "subscan"))
       traceData
     }
 
@@ -121,7 +121,7 @@ object SegdSchema extends Schema with SchemaBuilder {
     blob("trace header extension", byteSize(32))
 
   def traceData =
-    array("trace data", length(_ / -1 / "sample_count"), regular) {
+    array("trace data", length((n: BOMNode) => longValue(n / -1 / "sample_count")), regular) {
       number("sample", bom_int3)
     }
 

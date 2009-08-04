@@ -1,5 +1,6 @@
 package bom.schema
 
+import bom.BOM._
 import bom.types._
 import bom.bin._
 import scala.collection.mutable._
@@ -128,9 +129,8 @@ trait SchemaBuilder {
     stack.top.sizeFun = fun
   }
 
-  def length(lengthFun: BOMNode => Long): BOMNode => Long = lengthFun
-
   def length(len: Long): BOMNode => Long = (n: BOMNode) => len
+  def length(lengthFun: BOMNode => Long): BOMNode => Long = lengthFun
 
   def unbounded: BOMNode => Long = (n: BOMNode) => {
     var index = 0
