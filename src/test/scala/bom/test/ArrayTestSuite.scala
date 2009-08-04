@@ -4,7 +4,6 @@ import org.scalatest._
 
 import bom.BOM._
 import bom.schema._
-import bom.types._
 import bom.bin._
 
 class ArrayTestSuite extends FunSuite {
@@ -13,7 +12,8 @@ class ArrayTestSuite extends FunSuite {
     def schema = document("arrays") {
       sequence("array1") {
         number("length_array1", bom_byte)
-        array("array1", length((n: BOMNode) => longValue(n / -1 / "length_array1")), regular) {
+        def lengthFun(n: BOMNode) = longValue(n / -1 / "length_array1")
+        array("array1", length(lengthFun _), regular) {
           number("item", bom_byte)
         }
       }

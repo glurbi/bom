@@ -1,0 +1,60 @@
+---------------- What is BOM ?
+
+BOM stands for Binary Object Model.
+
+It is a software package written in scala and providing:
+* a scala DSL for describing the structure of binary documents
+* an API for navigating and querying binary object structures
+
+---------------- How to compile BOM ?
+
+You need to have scala installed (http://www.scala-lang.org/) and the variable
+SCALA_HOME set in your environment. At the moment, version 2.7.5 is supported.
+
+You also need ant (http://ant.apache.org/) available on the command line.
+
+Run ant (default target will compile everything). If the compilation passes and
+ the tests, you should get 'BUILD SUCCESSFUL'.
+
+---------------- Define a schema with the BOM DSL
+
+Some simple example schemas can be found under src/test/scala/bom/test/*.scala
+More complex examples can be found under src/example/scala/bom/examples/schemas
+
+An here is a simple skeleton:
+
+import bom.BOM._
+import bom.schema._
+
+object MySchema extends Schema with SchemaBuilder {
+
+  def schema = document("arrays") {
+    sequence("mySequence") {
+      number("myNumber", bom_int)
+      array("myArray", length(10), regular) {
+        number("item", bom_byte)
+      }
+    }
+  }
+
+}
+
+---------------- Apply a schema on an actual binary document
+
+You first need to instantiate a bom.BinarySpace object.
+Typically from a file:
+
+import bom.bin._
+val file = ... // get a reference to a java.io.File
+val bspace = new FileBinarySpace(file)
+
+Now you can apply the schema on the binary space created:
+
+val doc = new BOMDocument(MySchema.schema, bspace)
+
+And query data from the document:
+
+println("myNumber= " + value(doc/"mySequence"/"myNumber"))
+println("item5=" + value(doc/"mySequence"/"myArray"/4))
+
+
