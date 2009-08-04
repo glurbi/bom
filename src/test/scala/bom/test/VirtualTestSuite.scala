@@ -14,7 +14,7 @@ class VirtualTestSuite extends FunSuite {
       number("a", bom_int)
       number("b", bom_int)
       virtual("v1", n => (longValue(n / -1 / "a") + longValue(n / -1 / "b")) * 2)
-      virtual("v2", n => Math.pow(2, n / -1 / "a"))
+      virtual("v2", n => Math.pow(2, doubleValue(n / -1 / "a")))
     }
   }
 

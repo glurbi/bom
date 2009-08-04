@@ -33,7 +33,7 @@ object BOM {
     case _ => error ("unexpected type")
   }
 
-  implicit def doubleValue(node: BOMNode): Double = node.value match {
+  def doubleValue(node: BOMNode): Double = node.value match {
     case l: Long => l.toDouble
     case i: Int => i.toDouble
     case s: Short => s.toDouble

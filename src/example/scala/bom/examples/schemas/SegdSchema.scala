@@ -100,7 +100,7 @@ object SegdSchema extends Schema with SchemaBuilder {
       }
       virtual("start_time", n => longValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "start_time"))
       virtual("end_time", n => longValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "end_time"))
-      virtual("subscan", n => Math.pow(2, n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "sc"))
+      virtual("subscan", n => Math.pow(2, doubleValue(n.document / "scan_type_headers" / (n / -1 / -1 / -1).index / (n / -1 / -1).index / "sc")))
       virtual("trace_size", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan") * 3)
       virtual("sample_count", n => (doubleValue(n / -1 / "end_time") - doubleValue(n / -1 / "start_time")) * (n / -1 / "subscan"))
       traceData
