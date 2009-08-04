@@ -43,7 +43,7 @@ object BOM {
     case _ => error ("unexpected type")
   }
 
-  implicit def stringValue(node: BOMNode): String = node.value match {
+  def stringValue(node: BOMNode): String = node.value match {
     case s: String => s
     case l: Long => l.toString
     case i: Int => i.toString
