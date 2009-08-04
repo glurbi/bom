@@ -165,7 +165,15 @@ class DocumentHolder(val doc: BOMDocument) {
   dataTreePanel.getTableHeader.getColumnModel.getColumn(5).setHeaderValue("Type")
   dataTreePanel.getTableHeader.getColumnModel.getColumn(6).setHeaderValue("Index")
   dataTreePanel.addMouseListener(new MouseAdapter {
-    override def mousePressed(e: MouseEvent) = {
+    // Popup trigger for UNIX / Linux
+    override def mousePressed(e: MouseEvent) {
+      handlePopupMenu(e)
+    }
+    // Popup trigger for Windows
+    override def mouseReleased(e: MouseEvent) {
+      handlePopupMenu(e)
+    }
+    def handlePopupMenu(e: MouseEvent) {
       if (e.isPopupTrigger) {
         val clickedElement = dataTreePanel.getPathForLocation(e.getX, e.getY)
         dataTreePanel.getTreeSelectionModel.clearSelection
