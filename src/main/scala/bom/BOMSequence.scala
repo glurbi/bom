@@ -14,18 +14,12 @@ extends BOMContainer(schema, parent, index) {
 
   def elements: Iterator[BOMNode] = new SequenceIterator
 
-  override def size: Long = {
-    var sz = 0L
+  override def size: Long =
     if (schema.sizeFun != null)  {
-      sz = schema.sizeFun(this)
+      schema.sizeFun(this)
     } else {
-      val it = elements
-      while (it.hasNext) {
-        sz += it.next.size
-      }
+      foldLeft(0L)(_ + _.size)
     }
-    sz
-  }
   
   override def / (name: String): BOMNode = {
     val childSchema = schema.child(name)
