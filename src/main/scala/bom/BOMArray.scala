@@ -21,11 +21,7 @@ extends BOMContainer(schema, parent, index) {
       val n = schema.children(0).instance(this, 0)
       length * n.size
     } else {
-      var sz = 0L
-      for (i <- 0 until length.toInt) {
-        sz += (this/i).size
-      }
-      sz
+      foldLeft(0L)(_ + _.size)
     }
 
   def / (index: Int): BOMNode = index match {
