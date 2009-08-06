@@ -226,6 +226,7 @@ class DocumentHolder(val doc: BOMDocument) {
     }
   }
 
+  //TODO: should use pattern matching
   def isPlotable(node: BOMNode): Boolean =
     node.schema.isInstanceOf[SchemaArray] &&
     node.schema.asInstanceOf[SchemaArray].children.head.isInstanceOf[SchemaNumber]

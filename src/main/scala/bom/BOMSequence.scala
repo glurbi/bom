@@ -14,6 +14,7 @@ extends BOMContainer(schema, parent, index) {
 
   def elements: Iterator[BOMNode] = new SequenceIterator
 
+  //TODO: should be a simple call to sizeFun
   override def size: Long =
     if (schema.sizeFun != null)  {
       schema.sizeFun(this)

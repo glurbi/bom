@@ -12,8 +12,9 @@ case class BOMArray(
   override val index: Int)
 extends BOMContainer(schema, parent, index) {
 
-  def length: Long = schema.lengthFun(this).asInstanceOf[Int]
+  def length: Long = schema.lengthFun(this)
   
+  //TODO: should be a simple call to sizeFun
   override def size: Long =
     if (schema.sizeFun != null)  {
       schema.sizeFun(this)

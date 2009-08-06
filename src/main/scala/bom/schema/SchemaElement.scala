@@ -8,6 +8,7 @@ import bom.bin._
  */
 abstract class SchemaElement {
 
+  //TODO: should use pattern matching
   var positionFun: BOMNode => Long =
     node => {
       if (node.index == 0) {

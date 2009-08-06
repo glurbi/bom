@@ -17,6 +17,7 @@ extends SchemaElement {
   var defaultCase: SchemaCase = _
 
   override def add(child: SchemaElement) {
+    //TODO: should use pattern matching
     if (!(child.isInstanceOf[SchemaCase])) {
       error("Invalid child type: " + child.getClass)
     }
